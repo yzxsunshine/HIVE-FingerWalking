@@ -1,0 +1,29 @@
+Fri Dec 05 00:08:24 2014
+Command line: 
+0 <- application::api->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DUSAGE_DEPTHSTENCIL, D3DRTYPE_SURFACE, D3DFMT_D24S8)
+0 <- application::api->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DUSAGE_AUTOGENMIPMAP | D3DUSAGE_RENDERTARGET, D3DRTYPE_TEXTURE, displayMode.Format)
+0 <- application::api->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DUSAGE_AUTOGENMIPMAP | D3DUSAGE_RENDERTARGET, D3DRTYPE_TEXTURE, D3DFMT_A2R10G10B10)
+0 <- application::api->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DUSAGE_AUTOGENMIPMAP | D3DUSAGE_RENDERTARGET, D3DRTYPE_TEXTURE, D3DFMT_R32F)
+0 <- application::api->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DUSAGE_RENDERTARGET, D3DRTYPE_SURFACE, D3DFMT_G32R32F)
+0 <- application::api->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DUSAGE_RENDERTARGET, D3DRTYPE_TEXTURE, D3DFMT_G32R32F)
+0 <- application::api->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DUSAGE_AUTOGENMIPMAP | D3DUSAGE_RENDERTARGET, D3DRTYPE_TEXTURE, D3DFMT_G32R32F)
+0 <- application::api->CheckDepthStencilMatch(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, D3DFMT_X8R8G8B8, D3DFMT_X8R8G8B8, D3DFMT_D24S8)
+0 <- application::api->CheckDepthStencilMatch(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, displayMode.Format, D3DFMT_D24S8)
+0 <- application::api->CheckDepthStencilMatch(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DFMT_G32R32F, D3DFMT_D24S8)
+0 <- application::api->CheckDepthStencilMatch(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DFMT_R32F, D3DFMT_D24S8)
+0 <- application::api->CheckDepthStencilMatch(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DFMT_A2R10G10B10, D3DFMT_D24S8)
+Vertex shader vs_3_0
+Pixel  shader ps_3_0
+D3DDEVCAPS_HWTRANSFORMANDLIGHT 1
+D3DPRESENT_INTERVAL_ONE 1
+D3DPRESENT_INTERVAL_IMMEDIATE 1
+D3DCAPS2_CANAUTOGENMIPMAP 1
+scene::scene() ran
+Computing shadow mesh
+compute_shadow_mesh: 0.261946 ms
+Computing shadow mesh
+compute_shadow_mesh: 1.73969 ms
+Computing shadow mesh
+compute_shadow_mesh: 0.302555 ms
+columns::did_disconnect
+Clean shutdown
