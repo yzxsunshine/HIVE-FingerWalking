@@ -55,6 +55,7 @@ public abstract class TrackingComponentBase : MonoBehaviour, ITrackingComponent
 	
 	protected void Update()
 	{
+		transform.BroadcastMessage("InitTouches", SendMessageOptions.DontRequireReceiver);
 		BuildTouchDictionary();
 		
 		foreach (Tuio.Touch t in Touches.Values)

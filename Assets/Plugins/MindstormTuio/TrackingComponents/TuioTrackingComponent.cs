@@ -57,7 +57,7 @@ public class TuioTrackingComponent : TrackingComponentBase, ITrackingComponent
 				// It's not a new one
 				t = Touches[cursor.SessionID];
 				// Update it's position
-				t.SetNewTouchPoint(getScreenPoint(cursor), getRawPoint(cursor));
+				t.SetNewTouchPoint(getScreenPoint(cursor), getRawPoint(cursor), cursor.Force);
 			}
 			else
 			{

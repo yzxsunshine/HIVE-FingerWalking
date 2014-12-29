@@ -180,5 +180,26 @@ namespace Tuio
 			}
 			else SetHeld();
         }
+
+		public void SetNewTouchPoint(Vector2 p, Vector2 rawPoint, float force)
+		{
+			// We're being updated so must be current
+			IsCurrent = true;
+			
+			deltaTime = sw.ElapsedTicks;
+			sw.Reset();
+			sw.Start();
+			
+			// If we've not moved then we're Held
+			if (p != TouchPoint) 
+			{
+				SetMoving();
+				deltaDistance = p - TouchPoint;
+				TouchPoint = p;
+				RawPoint = rawPoint;
+				Properties.Force = force;
+			}
+			else SetHeld();
+		}
     }
 }
