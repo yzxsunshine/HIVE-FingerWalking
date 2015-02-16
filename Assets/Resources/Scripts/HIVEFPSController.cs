@@ -2,22 +2,24 @@
 using System.Collections;
 
 [RequireComponent (typeof (Rigidbody))]
-[RequireComponent (typeof (CapsuleCollider))]
 
 public class HIVEFPSController : MonoBehaviour {
 	public float speed = 10.0f;
 	public float gravity = 10.0f;
-	private float maxWalkingVelocityIncrease = 15.0f;
+	private float maxWalkingVelocityIncrease = 6.0f;
 	private float maxWalkingVelocityDecrease = -1.0f;
 	private float maxSegwayVelocityIncrease = 40.0f;
-	private float maxSegwayVelocityDecrease = -20.0f;
+	private float maxSegwayVelocityDecrease = -5.0f;
 	private float maxSurfVelocityIncrease = 100.0f;
-	private float maxSurfVelocityDecrease = -50.0f;
+	private float maxSurfVelocityDecrease = -10.0f;
+
+	private float maxInertiaChange = 0.0f;
 	public bool canJump = true;
 	public float jumpHeight = 2.0f;
 
 	public float frictionCoeff = 1.0f;
 	public Vector3 targetVelocity;
+	public Quaternion targetRotation;
 	public GESTURE_TYPE gestureType;
 
 
@@ -31,7 +33,10 @@ public class HIVEFPSController : MonoBehaviour {
 	void DoStep () {
 		Vector3 velocity = rigidbody.velocity;
 		Vector3 velocityChange = (targetVelocity - velocity);
-
+		float prevMag = velocity.magnitude;
+		float curMag = targetVelocity.magnitude;
+		float mag = 0.0f;
+		//rigidbody.rotation = targetRotation;
 		switch (gestureType) {
 		case GESTURE_TYPE.WALKING:
 			// Calculate how fast we should be moving
@@ -40,8 +45,9 @@ public class HIVEFPSController : MonoBehaviour {
 			//targetVelocity *= speed;
 			
 			// Apply a force that attempts to reach our target velocit;
-			velocityChange.x = Mathf.Clamp(velocityChange.x, maxWalkingVelocityDecrease, maxWalkingVelocityIncrease);
-			velocityChange.z = Mathf.Clamp(velocityChange.z, maxWalkingVelocityDecrease, maxWalkingVelocityIncrease);
+			mag = Mathf.Clamp(curMag - prevMag, maxWalkingVelocityDecrease, maxWalkingVelocityIncrease);
+			velocityChange.Normalize();
+			velocityChange = velocityChange * Mathf.Abs(mag);
 			velocityChange.y = 0;
 			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 
@@ -52,20 +58,28 @@ public class HIVEFPSController : MonoBehaviour {
 			break;
 
 		case GESTURE_TYPE.SEGWAY:
-			velocityChange.x = Mathf.Clamp(velocityChange.x, maxSegwayVelocityDecrease, maxSegwayVelocityIncrease);
-			velocityChange.z = Mathf.Clamp(velocityChange.z, maxSegwayVelocityDecrease, maxSegwayVelocityIncrease);
-			velocityChange.y = 0;
+			mag = Mathf.Clamp(curMag - prevMag, maxSegwayVelocityDecrease, maxSegwayVelocityIncrease);
+			velocityChange.Normalize();
+			velocityChange = velocityChange * Mathf.Abs(mag);
+			velocityChange.y = -gravity;
 			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 
 			break;
-			break;
 		case GESTURE_TYPE.SKATEBOARD:
-			velocityChange.x = Mathf.Clamp(velocityChange.x, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
-			velocityChange.z = Mathf.Clamp(velocityChange.z, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
-			velocityChange.y = Mathf.Clamp(velocityChange.y, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
+			mag = Mathf.Clamp(curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
+			velocityChange.Normalize();
+			velocityChange = velocityChange * Mathf.Abs(mag);
+			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+			break;
+		case GESTURE_TYPE.NOTHING: 
+			mag = Mathf.Clamp(curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
+			velocityChange.Normalize();
+			velocityChange = velocityChange * Mathf.Abs(mag);
 			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 			break;
 		}
+
+
 
 		// We apply gravity manually for more tuning control
 		rigidbody.AddForce(new Vector3 (0, -gravity * rigidbody.mass, 0));
@@ -85,6 +99,10 @@ public class HIVEFPSController : MonoBehaviour {
 
 	void SetVelocity (Vector3 vel) {
 		targetVelocity = vel;
+	}
+
+	void SetRotation (Quaternion q) {
+		targetRotation = q;
 	}
 
 	void SetGravity (float g) {
