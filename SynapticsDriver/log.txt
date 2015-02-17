@@ -1,4 +1,4 @@
-Sun Feb 15 20:02:44 2015
+Mon Feb 16 18:57:01 2015
 Command line: 
 0 <- application::api->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DUSAGE_DEPTHSTENCIL, D3DRTYPE_SURFACE, D3DFMT_D24S8)
 0 <- application::api->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, displayMode.Format, D3DUSAGE_AUTOGENMIPMAP | D3DUSAGE_RENDERTARGET, D3DRTYPE_TEXTURE, displayMode.Format)
@@ -20,10 +20,14 @@ D3DPRESENT_INTERVAL_IMMEDIATE 1
 D3DCAPS2_CANAUTOGENMIPMAP 1
 scene::scene() ran
 Computing shadow mesh
-compute_shadow_mesh: 0.0722288 ms
+compute_shadow_mesh: 0.120277 ms
 Computing shadow mesh
-compute_shadow_mesh: 1.67087 ms
+compute_shadow_mesh: 1.64823 ms
 Computing shadow mesh
-compute_shadow_mesh: 0.134848 ms
+compute_shadow_mesh: 0.140737 ms
 columns::did_disconnect
-Clean shutdown
+Computing shadow mesh
+compute_shadow_mesh: 0.0585887 ms
+Computing shadow mesh
+compute_shadow_mesh: 0.0954779 ms
+application.cpp:401: 88760868 = application::device->Present(nullptr, nullptr, nullptr, nullptr)

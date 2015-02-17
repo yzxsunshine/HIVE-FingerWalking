@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -198,12 +199,12 @@ public class FingerWalkingGesture : MonoBehaviour
 		}
 
 		GameObject tip = Instantiate(Resources.Load("Prefabs/finger_tip", typeof(GameObject))) as GameObject;
-		tip.transform.parent = GameObject.Find("Canvas").transform;
 		RectTransform rectTrans = tip.GetComponent<RectTransform>();
 		rectTrans.anchoredPosition = new Vector2(0, 0);
 		rectTrans.localPosition = TransformToWidget(t.TouchPoint);
 		rectTrans.rotation = Quaternion.identity;
 		rectTrans.localScale = new Vector3(1, 1, 1);
+		tip.transform.parent = GameObject.Find("Canvas").transform;
 		fingerTips.Add(t.TouchId, tip);
 
 
@@ -270,7 +271,12 @@ public class FingerWalkingGesture : MonoBehaviour
 		Vector3 pos = TransformToWidget(t.TouchPoint);//TransformToWidget(t.TouchPoint);
 		//pos.y = Screen.height - pos.y;
 		//pos.x = Screen.width - pos.x;
-		rectTrans.localPosition = pos;
+		rectTrans.position = pos;
+
+		RawImage img = fingerTips[t.TouchId].GetComponent<RawImage>();
+		float force = Mathf.Clamp(((float)t.Properties.Force), 0, 1);
+		img.color = new Color(1.0f, 0.9f * (1-force), 0.9f * (1-force));
+
 	}
 
 	void OnGUI() {
