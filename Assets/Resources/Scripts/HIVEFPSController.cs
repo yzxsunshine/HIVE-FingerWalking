@@ -6,12 +6,12 @@ using System.Collections;
 public class HIVEFPSController : MonoBehaviour {
 	public float speed = 10.0f;
 	public float gravity = 10.0f;
-	private float maxWalkingVelocityIncrease = 6.0f;
-	private float maxWalkingVelocityDecrease = -1.0f;
-	private float maxSegwayVelocityIncrease = 40.0f;
-	private float maxSegwayVelocityDecrease = -5.0f;
-	private float maxSurfVelocityIncrease = 100.0f;
-	private float maxSurfVelocityDecrease = -10.0f;
+	public float maxWalkingVelocityIncrease = 6.0f;
+	public float maxWalkingVelocityDecrease = -1.0f;
+	public float maxSegwayVelocityIncrease = 40.0f;
+	public float maxSegwayVelocityDecrease = -5.0f;
+	public float maxSurfVelocityIncrease = 100.0f;
+	public float maxSurfVelocityDecrease = -10.0f;
 
 	private float maxInertiaChange = 0.0f;
 	public bool canJump = true;

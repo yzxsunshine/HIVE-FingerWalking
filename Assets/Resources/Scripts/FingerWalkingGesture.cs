@@ -83,9 +83,10 @@ public class FingerWalkingGesture : MonoBehaviour
 	private float skateboardBaseAngularSpeed = 62.8f;
 	private float skateboardBaseYawSpeed = 0.01f;
 
-	private float segwayBaseForwardSpeed = 50.0f;
+	private float segwayBaseForwardSpeed = 30.0f;
 	private float segwayPressureBaseYawSpeed = 10.0f;
 	private float segwayAngleBaseYawSpeed = 0.01f;
+	private float segwayDispSpeed = 20.0f;
 
 	private Vector2[] segwayBasePosition = new Vector2[2];
 	private float resolutionCompensateX = 0.0f;
@@ -102,6 +103,8 @@ public class FingerWalkingGesture : MonoBehaviour
 	private GameObject baseTip1 = null;
 	private GameObject baseTip2 = null;
 	private GameObject dashline = null;
+
+	private HIVEFPSController controller;
 	//private Dictionary<int, GameObject> fingerTrailRender = new Dictionary<int, GameObject>();
 
 	Rect touchPadRect;
@@ -134,6 +137,8 @@ public class FingerWalkingGesture : MonoBehaviour
 		RectTransform rectTrans = GameObject.Find("Widget").GetComponent<RectTransform>();
 		widgetSize = new Vector2(rectTrans.sizeDelta.x, rectTrans.sizeDelta.y);
 		widgetRatio = new Vector2(widgetSize.x / Screen.width, widgetSize.y / Screen.height);
+
+		controller = GetComponent<HIVEFPSController>();
 	}
 	// Use this for initialization
 
@@ -152,11 +157,53 @@ public class FingerWalkingGesture : MonoBehaviour
 
 		GestureExcute();
 		Vector3 moveVel = velQueue.GetAvgVelocity(velocity);
-		this.GetComponent("HIVEFPSController").SendMessage("SetVelocity", moveVel);
+		controller.SendMessage("SetVelocity", moveVel);
 		//this.GetComponent("HIVEFPSController").SendMessage("SetRotation", rotation);
-		this.GetComponent("HIVEFPSController").SendMessage("DoStep");
+		controller.SendMessage("DoStep");
 		//Debug.Log(moveVel.ToString());
+
+		if(Input.GetKeyDown(KeyCode.Z)) {
+			//minFingerSpeed -= 10.0f;
+			controller.maxWalkingVelocityIncrease -= 1.0f;
+		}
+		else if(Input.GetKeyDown(KeyCode.X)) {
+			controller.maxWalkingVelocityIncrease += 1.0f;
+		}
+		else if(Input.GetKeyDown(KeyCode.A)) {
+			controller.maxWalkingVelocityDecrease -= 0.2f;
+		}
+		else if(Input.GetKeyDown(KeyCode.S)) {
+			controller.maxWalkingVelocityDecrease += 0.2f;
+		}
+		else if(Input.GetKeyDown(KeyCode.C)) {
+			//minFingerSpeed -= 10.0f;
+			controller.maxSegwayVelocityIncrease -= 1.0f;
+		}
+		else if(Input.GetKeyDown(KeyCode.V)) {
+			controller.maxSegwayVelocityIncrease += 1.0f;
+		}
+		else if(Input.GetKeyDown(KeyCode.D)) {
+			controller.maxSegwayVelocityDecrease -= 0.2f;
+		}
+		else if(Input.GetKeyDown(KeyCode.F)) {
+			controller.maxSegwayVelocityDecrease += 0.2f;
+		}
+		else if(Input.GetKeyDown(KeyCode.B)) {
+			//minFingerSpeed -= 10.0f;
+			controller.maxSurfVelocityIncrease -= 1.0f;
+		}
+		else if(Input.GetKeyDown(KeyCode.N)) {
+			controller.maxSurfVelocityIncrease += 1.0f;
+		}
+		else if(Input.GetKeyDown(KeyCode.G)) {
+			controller.maxSurfVelocityDecrease -= 0.2f;
+		}
+		else if(Input.GetKeyDown(KeyCode.H)) {
+			controller.maxSurfVelocityDecrease += 0.2f;
+		}
 	}
+
+
 
 	// a step is from addTouch to removeTouch
 	void HandleTouches(Tuio.Touch t) { // called every update in TrackingComponentBase, between InitTouches and FinishTouches
@@ -199,12 +246,15 @@ public class FingerWalkingGesture : MonoBehaviour
 		}
 
 		GameObject tip = Instantiate(Resources.Load("Prefabs/finger_tip", typeof(GameObject))) as GameObject;
-		RectTransform rectTrans = tip.GetComponent<RectTransform>();
-		rectTrans.anchoredPosition = new Vector2(0, 0);
-		rectTrans.localPosition = TransformToWidget(t.TouchPoint);
-		rectTrans.rotation = Quaternion.identity;
-		rectTrans.localScale = new Vector3(1, 1, 1);
 		tip.transform.parent = GameObject.Find("Canvas").transform;
+		RectTransform rectTrans = tip.GetComponent<RectTransform>();
+		//rectTrans.anchoredPosition = new Vector2(0, 0);
+		Vector3 pos = TransformToWidget(t.TouchPoint);
+		pos.z = 1;
+		rectTrans.localPosition = pos;
+		rectTrans.localRotation = Quaternion.identity;
+		rectTrans.localScale = new Vector3(1, 1, 1);
+		//tip.transform.parent = GameObject.Find("Canvas").transform;
 		fingerTips.Add(t.TouchId, tip);
 
 
@@ -272,10 +322,12 @@ public class FingerWalkingGesture : MonoBehaviour
 		//pos.y = Screen.height - pos.y;
 		//pos.x = Screen.width - pos.x;
 		rectTrans.position = pos;
+		//rectTrans.localPosition = pos;
 
 		RawImage img = fingerTips[t.TouchId].GetComponent<RawImage>();
 		float force = Mathf.Clamp(((float)t.Properties.Force), 0, 1);
 		img.color = new Color(1.0f, 0.9f * (1-force), 0.9f * (1-force));
+
 
 	}
 
@@ -291,6 +343,10 @@ public class FingerWalkingGesture : MonoBehaviour
 			GUI.Label(new Rect(10, 10, 100, 50), "Pressure Based Segway Off");
 		else 
 			GUI.Label(new Rect(10, 10, 100, 50), "Pressure Based Segway On");
+
+		GUI.Label(new Rect(10, 60, 400, 30), "Max In(De)crease Walking Speed: " + controller.maxWalkingVelocityIncrease.ToString() + ", " + controller.maxWalkingVelocityDecrease.ToString());
+		GUI.Label(new Rect(10, 100, 400, 30), "Max In(De)crease Segway Speed: " + controller.maxSegwayVelocityIncrease.ToString() + ", " + controller.maxSegwayVelocityDecrease.ToString());
+		GUI.Label(new Rect(10, 140, 400, 30), "Max In(De)crease Surfing Speed: " + controller.maxSurfVelocityIncrease.ToString() + ", " + controller.maxSurfVelocityDecrease.ToString());
 	}
 
 	void addTrail (Tuio.Touch t) 
@@ -436,6 +492,7 @@ public class FingerWalkingGesture : MonoBehaviour
 		float forceDiff = 0.0f;
 		float yawDiff = 0.0f;
 		float speedDiff = 0.0f;
+		float avgDisplacement = 0.0f;
 		foreach (var pos in fingerTrails) {
 			fingers[i] = pos.Value;
 			forces[i] = fingerForce[pos.Key];
@@ -504,10 +561,14 @@ public class FingerWalkingGesture : MonoBehaviour
 			forceDiff = forceDiff * segwayPressureBaseYawSpeed;
 			yawDiff = (fingers[right].y - fingers[left].y);// * skateboardBaseYawSpeed;
 			yawDiff = yawDiff * resolutionCompensateY * segwayAngleBaseYawSpeed;
+
 			speedDiff = (forces[right] + forces[left]) / 2;// * skateboardBaseYawSpeed;
 			speedDiff = speedDiff * segwayBaseForwardSpeed;
+			avgDisplacement = Mathf.Abs((fingers[right].y + fingers[left].y) / 2 - segwayBasePosition[1].y);
+			avgDisplacement /= (Screen.height / 2);
+			avgDisplacement *= segwayDispSpeed;
 
-			Vector3 segwayMove = Vector3.forward * speedDiff;
+			Vector3 segwayMove = Vector3.forward * (speedDiff + avgDisplacement);
 			string direction = "forward";
 			if(fingers[right].y - segwayBasePosition[1].y + fingers[left].y - segwayBasePosition[0].y > 0) {
 				segwayMove = -segwayMove;
