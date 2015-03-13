@@ -65,7 +65,7 @@ public class HIVEFPSController : MonoBehaviour {
 			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 
 			break;
-		case GESTURE_TYPE.SKATEBOARD:
+		case GESTURE_TYPE.SURFING:
 			mag = Mathf.Clamp(curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
 			velocityChange.Normalize();
 			velocityChange = velocityChange * Mathf.Abs(mag);
@@ -120,7 +120,7 @@ public class HIVEFPSController : MonoBehaviour {
 	}
 
 	void SetSurfing () {
-		gestureType = GESTURE_TYPE.SKATEBOARD;
+		gestureType = GESTURE_TYPE.SURFING;
 		grounded = false;
 		gravity = 0.0f;
 	}
