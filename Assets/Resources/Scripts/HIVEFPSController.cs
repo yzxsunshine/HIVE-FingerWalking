@@ -8,9 +8,9 @@ public class HIVEFPSController : MonoBehaviour {
 	public float gravity = 10.0f;
 	public float maxWalkingVelocityIncrease = 6.0f;
 	public float maxWalkingVelocityDecrease = -1.0f;
-	public float maxSegwayVelocityIncrease = 40.0f;
+	public float maxSegwayVelocityIncrease = 160.0f;
 	public float maxSegwayVelocityDecrease = -5.0f;
-	public float maxSurfVelocityIncrease = 100.0f;
+	public float maxSurfVelocityIncrease = 500.0f;
 	public float maxSurfVelocityDecrease = -10.0f;
 
 	private float maxInertiaChange = 0.0f;
@@ -19,9 +19,10 @@ public class HIVEFPSController : MonoBehaviour {
 
 	public float frictionCoeff = 1.0f;
 	public Vector3 targetVelocity;
+	public Vector3 targetPosition;
 	public Quaternion targetRotation;
 	public GESTURE_TYPE gestureType;
-
+	public int pos_or_vel = 1;
 
 	private bool grounded = false;
 	void Awake ()
@@ -39,46 +40,46 @@ public class HIVEFPSController : MonoBehaviour {
 		//rigidbody.rotation = targetRotation;
 		switch (gestureType) {
 		case GESTURE_TYPE.WALKING:
-			// Calculate how fast we should be moving
-			//Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-			//targetVelocity = transform.TransformDirection(targetVelocity);
-			//targetVelocity *= speed;
-			
-			// Apply a force that attempts to reach our target velocit;
-			mag = Mathf.Clamp(curMag - prevMag, maxWalkingVelocityDecrease, maxWalkingVelocityIncrease);
-			velocityChange.Normalize();
-			velocityChange = velocityChange * Mathf.Abs(mag);
-			velocityChange.y = 0;
-			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+// Calculate how fast we should be moving
+//Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+//targetVelocity = transform.TransformDirection(targetVelocity);
+//targetVelocity *= speed;
 
-			// Jump
-			if (canJump && Input.GetButton("Jump")) {
-				rigidbody.velocity = new Vector3(velocity.x, CalculateJumpVerticalSpeed(), velocity.z);
+// Apply a force that attempts to reach our target velocit;
+			mag = Mathf.Clamp (curMag - prevMag, maxWalkingVelocityDecrease, maxWalkingVelocityIncrease);
+			velocityChange.Normalize ();
+			velocityChange = velocityChange * Mathf.Abs (mag);
+			velocityChange.y = 0;
+			rigidbody.AddForce (velocityChange, ForceMode.VelocityChange);
+
+// Jump
+			if (canJump && Input.GetButton ("Jump")) {
+					rigidbody.velocity = new Vector3 (velocity.x, CalculateJumpVerticalSpeed (), velocity.z);
 			}
 			break;
 
 		case GESTURE_TYPE.SEGWAY:
-			mag = Mathf.Clamp(curMag - prevMag, maxSegwayVelocityDecrease, maxSegwayVelocityIncrease);
-			velocityChange.Normalize();
-			velocityChange = velocityChange * Mathf.Abs(mag);
+			mag = Mathf.Clamp (curMag - prevMag, maxSegwayVelocityDecrease, maxSegwayVelocityIncrease);
+			velocityChange.Normalize ();
+			velocityChange = velocityChange * Mathf.Abs (mag);
 			velocityChange.y = -gravity;
-			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+			rigidbody.AddForce (velocityChange, ForceMode.VelocityChange);
 
 			break;
 		case GESTURE_TYPE.SURFING:
-			mag = Mathf.Clamp(curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
-			velocityChange.Normalize();
-			velocityChange = velocityChange * Mathf.Abs(mag);
-			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+			mag = Mathf.Clamp (curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
+			velocityChange.Normalize ();
+			velocityChange = velocityChange * Mathf.Abs (mag);
+			rigidbody.AddForce (velocityChange, ForceMode.VelocityChange);
 			break;
 		case GESTURE_TYPE.NOTHING: 
-			mag = Mathf.Clamp(curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
-			velocityChange.Normalize();
-			velocityChange = velocityChange * Mathf.Abs(mag);
-			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+			mag = Mathf.Clamp (curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
+			velocityChange.Normalize ();
+			velocityChange = velocityChange * Mathf.Abs (mag);
+			rigidbody.AddForce (velocityChange, ForceMode.VelocityChange);
 			break;
 		}
-
+	
 
 
 		// We apply gravity manually for more tuning control
@@ -136,4 +137,5 @@ public class HIVEFPSController : MonoBehaviour {
 		grounded = true;
 		gravity = 10.0f;
 	}
+
 }

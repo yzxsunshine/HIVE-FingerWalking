@@ -57,11 +57,12 @@ public class VelocityQueue {
 public class FingerWalkingGesture : MonoBehaviour 
 {	
 	private int status = 0;
-	private Dictionary<int, Vector2> fingerTrails = new Dictionary<int, Vector2>();	// remember the trails of each finger
-	private Dictionary<int, Vector2> fingerStart = new Dictionary<int, Vector2>();	// remember the trails of each finger
+	private Dictionary<int, Vector2> fingerPositions = new Dictionary<int, Vector2>();	// record the trails of each finger
+	private Dictionary<int, Vector2> fingerStart = new Dictionary<int, Vector2>();	// record the trails of each finger
 	private Dictionary<int, float> fingerForce = new Dictionary<int, float>();	// forces of each fingers, can be queried by touch id
 	private Dictionary<int, Vector2> fingerVel = new Dictionary<int, Vector2>();	// velocity of each finger trail, which is used to smooth velocity
-	
+	private Dictionary<int, List<Tuio.Touch>> fingerTrails = new Dictionary<int, List<Tuio.Touch>>();
+
 	private float filterThresh = 0.7f;
 
 	private int curFingerNum = 0;	// number of fingers on track
@@ -77,6 +78,8 @@ public class FingerWalkingGesture : MonoBehaviour
 	private Quaternion rotation;
 
 	private VelocityQueue velQueue;
+	private VelocityQueue surfingRotVelQueue;
+	private VelocityQueue walkingRotVelQueue;
 
 	private Queue<int> fingerNumQueue;
 	private int fingerNumQueueLength;
@@ -84,17 +87,17 @@ public class FingerWalkingGesture : MonoBehaviour
 	private float minCharSpeed = 20.0f;
 	private float maxCharSpeed = 30.0f;
 	private float minFingerMove = 5.0f;
-	private float minFingerSpeed = 20.0f;
-	private float maxFingerSpeed = 200.0f;	// clamp
+	private float minFingerSpeed = 5.0f;
+	private float maxFingerSpeed = 100.0f;	// clamp
 
 	private float SURFINGBaseForwardSpeed = 500.0f;	// pay attention to the x or y axis related parameters, they will be influenced by screen resolution
 	private float SURFINGBaseAngularSpeed = 62.8f;
 	private float SURFINGBaseYawSpeed = 0.01f;
 
-	private float segwayBaseForwardSpeed = 30.0f;
+	private float segwayBaseForwardSpeed = 200.0f;
 	private float segwayPressureBaseYawSpeed = 10.0f;
 	private float segwayAngleBaseYawSpeed = 0.01f;
-	private float segwayDispSpeed = 50.0f;
+	private float segwayDispSpeed = 80.0f;
 
 	private Vector2[] segwayBasePosition = new Vector2[2];
 	private Vector2[] restingBasePosition = new Vector2[2];
@@ -133,7 +136,7 @@ public class FingerWalkingGesture : MonoBehaviour
 		velQueue = new VelocityQueue();
 		velQueue.SetQueueSize(10);
 
-		fingerNumQueueLength = 30;
+		fingerNumQueueLength = 20;
 		fingerNumQueue = new Queue<int>(fingerNumQueueLength);
 		for(int i=0; i<fingerNumQueueLength; i++) {
 			fingerNumQueue.Enqueue(0);
@@ -261,8 +264,9 @@ public class FingerWalkingGesture : MonoBehaviour
 		rectTrans.localScale = new Vector3(1, 1, 1);
 		//tip.transform.parent = GameObject.Find("Canvas").transform;
 		fingerTips.Add(t.TouchId, tip);
-
-
+		List<Tuio.Touch> trail = new List<Tuio.Touch> ();
+		trail.Add(t);
+		fingerTrails.Add(t.TouchId, trail);
 	}
 
 	// step end
@@ -299,11 +303,12 @@ public class FingerWalkingGesture : MonoBehaviour
 		 *		  0, 500 -------  900, 500
 		 *		Student Innovation Contest
 		 */		
-		if(fingerTrails.ContainsKey(t.TouchId)) {
-			Vector2 diff = t.TouchPoint - fingerTrails[t.TouchId];
+		if(fingerPositions.ContainsKey(t.TouchId)) {
+			Vector2 diff = t.TouchPoint - fingerPositions[t.TouchId];
 			fingerVel[t.TouchId] = diff;
-			fingerTrails[t.TouchId] = t.TouchPoint;
+			fingerPositions[t.TouchId] = t.TouchPoint;
 			fingerForce[t.TouchId] = (float) t.Properties.Force;
+			fingerTrails[t.TouchId].Add(t);
 			Debug.Log("id = " + t.TouchId + ", force = " + t.Properties.Force);
 		}
 
@@ -323,8 +328,8 @@ public class FingerWalkingGesture : MonoBehaviour
 	}
 
 	void OnGUI() {
-		/*var iter = fingerTrails.GetEnumerator();
-		GUI.Label(new Rect(10, 10, 100, 50), fingerTrails.Count.ToString());
+		/*var iter = fingerPositions.GetEnumerator();
+		GUI.Label(new Rect(10, 10, 100, 50), fingerPositions.Count.ToString());
 		int i = 0;
 		while(iter.MoveNext()) {
 			GUI.Label(new Rect(10, 60 + i * 50, 100, 50), iter.Current.Value.ToString());
@@ -343,7 +348,7 @@ public class FingerWalkingGesture : MonoBehaviour
 
 	void addTrail (Tuio.Touch t) 
 	{
-		fingerTrails.Add(t.TouchId, new Vector2(t.TouchPoint.x, t.TouchPoint.y));
+		fingerPositions.Add(t.TouchId, new Vector2(t.TouchPoint.x, t.TouchPoint.y));
 		fingerForce.Add(t.TouchId, (float)t.Properties.Force);
 		fingerVel.Add (t.TouchId, Vector2.zero);
 		fingerStart.Add(t.TouchId, new Vector2(t.TouchPoint.x, t.TouchPoint.y));
@@ -351,10 +356,12 @@ public class FingerWalkingGesture : MonoBehaviour
 
 	void removeTrail(Tuio.Touch t)
 	{
-		fingerTrails.Remove(t.TouchId);
+		fingerPositions.Remove(t.TouchId);
 		fingerForce.Remove(t.TouchId);
 		fingerVel.Remove(t.TouchId);
 		fingerStart.Remove(t.TouchId);
+		// remember to save the record here in future
+		fingerTrails.Remove (t.TouchId);
 	}
 
 	void GestureClassfier() {
@@ -366,8 +373,8 @@ public class FingerWalkingGesture : MonoBehaviour
 		GESTURE_TYPE curGestureType = gestureType;
 		if(twoFingerFrames >= fingerNumQueueLength * 0.8) {
 			Vector2 diff = new Vector2(0, 0);
-			foreach(var key in fingerTrails.Keys) {
-				diff = fingerTrails[key] - diff;
+			foreach(var key in fingerPositions.Keys) {
+				diff = fingerPositions[key] - diff;
 			}
 
 			curGestureType = GESTURE_TYPE.RESTING; 
@@ -375,8 +382,8 @@ public class FingerWalkingGesture : MonoBehaviour
 			if(diff.x < 0)
 				i = 1;	// make sure the left finger is 0, and right finger is 1
 			if(gestureType != GESTURE_TYPE.RESTING) {	// set resting pose
-				foreach(var key in fingerTrails.Keys) {
-					restingBasePosition[i] = fingerTrails[key];
+				foreach(var key in fingerPositions.Keys) {
+					restingBasePosition[i] = fingerPositions[key];
 					i = (i + 1) % 2;
 				}
 			}
@@ -393,9 +400,9 @@ public class FingerWalkingGesture : MonoBehaviour
 			}
 			else {
 				float[] dist = {0.0f, 0.0f};
-				foreach(var key in fingerTrails.Keys) {
-					dist[i] += Mathf.Abs(restingBasePosition[i].x - fingerTrails[key].x);
-					dist[i] += Mathf.Abs(restingBasePosition[i].y - fingerTrails[key].y);
+				foreach(var key in fingerPositions.Keys) {
+					dist[i] += Mathf.Abs(restingBasePosition[i].x - fingerPositions[key].x);
+					dist[i] += Mathf.Abs(restingBasePosition[i].y - fingerPositions[key].y);
 					dist[i] = dist[i] / Screen.height;
 					i = (i + 1) % 2;
 				}
@@ -403,8 +410,8 @@ public class FingerWalkingGesture : MonoBehaviour
 				if(dist[0] > minMove && dist[1] > minMove && Mathf.Abs(diff.x) > Mathf.Abs(diff.y) ) {
 					if(gestureType != GESTURE_TYPE.SEGWAY) {
 						if (Mathf.Abs(diff.y) / Mathf.Abs(diff.x) < Mathf.Tan(Mathf.PI * 0.1f) ) {	// add more constraints for triggring the first segway
-							foreach(var key in fingerTrails.Keys) {
-								segwayBasePosition[i] = fingerTrails[key];
+							foreach(var key in fingerPositions.Keys) {
+								segwayBasePosition[i] = fingerPositions[key];
 								i = (i + 1) % 2;
 							}
 							curGestureType = GESTURE_TYPE.SEGWAY;
@@ -484,6 +491,15 @@ public class FingerWalkingGesture : MonoBehaviour
 			
 			dashline.transform.parent = GameObject.Find("Canvas").transform;
 		}
+		else if (gestureType != curGestureType && curGestureType == GESTURE_TYPE.SURFING) {
+			surfingRotVelQueue = new VelocityQueue();
+			surfingRotVelQueue.SetQueueSize(20);
+		}
+		else if (gestureType != curGestureType && curGestureType == GESTURE_TYPE.WALKING) {
+			walkingRotVelQueue = new VelocityQueue();
+			walkingRotVelQueue.SetQueueSize(20);
+		}
+
 		// start a new metaphor, the new one is walking, create the trail
 		gestureType = curGestureType;
 	}
@@ -496,7 +512,7 @@ public class FingerWalkingGesture : MonoBehaviour
 		float yawDiff = 0.0f;
 		float speedDiff = 0.0f;
 		float avgDisplacement = 0.0f;
-		foreach (var pos in fingerTrails) {
+		foreach (var pos in fingerPositions) {
 			fingers[i] = pos.Value;
 			forces[i] = fingerForce[pos.Key];
 			i++;
@@ -509,35 +525,63 @@ public class FingerWalkingGesture : MonoBehaviour
 				diff += vel.Value;
 			}
 
-			//diff /= fingerVel.Count;
-
 			Vector3 move = new Vector3(-diff.x, 0.0f, diff.y);
 			move.Normalize();
 			if(diff.magnitude < minFingerMove) {
-				move = Vector3.zero;
-			}
-			else if(diff.magnitude < minFingerSpeed) {
-				
-				move = move * minCharSpeed;
-			}
-			else if(diff.magnitude > maxFingerSpeed) {
-				move = move * maxCharSpeed;
+				// tapping
+				Vector2 newStep = new Vector2();
+				Vector2 oldStep = new Vector2();
+				float stepDist = 0.0f;
+				bool hasStep = false;
+				if (fingerTrails.Count > 1) {
+					foreach (var trail in fingerTrails) {
+						if(trail.Value.Count == 1) {	// new step
+							newStep = trail.Value.ElementAt(0).TouchPoint;
+							hasStep = true;
+							break;
+						}
+					}
+					if(hasStep) {
+						foreach (var trail in fingerTrails) {
+							int numElem = trail.Value.Count;
+							Vector2 curStep = trail.Value.ElementAt(numElem - 1).TouchPoint;
+							float curDist = Mathf.Abs(curStep.x - newStep.x) + Mathf.Abs(curStep.y - newStep.y);
+							if(curDist > stepDist) {
+								stepDist = curDist;
+								oldStep = curStep;
+							}
+						}
+						move = newStep - oldStep;
+						move = new Vector3(move.x, 0.0f, -move.y);
+						velocity = transform.TransformDirection(move);//Vector3.zero;
+						//transform.Translate(move.x * 0.03f, 0.0f, -move.y*0.03f);
+					}
+
+				}
 			}
 			else {
-				move = move * diff.magnitude;//((diff.magnitude - minFingerSpeed) * speedScale + minCharSpeed);
+				if(diff.magnitude < minFingerSpeed) {	
+					move = move * minCharSpeed;
+				}
+				else if(diff.magnitude > maxFingerSpeed) {
+					move = move * maxCharSpeed;
+				}
+				else {
+					move = move * diff.magnitude;//((diff.magnitude - minFingerSpeed) * speedScale + minCharSpeed);
+				}
+				
+				//velocity = transform.TransformDirection(move);
+				Vector3 walkingRot = walkingRotVelQueue.GetAvgVelocity(new Vector3(walkingAngleSpeed * move.x, 0, 0), gestureType);
+				this.transform.Rotate(0.0f, walkingRot.x, 0.0f);
+				velocity = transform.TransformDirection(move.z * new Vector3(0, 0, 1));
 			}
-			
-			//velocity = transform.TransformDirection(move);
-
-			this.transform.Rotate(0.0f, walkingAngleSpeed * move.x, 0.0f);
-			velocity = transform.TransformDirection(move.z * new Vector3(0, 0, 1));
 			this.GetComponent("HIVEFPSController").SendMessage("SetWalking");
 
 			// set trail
 			/*foreach(var obj in fingerTrailRender) {
 				GameObject trail = obj.Value;
 				Vector3 baseCorner = new Vector3(Screen.width - widgetSize.x, Screen.height - widgetSize.y, -1.0f);
-				Vector3 curFinger = new Vector3(fingerTrails[obj.Key].x * widgetRatio.x, (Screen.height - fingerTrails[obj.Key].y) * widgetRatio.y, 0);
+				Vector3 curFinger = new Vector3(fingerPositions[obj.Key].x * widgetRatio.x, (Screen.height - fingerPositions[obj.Key].y) * widgetRatio.y, 0);
 				Vector3 pastFinger = new Vector3(fingerStart[obj.Key].x * widgetRatio.x, (Screen.height - fingerStart[obj.Key].y) * widgetRatio.y, 0);
 				trail.GetComponent<LineRenderer>().SetPosition(0, baseCorner + curFinger);
 				trail.GetComponent<LineRenderer>().SetPosition(1, baseCorner + pastFinger);
@@ -596,12 +640,12 @@ public class FingerWalkingGesture : MonoBehaviour
 
 			//rotationY += forceDiff;
 			Debug.Log("Skate Board Angular Speed = " + forceDiff +", Yaw Speed = " + yawDiff);
-
+			Vector3 avgVel = surfingRotVelQueue.GetAvgVelocity(new Vector3(forceDiff, yawDiff, 0), gestureType);
 			//transform.Rotate(Vector3.right, forceDiff - transform.eulerAngles.x);
-			transform.Rotate(Vector3.up, yawDiff);
+			transform.Rotate(Vector3.up, avgVel.y);
 			//transform.localEulerAngles = new Vector3(forceDiff, transform.localEulerAngles.y, transform.localEulerAngles.z);
 			//transform.localEulerAngles = new Vector3(forceDiff, transform.localEulerAngles.y, 0);
-			transform.eulerAngles = new Vector3(forceDiff, transform.eulerAngles.y, 0);
+			transform.eulerAngles = new Vector3(avgVel.x, transform.eulerAngles.y, 0);
 			//velocity = transform.rotation * boardMove;
 			velocity = transform.TransformDirection(boardMove);
 			this.GetComponent("HIVEFPSController").SendMessage("SetSurfing");
