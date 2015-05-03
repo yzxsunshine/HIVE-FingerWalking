@@ -31,6 +31,6 @@ public class StartSleeping : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		rigidbody.Sleep();
+		GetComponent<Rigidbody>().Sleep();
 	}
 }

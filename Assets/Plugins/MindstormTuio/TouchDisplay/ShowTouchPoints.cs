@@ -112,13 +112,13 @@ public class ShowTouchPoints : MonoBehaviour
 	{
 		GameObject go = touchIcons[t.TouchId];
 		go.transform.position = hitPoint;
-		go.renderer.enabled = visible;
+		go.GetComponent<Renderer>().enabled = visible;
 	}
 		
 	Camera FindCamera ()
 	{
-		if (camera != null)
-			return camera;
+		if (GetComponent<Camera>() != null)
+			return GetComponent<Camera>();
 		else
 			return Camera.main;
 	}

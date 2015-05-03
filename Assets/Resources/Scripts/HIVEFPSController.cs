@@ -27,12 +27,12 @@ public class HIVEFPSController : MonoBehaviour {
 	private bool grounded = false;
 	void Awake ()
 	{
-		rigidbody.freezeRotation = true;
-		rigidbody.useGravity = false;
+		GetComponent<Rigidbody>().freezeRotation = true;
+		GetComponent<Rigidbody>().useGravity = false;
 	}
 	
 	void DoStep () {
-		Vector3 velocity = rigidbody.velocity;
+		Vector3 velocity = GetComponent<Rigidbody>().velocity;
 		Vector3 velocityChange = (targetVelocity - velocity);
 		float prevMag = velocity.magnitude;
 		float curMag = targetVelocity.magnitude;
@@ -50,11 +50,11 @@ public class HIVEFPSController : MonoBehaviour {
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
 			velocityChange.y = 0;
-			rigidbody.AddForce (velocityChange, ForceMode.VelocityChange);
+			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
 
 // Jump
 			if (canJump && Input.GetButton ("Jump")) {
-					rigidbody.velocity = new Vector3 (velocity.x, CalculateJumpVerticalSpeed (), velocity.z);
+					GetComponent<Rigidbody>().velocity = new Vector3 (velocity.x, CalculateJumpVerticalSpeed (), velocity.z);
 			}
 			break;
 
@@ -63,27 +63,27 @@ public class HIVEFPSController : MonoBehaviour {
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
 			velocityChange.y = -gravity;
-			rigidbody.AddForce (velocityChange, ForceMode.VelocityChange);
+			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
 
 			break;
 		case GESTURE_TYPE.SURFING:
 			mag = Mathf.Clamp (curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
-			rigidbody.AddForce (velocityChange, ForceMode.VelocityChange);
+			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
 			break;
 		case GESTURE_TYPE.NOTHING: 
 			mag = Mathf.Clamp (curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
-			rigidbody.AddForce (velocityChange, ForceMode.VelocityChange);
+			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
 			break;
 		}
 	
 
 
 		// We apply gravity manually for more tuning control
-		rigidbody.AddForce(new Vector3 (0, -gravity * rigidbody.mass, 0));
+		GetComponent<Rigidbody>().AddForce(new Vector3 (0, -gravity * GetComponent<Rigidbody>().mass, 0));
 		
 		grounded = false;
 	}

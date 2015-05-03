@@ -104,8 +104,8 @@ public class GestureTouchClick : MonoBehaviour, IGestureHandler {
 	
 	Camera FindCamera ()
 	{
-		if (camera != null)
-			return camera;
+		if (GetComponent<Camera>() != null)
+			return GetComponent<Camera>();
 		else
 			return Camera.main;
 	}

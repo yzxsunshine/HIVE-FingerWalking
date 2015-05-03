@@ -56,7 +56,7 @@ public class WallBuilder : MonoBehaviour {
 					Vector3 pos = new Vector3(x * BrickPrefab.transform.localScale.x, y * BrickPrefab.transform.localScale.y, z * BrickPrefab.transform.localScale.z);
 					pos = transform.position + pos;
 		            GameObject brick = (GameObject)Instantiate(BrickPrefab, pos, Quaternion.identity);
-					brick.rigidbody.Sleep();
+					brick.GetComponent<Rigidbody>().Sleep();
 					
 					yield return null;
 				}

@@ -79,8 +79,8 @@ public class DefaultTouchHandler : MonoBehaviour
 	
 	Camera FindCamera ()
 	{
-		if (camera != null)
-			return camera;
+		if (GetComponent<Camera>() != null)
+			return GetComponent<Camera>();
 		else
 			return Camera.main;
 	}

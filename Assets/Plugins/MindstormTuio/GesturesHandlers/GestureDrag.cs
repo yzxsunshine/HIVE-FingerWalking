@@ -64,7 +64,7 @@ public class GestureDrag : MonoBehaviour, IGestureHandler
 	public void AddTouch(Tuio.Touch t, RaycastHit hit)
 	{
 		GameObject go = addDragger(hit.point, t, true);
-		Rigidbody bod = attachToParent ? transform.parent.rigidbody : rigidbody;
+		Rigidbody bod = attachToParent ? transform.parent.GetComponent<Rigidbody>() : GetComponent<Rigidbody>();
 		addJoint(bod, go, hit.point, t);
 	}
 	
@@ -116,7 +116,7 @@ public class GestureDrag : MonoBehaviour, IGestureHandler
 		float y = fixedDraggerHeight == 0 ? hitPoint.y : fixedDraggerHeight;
 		go.transform.position = new Vector3(hitPoint.x, y, hitPoint.z);
 		
-		if (go.renderer != null) go.renderer.enabled = visible && showDraggers;
+		if (go.GetComponent<Renderer>() != null) go.GetComponent<Renderer>().enabled = visible && showDraggers;
 	}
 	
 	GameObject addDragger(Vector3 hitPoint, Tuio.Touch t, bool visible)
@@ -125,7 +125,7 @@ public class GestureDrag : MonoBehaviour, IGestureHandler
 		float y = fixedDraggerHeight == 0 ? hitPoint.y : fixedDraggerHeight;
 		go.transform.position = new Vector3(hitPoint.x, y, hitPoint.z);
 		
-		if (go.renderer != null) go.renderer.enabled = visible && showDraggers;
+		if (go.GetComponent<Renderer>() != null) go.GetComponent<Renderer>().enabled = visible && showDraggers;
 		
 		draggers.Add(t.TouchId, go);
 		return go;
@@ -168,8 +168,8 @@ public class GestureDrag : MonoBehaviour, IGestureHandler
 		
 	Camera FindCamera ()
 	{
-		if (camera != null)
-			return camera;
+		if (GetComponent<Camera>() != null)
+			return GetComponent<Camera>();
 		else
 			return Camera.main;
 	}
