@@ -6,53 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using Tuio;
 
-public enum GESTURE_TYPE {
-	NOTHING,
-	WALKING,
-	SEGWAY,
-	SURFING,
-	RESTING
-};
-
-public class VelocityQueue {
-	public Queue<Vector3> queue;
-	public int size;
-	public float[] weights;
-	public float[] weights_surfing;
-
-	public void SetQueueSize(int s) {
-		size = s;
-		weights = new float[size];
-		weights_surfing = new float[size];
-		queue = new Queue<Vector3>(size);
-		float variant_ratio = 0.1f;
-		for(int i=0; i<size; i++) {
-			queue.Enqueue(Vector3.zero);
-			weights[i] = Mathf.Pow(0.5f, size - i);
-			weights_surfing[i] = weights[i] * variant_ratio + (1 - variant_ratio) / size;
-		}		
-		weights[size - 1] += Mathf.Pow(0.5f, size);
-		weights_surfing[size - 1] += Mathf.Pow(0.5f, size) * variant_ratio;
-	}
-
-	public Vector3 GetAvgVelocity(Vector3 vel, GESTURE_TYPE type) {
-		Vector3 outVel = Vector3.zero;
-		queue.Dequeue();
-		queue.Enqueue(vel);
-		int i=0; 
-		foreach(Vector3 v in queue) {
-			if (type == GESTURE_TYPE.WALKING || type == GESTURE_TYPE.SEGWAY) {
-				outVel += weights[i] * v;
-			}
-			else if (type == GESTURE_TYPE.SURFING) {
-				outVel += weights_surfing[i] * v;
-			}
-			i++;
-		}		
-		return outVel;
-	}
-};
-
 
 public class FingerWalkingGesture : MonoBehaviour 
 {	
@@ -73,7 +26,6 @@ public class FingerWalkingGesture : MonoBehaviour
 	private int MAX_ITER = 2;
 	private StreamWriter sw;
 
-	private GESTURE_TYPE gestureType = GESTURE_TYPE.WALKING;
 
 	private Vector3 velocity;
 	private Quaternion rotation;
@@ -107,7 +59,7 @@ public class FingerWalkingGesture : MonoBehaviour
 
 	private bool pressureBasedSegwayOn = false;
 	private float minMove = 0.02f;
-	private float walkingAngleSpeed = 0.05f;
+	private float walkingAngleSpeed = 10f;
 
 
 	// for 2d widgets
@@ -118,14 +70,14 @@ public class FingerWalkingGesture : MonoBehaviour
 	private GameObject baseTip1 = null;
 	private GameObject baseTip2 = null;
 	private GameObject dashline = null;
+	private TravelModelInterface travel_model_interface;
 
-	private HIVEFPSController controller;
 	//private Dictionary<int, GameObject> fingerTrailRender = new Dictionary<int, GameObject>();
 
 	Rect touchPadRect;
 	Rect leftRect;
 	Rect rightRect;
-
+	GESTURE_TYPE gestureType;
 
 
 	void Start() {
@@ -154,7 +106,7 @@ public class FingerWalkingGesture : MonoBehaviour
 		leftTurnForce = new KeyValuePair<int, float>(-1, 0.0f);
 		rightTurnForce = new KeyValuePair<int, float>(-1, 0.0f);
 
-		controller = GetComponent<HIVEFPSController>();
+		travel_model_interface = GetComponent<TravelModelInterface>();
 	}
 	// Use this for initialization
 
@@ -172,58 +124,12 @@ public class FingerWalkingGesture : MonoBehaviour
 
 		GestureExcute();
 		Vector3 moveVel = velQueue.GetAvgVelocity(velocity, gestureType);
-		controller.SendMessage("SetVelocity", moveVel);
-		//this.GetComponent("HIVEFPSController").SendMessage("SetRotation", rotation);
-		controller.SendMessage("DoStep");
-		//Debug.Log(moveVel.ToString());
 
+		//Debug.Log(moveVel.ToString());
+		travel_model_interface.SetVelocity (moveVel, new Vector3(0, 0, 0));
 		GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 
-		if(Input.GetKeyDown(KeyCode.Z)) {
-			//minFingerSpeed -= 10.0f;
-			controller.maxWalkingVelocityIncrease -= 1.0f;
-		}
-		else if(Input.GetKeyDown(KeyCode.X)) {
-			controller.maxWalkingVelocityIncrease += 1.0f;
-		}
-		else if(Input.GetKeyDown(KeyCode.A)) {
-			controller.maxWalkingVelocityDecrease -= 0.2f;
-		}
-		else if(Input.GetKeyDown(KeyCode.S)) {
-			controller.maxWalkingVelocityDecrease += 0.2f;
-		}
-		else if(Input.GetKeyDown(KeyCode.C)) {
-			//minFingerSpeed -= 10.0f;
-			controller.maxSegwayVelocityIncrease -= 1.0f;
-		}
-		else if(Input.GetKeyDown(KeyCode.V)) {
-			controller.maxSegwayVelocityIncrease += 1.0f;
-		}
-		else if(Input.GetKeyDown(KeyCode.D)) {
-			controller.maxSegwayVelocityDecrease -= 0.2f;
-		}
-		else if(Input.GetKeyDown(KeyCode.F)) {
-			controller.maxSegwayVelocityDecrease += 0.2f;
-		}
-		else if(Input.GetKeyDown(KeyCode.B)) {
-			//minFingerSpeed -= 10.0f;
-			controller.maxSurfVelocityIncrease -= 1.0f;
-		}
-		else if(Input.GetKeyDown(KeyCode.N)) {
-			controller.maxSurfVelocityIncrease += 1.0f;
-		}
-		else if(Input.GetKeyDown(KeyCode.G)) {
-			controller.maxSurfVelocityDecrease -= 0.2f;
-		}
-		else if(Input.GetKeyDown(KeyCode.H)) {
-			controller.maxSurfVelocityDecrease += 0.2f;
-		}
-		else if(Input.GetKeyDown(KeyCode.Q)) {
-			walkingAngleSpeed -= 0.005f;
-		}
-		else if(Input.GetKeyDown(KeyCode.W)) {
-			walkingAngleSpeed += 0.005f;
-		}
+
 	}
 
 
@@ -293,7 +199,7 @@ public class FingerWalkingGesture : MonoBehaviour
 		} else if (t.TouchId == rightTurnForce.Key) {
 			rightTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
 		} else {
-			if (gestureType == GESTURE_TYPE.WALKING) {
+			if (travel_model_interface.GetGestureType() == GESTURE_TYPE.WALKING) {
 				status++;
 				if (status > 2)
 					status = 1;
@@ -367,9 +273,9 @@ public class FingerWalkingGesture : MonoBehaviour
 		else 
 			GUI.Label(new Rect(10, 10, 100, 50), "Pressure Based Segway On");
 
-		GUI.Label(new Rect(10, 60, 400, 30), "Max In(De)crease Walking Speed: " + controller.maxWalkingVelocityIncrease.ToString() + ", " + controller.maxWalkingVelocityDecrease.ToString());
-		GUI.Label(new Rect(10, 100, 400, 30), "Max In(De)crease Segway Speed: " + controller.maxSegwayVelocityIncrease.ToString() + ", " + controller.maxSegwayVelocityDecrease.ToString());
-		GUI.Label(new Rect(10, 140, 400, 30), "Max In(De)crease Surfing Speed: " + controller.maxSurfVelocityIncrease.ToString() + ", " + controller.maxSurfVelocityDecrease.ToString());
+		GUI.Label(new Rect(10, 60, 400, 30), "Max In(De)crease Walking Speed: " + travel_model_interface.GetController().maxWalkingVelocityIncrease.ToString() + ", " + travel_model_interface.GetController().maxWalkingVelocityDecrease.ToString());
+		GUI.Label(new Rect(10, 100, 400, 30), "Max In(De)crease Segway Speed: " + travel_model_interface.GetController().maxSegwayVelocityIncrease.ToString() + ", " + travel_model_interface.GetController().maxSegwayVelocityDecrease.ToString());
+		GUI.Label(new Rect(10, 140, 400, 30), "Max In(De)crease Surfing Speed: " + travel_model_interface.GetController().maxSurfVelocityIncrease.ToString() + ", " + travel_model_interface.GetController().maxSurfVelocityDecrease.ToString());
 		GUI.Label(new Rect(10, 180, 400, 30), "Walking Angular Speed: " + walkingAngleSpeed.ToString());
 	}
 
@@ -397,7 +303,7 @@ public class FingerWalkingGesture : MonoBehaviour
 			if(num == 2)
 				twoFingerFrames++;
 		}
-		GESTURE_TYPE curGestureType = gestureType;
+		GESTURE_TYPE curGestureType = travel_model_interface.GetGestureType();
 		if(leftTurnForce.Key > 0 || rightTurnForce.Key > 0) {
 				curGestureType = GESTURE_TYPE.WALKING;
 			}
@@ -415,7 +321,7 @@ public class FingerWalkingGesture : MonoBehaviour
 			int i = 0;
 			if(diff.x < 0)
 				i = 1;	// make sure the left finger is 0, and right finger is 1
-			if(gestureType != GESTURE_TYPE.RESTING) {	// set resting pose
+			if(travel_model_interface.GetGestureType() != GESTURE_TYPE.RESTING) {	// set resting pose
 				foreach(var key in fingerPositions.Keys) {
 					restingBasePosition[i] = fingerPositions[key];
 					i = (i + 1) % 2;
@@ -423,7 +329,7 @@ public class FingerWalkingGesture : MonoBehaviour
 			}
 
 			if (Mathf.Abs(diff.y) / Mathf.Abs(diff.x) > Mathf.Tan(Mathf.PI * 0.4f) ) {	// add more constraints for triggring the first segway
-				if(gestureType != GESTURE_TYPE.SURFING) {
+				if(travel_model_interface.GetGestureType() != GESTURE_TYPE.SURFING) {
 					curGestureType = GESTURE_TYPE.SURFING;
 					Debug.Log("Skate Board");
 				}
@@ -442,7 +348,7 @@ public class FingerWalkingGesture : MonoBehaviour
 				}
 
 				if(dist[0] > minMove && dist[1] > minMove && Mathf.Abs(diff.x) > Mathf.Abs(diff.y) ) {
-					if(gestureType != GESTURE_TYPE.SEGWAY) {
+					if(travel_model_interface.GetGestureType() != GESTURE_TYPE.SEGWAY) {
 						if (Mathf.Abs(diff.y) / Mathf.Abs(diff.x) < Mathf.Tan(Mathf.PI * 0.1f) ) {	// add more constraints for triggring the first segway
 							foreach(var key in fingerPositions.Keys) {
 								segwayBasePosition[i] = fingerPositions[key];
@@ -452,7 +358,7 @@ public class FingerWalkingGesture : MonoBehaviour
 							Debug.Log("Segway");
 						}
 						else {
-							curGestureType = gestureType;
+							curGestureType = travel_model_interface.GetGestureType();
 						}
 					}
 					else {
@@ -460,8 +366,8 @@ public class FingerWalkingGesture : MonoBehaviour
 						Debug.Log("Segway");
 					}
 				}
-				else if(gestureType == GESTURE_TYPE.SEGWAY || gestureType == GESTURE_TYPE.SURFING){
-					curGestureType = gestureType;
+				else if(travel_model_interface.GetGestureType() == GESTURE_TYPE.SEGWAY || travel_model_interface.GetGestureType() == GESTURE_TYPE.SURFING){
+					curGestureType = travel_model_interface.GetGestureType();
 				}
 			}
 
@@ -475,7 +381,7 @@ public class FingerWalkingGesture : MonoBehaviour
 		}
 
 		// start a new metaphor, the last one is SURFING, reset states
-		if(gestureType != curGestureType && gestureType == GESTURE_TYPE.SURFING) {
+		if(travel_model_interface.GetGestureType() != curGestureType && travel_model_interface.GetGestureType() == GESTURE_TYPE.SURFING) {
 			Vector3 forward = transform.forward;
 			Vector3 up = new Vector3(0, 1.0f, 0);
 			Vector3 xAxis = Vector3.Cross(transform.up, forward);
@@ -484,7 +390,7 @@ public class FingerWalkingGesture : MonoBehaviour
 			transform.forward = forward;
 		}
 		// start a new metaphor, the last one is segway, destroy segway drawing
-		else if(gestureType != curGestureType && gestureType == GESTURE_TYPE.SEGWAY) {	// last one is SEGWAY, remove baseline
+		else if(travel_model_interface.GetGestureType() != curGestureType && travel_model_interface.GetGestureType() == GESTURE_TYPE.SEGWAY) {	// last one is SEGWAY, remove baseline
 			if(baseTip1 != null) {
 				Destroy(baseTip1);
 				baseTip1 = null;
@@ -556,10 +462,10 @@ public class FingerWalkingGesture : MonoBehaviour
 			if(leftTurnForce.Key >= 0 && rightTurnForce.Key >= 0) {
 			}
 			else if(leftTurnForce.Key >= 0) {
-				this.transform.Rotate(0.0f, -5.0f * leftTurnForce.Value, 0.0f);
+				this.transform.Rotate(0.0f, -walkingAngleSpeed * leftTurnForce.Value, 0.0f);
 			}
 			else if(rightTurnForce.Key >= 0) {
-				this.transform.Rotate(0.0f, 5.0f * rightTurnForce.Value, 0.0f);
+				this.transform.Rotate(0.0f, walkingAngleSpeed * rightTurnForce.Value, 0.0f);
 			}
 			Vector2 diff = Vector2.zero;
 			foreach (var vel in fingerVel) {
@@ -702,5 +608,7 @@ public class FingerWalkingGesture : MonoBehaviour
 		pos.y = Screen.height - widgetSize.y + pos.y;
 		return pos;
 	}
+
+
 }
 

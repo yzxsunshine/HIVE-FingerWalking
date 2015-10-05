@@ -6,12 +6,12 @@ using System.Collections;
 public class HIVEFPSController : MonoBehaviour {
 	public float speed = 10.0f;
 	public float gravity = 10.0f;
-	public float maxWalkingVelocityIncrease = 6.0f;
+	public float maxWalkingVelocityIncrease = 1.0f;
 	public float maxWalkingVelocityDecrease = -1.0f;
-	public float maxSegwayVelocityIncrease = 160.0f;
-	public float maxSegwayVelocityDecrease = -5.0f;
-	public float maxSurfVelocityIncrease = 500.0f;
-	public float maxSurfVelocityDecrease = -10.0f;
+	public float maxSegwayVelocityIncrease = 5.0f;
+	public float maxSegwayVelocityDecrease = -2.0f;
+	public float maxSurfVelocityIncrease = 10.0f;
+	public float maxSurfVelocityDecrease = -5.0f;
 
 	private float maxInertiaChange = 0.0f;
 	public bool canJump = true;
@@ -31,7 +31,7 @@ public class HIVEFPSController : MonoBehaviour {
 		GetComponent<Rigidbody>().useGravity = false;
 	}
 	
-	void DoStep () {
+	public void DoStep () {
 		Vector3 velocity = GetComponent<Rigidbody>().velocity;
 		Vector3 velocityChange = (targetVelocity - velocity);
 		float prevMag = velocity.magnitude;
@@ -88,51 +88,51 @@ public class HIVEFPSController : MonoBehaviour {
 		grounded = false;
 	}
 	
-	void OnCollisionStay () {
+	public void OnCollisionStay () {
 		grounded = true;    
 	}
 	
-	float CalculateJumpVerticalSpeed () {
+	public float CalculateJumpVerticalSpeed () {
 		// From the jump height and gravity we deduce the upwards speed 
 		// for the character to reach at the apex.
 		return Mathf.Sqrt(2 * jumpHeight * gravity);
 	}
 
-	void SetVelocity (Vector3 vel) {
+	public void SetVelocity (Vector3 vel) {
 		targetVelocity = vel;
 	}
 
-	void SetRotation (Quaternion q) {
+	public void SetRotation (Quaternion q) {
 		targetRotation = q;
 	}
 
-	void SetGravity (float g) {
+	public void SetGravity (float g) {
 		gravity = g;
 	}
 
-	void SetFly () {
+	public void SetFly () {
 		grounded = false;
 		gravity = 0.0f;
 	}
 
-	void SetGround () {
+	public void SetGround () {
 		grounded = true;
 		gravity = 10.0f;
 	}
 
-	void SetSurfing () {
+	public void SetSurfing () {
 		gestureType = GESTURE_TYPE.SURFING;
 		grounded = false;
 		gravity = 0.0f;
 	}
 	
-	void SetWalking () {
+	public void SetWalking () {
 		gestureType = GESTURE_TYPE.WALKING;
 		grounded = true;
 		gravity = 10.0f;
 	}
 
-	void SetSegway () {
+	public void SetSegway () {
 		gestureType = GESTURE_TYPE.SEGWAY;
 		grounded = true;
 		gravity = 10.0f;
