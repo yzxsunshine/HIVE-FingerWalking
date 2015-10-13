@@ -1,66 +1,81 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public class JoystickParams {
+	public float walkingSpeed;
+	public float walkingAngularSpeed;
+	public float segwaySpeed;
+	public float segwayAngularSpeed;
+	public float surfingSpeed;
+	public float surfingPitchSpeed;
+	public float surfingYawSpeed;
+
+	public JoystickParams() {
+		walkingSpeed = 10.0f;
+		walkingAngularSpeed = 1.0f;
+		segwaySpeed = 20.0f;
+		segwayAngularSpeed = 1.0f;
+		surfingSpeed = 30.0f;
+		surfingPitchSpeed = 20.0f;
+		surfingYawSpeed = 1.0f;
+	}
+};
+
 public class JoystickGesture : MonoBehaviour {
 	private GESTURE_TYPE gestureType = GESTURE_TYPE.WALKING;
-	public float right_horizontal;
-	public float right_vertical;
-	public float left_horizontal;
-	public float left_vertical;
+	public float rightHorizontal;
+	public float rightVertical;
+	public float leftHorizontal;
+	public float leftVertical;
 
-	private float walking_speed = 10.0f;
-	private float walking_angle_speed = 1.0f;
-	private float segway_speed = 20.0f;
-	private float segway_angle_speed = 1.0f;
-	private float surfing_speed = 30.0f;
-	private float surfing_pitch_speed = 20.0f;
-	private float surfing_yaw_speed = 1.0f;
-	private bool flip_left_right = false;
-	private bool flip_surf_pitch = false;
+	public JoystickParams joystickParams;
+	public bool flipLeftRight = false;
+	public bool flipSurfPitch = false;
 
-	private TravelModelInterface travel_model_interface;
+	private TravelModelInterface travelModelInterface;
 	// Use this for initialization
 	void Start () {
-		travel_model_interface = GetComponent<TravelModelInterface>();
+		travelModelInterface = GetComponent<TravelModelInterface>();
+		joystickParams = ConfigurationHandler.joystickParams;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		//GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 		if(Input.GetKey("joystick button 0")) {
-			travel_model_interface.SetTargetGestureType (GESTURE_TYPE.WALKING);
-			travel_model_interface.SetGestureType (GESTURE_TYPE.WALKING);
+			travelModelInterface.SetTargetGestureType (GESTURE_TYPE.WALKING);
+			travelModelInterface.SetGestureType (GESTURE_TYPE.WALKING);
 			Debug.Log("Walking");
 		}
 		else if(Input.GetKey("joystick button 1")) {
-			travel_model_interface.SetTargetGestureType (GESTURE_TYPE.SEGWAY);
-			travel_model_interface.SetGestureType (GESTURE_TYPE.SEGWAY);
+			travelModelInterface.SetTargetGestureType (GESTURE_TYPE.SEGWAY);
+			travelModelInterface.SetGestureType (GESTURE_TYPE.SEGWAY);
 			Debug.Log("Segway");
 		}
 		else if(Input.GetKey("joystick button 2")) {
-			travel_model_interface.SetTargetGestureType (GESTURE_TYPE.SURFING);
-			travel_model_interface.SetGestureType (GESTURE_TYPE.SURFING);
+			travelModelInterface.SetTargetGestureType (GESTURE_TYPE.SURFING);
+			travelModelInterface.SetGestureType (GESTURE_TYPE.SURFING);
 			Debug.Log("Surfing");
 		}
 		else if(Input.GetKey("joystick button 6")) {
-			flip_left_right = ! flip_left_right;
+			flipLeftRight = ! flipLeftRight;
 			Debug.Log("Flip left and right");
 		}
 		else if(Input.GetKey("joystick button 7")) {
-			flip_surf_pitch = ! flip_surf_pitch;
+			flipSurfPitch = ! flipSurfPitch;
 			Debug.Log("Flip surfing pitch");
 		}
 
-		if (flip_left_right) {
-			right_horizontal = Input.GetAxis ("Horizontal") * 1.0f;
-			right_vertical = Input.GetAxis ("Vertical") * 1.0f;
-			left_horizontal = Input.GetAxis ("ZHorizontal") * 1.0f;
-			left_vertical = Input.GetAxis ("ZVertical") * 1.0f;
+		if (flipLeftRight) {
+			rightHorizontal = Input.GetAxis ("Horizontal") * 1.0f;
+			rightVertical = Input.GetAxis ("Vertical") * 1.0f;
+			leftHorizontal = Input.GetAxis ("ZHorizontal") * 1.0f;
+			leftVertical = Input.GetAxis ("ZVertical") * 1.0f;
 		} else {
-			right_horizontal = Input.GetAxis ("ZHorizontal") * 1.0f;
-			right_vertical = -Input.GetAxis ("ZVertical") * 1.0f;
-			left_horizontal = Input.GetAxis ("Horizontal") * 1.0f;
-			left_vertical = -Input.GetAxis ("Vertical") * 1.0f;
+			rightHorizontal = Input.GetAxis ("ZHorizontal") * 1.0f;
+			rightVertical = -Input.GetAxis ("ZVertical") * 1.0f;
+			leftHorizontal = Input.GetAxis ("Horizontal") * 1.0f;
+			leftVertical = -Input.GetAxis ("Vertical") * 1.0f;
 		}
 		//Vector3 moveVel = velQueue.GetAvgVelocity(velocity, gestureType);
 		//controller.SendMessage("SetVelocity", moveVel);
@@ -70,30 +85,30 @@ public class JoystickGesture : MonoBehaviour {
 		Vector3 moveVel = new Vector3();
 		Vector3 rotVel = new Vector3 ();
 
-		switch (travel_model_interface.GetGestureType ()) {
+		switch (travelModelInterface.GetGestureType ()) {
 		case GESTURE_TYPE.WALKING:
 			// right hand joystick control the translation, left hand joystick control rotation
-			moveVel = new Vector3 (left_horizontal, 0, left_vertical) * walking_speed;
-			rotVel = new Vector3 (0, right_horizontal, 0) * walking_angle_speed;
+			moveVel = new Vector3 (leftHorizontal, 0, leftVertical) * joystickParams.walkingSpeed;
+			rotVel = new Vector3 (0, rightHorizontal, 0) * joystickParams.walkingAngularSpeed;
 			this.GetComponent ("HIVEFPSController").SendMessage ("SetWalking");
 			break;
 		case GESTURE_TYPE.SEGWAY:
-			moveVel = Vector3.forward * left_vertical * segway_speed;
-			rotVel = new Vector3 (0, left_horizontal, 0) * segway_angle_speed;
+			moveVel = Vector3.forward * leftVertical * joystickParams.segwaySpeed;
+			rotVel = new Vector3 (0, leftHorizontal, 0) * joystickParams.segwayAngularSpeed;
 			this.GetComponent ("HIVEFPSController").SendMessage ("SetSegway");
 			break;
 		case GESTURE_TYPE.SURFING:
-			moveVel = -Vector3.forward * right_vertical * surfing_speed;
+			moveVel = -Vector3.forward * rightVertical * joystickParams.surfingSpeed;
 
-			if (flip_surf_pitch) {
-				left_vertical = - left_vertical;
+			if (flipSurfPitch) {
+				leftVertical = - leftVertical;
 			} 
-			rotVel = new Vector3(left_vertical * surfing_pitch_speed, left_horizontal * surfing_yaw_speed, 0);
+			rotVel = new Vector3(leftVertical * joystickParams.surfingPitchSpeed, leftHorizontal * joystickParams.surfingYawSpeed, 0);
 			this.GetComponent("HIVEFPSController").SendMessage("SetSurfing");
 			break;
 		}
 
-		travel_model_interface.SetVelocity (moveVel, rotVel);
+		travelModelInterface.SetVelocity (moveVel, rotVel);
 		GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 	}
 }

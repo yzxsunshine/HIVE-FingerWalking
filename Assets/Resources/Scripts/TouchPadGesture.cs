@@ -5,6 +5,39 @@ using System.Collections.Generic;
 using System.IO;
 using Tuio;
 
+public class ForcePadParams {
+	public float minFingerMove;
+	public float minFingerSpeed;
+	public float maxFingerSpeed;	// clamp
+	public float walkingAngularSpeed;
+	
+	public float surfingSpeed;	// pay attention to the x or y axis related parameters, they will be influenced by screen resolution
+	public float surfingPitchSpeed;
+	public float surfingYawSpeed;
+	
+	public float segwaySpeed;
+	public float segwayPressureAngularSpeed;
+	public float segwayAngularSpeed;
+	public float segwayOffsetSpeed;
+
+	public ForcePadParams() {
+		minFingerMove = 5.0f;
+		minFingerSpeed = 2.0f;
+		maxFingerSpeed = 10.0f;
+		walkingAngularSpeed = 10f;
+		
+		surfingSpeed = 100.0f;	
+		surfingPitchSpeed = 62.8f;
+		surfingYawSpeed = 0.01f;
+		
+		segwaySpeed = 50.0f;
+		segwayPressureAngularSpeed = 10.0f;
+		segwayAngularSpeed = 0.01f;
+		segwayOffsetSpeed = 80.0f;
+	}
+};
+
+
 public class TouchPadGesture : MonoBehaviour {
 	private Dictionary<int, Vector2> fingerPositions = new Dictionary<int, Vector2>();	// record the trails of each finger
 	private Dictionary<int, Vector2> fingerStart = new Dictionary<int, Vector2>();	// record the trails of each finger
@@ -44,25 +77,11 @@ public class TouchPadGesture : MonoBehaviour {
 	private float resolutionCompensateX = 0.0f;
 	private float resolutionCompensateY = 0.0f;
 
-	private float minCharSpeed = 2.0f;
-	private float maxCharSpeed = 10.0f;
-	private float minFingerMove = 5.0f;
-	private float minFingerSpeed = 2.0f;
-	private float maxFingerSpeed = 10.0f;	// clamp
-
 	private Vector3 moveVel;
 	private Vector3 rotVel;
 
-	private float SURFINGBaseForwardSpeed = 100.0f;	// pay attention to the x or y axis related parameters, they will be influenced by screen resolution
-	private float SURFINGBaseAngularSpeed = 62.8f;
-	private float SURFINGBaseYawSpeed = 0.01f;
-	
-	private float segwayBaseForwardSpeed = 50.0f;
-	private float segwayPressureBaseYawSpeed = 10.0f;
-	private float segwayAngleBaseYawSpeed = 0.01f;
-	private float segwayDispSpeed = 80.0f;
-	
-	private float walkingAngleSpeed = 10f;
+	public ForcePadParams forcePadParams;
+
 
 	// Use this for initialization
 	void Start () {
@@ -83,6 +102,7 @@ public class TouchPadGesture : MonoBehaviour {
 		widgetSize = new Vector2(rectTrans.sizeDelta.x, rectTrans.sizeDelta.y);
 		widgetRatio = new Vector2(widgetSize.x / Screen.width, widgetSize.y / Screen.height);
 		travel_model_interface = GetComponent<TravelModelInterface>();
+		forcePadParams = ConfigurationHandler.forcePadParams;
 	}
 
 	void InitTouches() {	// called every update in TrackingComponentBase, before HandleTouches and FinishTouches
@@ -342,10 +362,10 @@ public class TouchPadGesture : MonoBehaviour {
 			if(leftTurnForce.Key > 0 && rightTurnForce.Key > 0) {
 			}
 			else if(leftTurnForce.Key >= 0) {
-				rotVel = new Vector3(0, -walkingAngleSpeed * leftTurnForce.Value, 0);
+				rotVel = new Vector3(0, -forcePadParams.walkingAngularSpeed * leftTurnForce.Value, 0);
 			}
 			else if(rightTurnForce.Key >= 0) {
-				rotVel = new Vector3(0, walkingAngleSpeed * rightTurnForce.Value, 0);
+				rotVel = new Vector3(0, forcePadParams.walkingAngularSpeed * rightTurnForce.Value, 0);
 			}
 			Vector2 diff = Vector2.zero;
 			foreach (var vel in fingerVel) {
@@ -354,16 +374,16 @@ public class TouchPadGesture : MonoBehaviour {
 			
 			Vector3 move = new Vector3(-diff.x, 0.0f, diff.y);
 			move.Normalize();
-			if(diff.magnitude < minFingerMove) {
+			if(diff.magnitude < forcePadParams.minFingerMove) {
 				// tapping
 				move = Vector3.zero;
 			}
-			else {
-				if(diff.magnitude < minFingerSpeed) {	
-					move = move * minCharSpeed;
+			else {	// Clamping
+				if(diff.magnitude < forcePadParams.minFingerSpeed) {	
+					move = move * forcePadParams.minFingerSpeed;
 				}
-				else if(diff.magnitude > maxFingerSpeed) {
-					move = move * maxCharSpeed;
+				else if(diff.magnitude > forcePadParams.maxFingerSpeed) {
+					move = move * forcePadParams.maxFingerSpeed;
 				}
 				else {
 					move = move * diff.magnitude;//((diff.magnitude - minFingerSpeed) * speedScale + minCharSpeed);
@@ -394,16 +414,16 @@ public class TouchPadGesture : MonoBehaviour {
 				right = 0;
 			}
 			forceDiff = (forces[right] - forces[left]);// * SURFINGBaseAngularSpeed;
-			forceDiff = forceDiff * segwayPressureBaseYawSpeed;
+			forceDiff = forceDiff * forcePadParams.segwayPressureAngularSpeed;
 			yawDiff = (fingers[right].y - fingers[left].y);// * SURFINGBaseYawSpeed;
-			yawDiff = yawDiff * resolutionCompensateY * segwayAngleBaseYawSpeed;
+			yawDiff = yawDiff * resolutionCompensateY * forcePadParams.segwayAngularSpeed;
 			
 			speedDiff = (forces[right] + forces[left]) / 2;// * SURFINGBaseYawSpeed;
-			speedDiff = speedDiff * segwayBaseForwardSpeed;
+			speedDiff = speedDiff * forcePadParams.segwaySpeed;
 			float avgBase = (segwayBasePosition[0].y + segwayBasePosition[1].y) / 2;
 			avgDisplacement = Mathf.Abs((fingers[right].y + fingers[left].y) / 2 - avgBase);
 			avgDisplacement = avgDisplacement / (Screen.height * 0.5f);
-			avgDisplacement = avgDisplacement * avgDisplacement * segwayDispSpeed;
+			avgDisplacement = avgDisplacement * avgDisplacement * forcePadParams.segwayOffsetSpeed;
 			
 			Vector3 segwayMove = Vector3.forward * (speedDiff + avgDisplacement);
 			string direction = "forward";
@@ -431,11 +451,11 @@ public class TouchPadGesture : MonoBehaviour {
 				back = 0;
 			}
 			forceDiff = (forces[front] - forces[back]);// * SURFINGBaseAngularSpeed;
-			forceDiff = forceDiff * SURFINGBaseAngularSpeed;
+			forceDiff = forceDiff * forcePadParams.surfingPitchSpeed;
 			yawDiff = (fingers[front].x - fingers[back].x);// * SURFINGBaseYawSpeed;
-			yawDiff = yawDiff * resolutionCompensateX * SURFINGBaseYawSpeed;
+			yawDiff = yawDiff * resolutionCompensateX * forcePadParams.surfingYawSpeed;
 			speedDiff = (fingers[back].y - fingers[front].y) / (float)Screen.height;// * SURFINGBaseYawSpeed;
-			speedDiff = speedDiff * speedDiff * SURFINGBaseForwardSpeed;  // parabolic increasing speed
+			speedDiff = speedDiff * speedDiff * forcePadParams.surfingSpeed;  // parabolic increasing speed
 			Vector3 boardMove = Vector3.forward * speedDiff;
 			
 			//rotationY += forceDiff;
