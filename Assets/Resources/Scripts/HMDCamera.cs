@@ -16,7 +16,7 @@ public class HMDCamera : MonoBehaviour {
 
 	public Vector3 UpdateCamera (float hmdX, float hmdY, float hmdZ) {
 		//transform.position = character.transform.position + HEAD_HEIGHT;
-		transform.position.Set (0, HEAD_HEIGHT, 0);
+		transform.localPosition.Set (0, HEAD_HEIGHT, 0);
 		//Quaternion forwardQuat = character.transform.rotation;
 		Quaternion hmdQuat = Quaternion.Euler(hmdX, hmdY, hmdZ);
 		transform.localRotation = hmdQuat; //forwardQuat * hmdQuat;

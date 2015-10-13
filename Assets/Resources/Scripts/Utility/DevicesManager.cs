@@ -79,6 +79,10 @@ public class DevicesManager : MonoBehaviour {
 		devsConnected = true;
 	}
 
+	void Start() {
+		CalibrateCamera(); // we should remove it after the test
+	
+	}
 	/// Update is called once per frame
 	void Update () {
         //uiva.GetWiimoteTiltData(out pitch_ABPack, out roll_ABPack, out wmButtons);
@@ -127,15 +131,11 @@ public class DevicesManager : MonoBehaviour {
 		hmd_euler = new Vector3(-resultantZ, -GY-90.0f, resultantX);
 		
 		//Find the camera script and call its UpdateCamera() function
-		if(Application.loadedLevelName.IndexOf("Study") != -1 
-			|| Application.loadedLevelName.IndexOf("Tutorial") != -1)
-		{
 			//if the current level is a study level, we will get is camera and update it later
-			Camera myCam = Camera.main;
-			HMDCamera camScript = myCam.GetComponent<HMDCamera>();
-            camScript.UpdateCamera(hmd_euler.x - calib_euler.x, hmd_euler.y - calib_euler.y,
-                                            hmd_euler.z - calib_euler.z);
-		}
+			//Camera myCam = ;
+		HMDCamera camScript = GameObject.Find("Character").GetComponentInChildren<HMDCamera>();
+        camScript.UpdateCamera(hmd_euler.x - calib_euler.x, hmd_euler.y - calib_euler.y,
+		                       hmd_euler.z - calib_euler.z);
 	}
 	
 	public void CalibrateCamera()
