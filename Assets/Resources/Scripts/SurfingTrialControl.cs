@@ -33,8 +33,10 @@ public class SurfingTrialControl : MonoBehaviour {
 				GameObject.Destroy(wayPoints[i]);
 			}
 			for (int i = passedSphereNum; i < wayPointNum; i++) {
-				float alpha = 1.0f * (wayPointNum - i + passedSphereNum - 1) / wayPointNum;
-				wayPoints[i].GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.8f * alpha * alpha * alpha);
+				if(wayPoints[i] != null) {
+					float alpha = 1.0f * (wayPointNum - i + passedSphereNum - 1) / wayPointNum;
+					wayPoints[i].GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.8f * alpha * alpha * alpha);
+				}
 			}
 			string line = "" + timeStamp + "\t" + playerStatus.GetCurrentTransformLine();
 			recorder.RecordLine(line);
