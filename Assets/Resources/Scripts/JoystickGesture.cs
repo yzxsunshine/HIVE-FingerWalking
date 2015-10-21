@@ -43,17 +43,14 @@ public class JoystickGesture : MonoBehaviour {
 	void Update () {
 		//GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 		if(Input.GetKey("joystick button 0")) {
-			travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.WALKING);
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.WALKING);
 			Debug.Log("Walking");
 		}
 		else if(Input.GetKey("joystick button 1")) {
-			travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SEGWAY);
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.SEGWAY);
 			Debug.Log("Segway");
 		}
 		else if(Input.GetKey("joystick button 2")) {
-			travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SURFING);
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.SURFING);
 			Debug.Log("Surfing");
 		}

@@ -337,7 +337,6 @@ public class TouchPadGesture : MonoBehaviour {
 			// do nothing
 			curGestureType = TRAVEL_TYPE.NOTHING;
 		}
-		travel_model_interface.SetTargetGestureType (curGestureType);
 		travel_model_interface.SetGestureType (curGestureType);
 
 	}

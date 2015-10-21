@@ -5,16 +5,16 @@
     uiva_ip_address = "localhost">
   </devices>
   <subject
-    subject_id = "1" 
+    subject_id = "8" 
 	controller_type = "joystick">
   </subject>
   <travel_interfaces>
 	  <joystick
 		walking_speed = "10.0"
 		walking_angular_speed = "1.0"
-		segway_speed = "30.0"
+		segway_speed = "50.0"
 		segway_angular_speed = "1.0"
-		surfing_speed = "50.0"
+		surfing_speed = "100.0"
 		surfing_pitch_speed = "20.0"
 		surfing_yaw_speed = "1.0">
 	  </joystick>

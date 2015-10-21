@@ -43,8 +43,8 @@ public class VelocityQueue {
 
 
 public class TravelModelInterface : MonoBehaviour  {
-	private TRAVEL_TYPE gestureType;
-	private TRAVEL_TYPE targetGestureType;
+	private TRAVEL_TYPE gestureType = TRAVEL_TYPE.NOTHING;
+	private TRAVEL_TYPE targetGestureType = TRAVEL_TYPE.RESTING;
 	private HIVEFPSController controller;
 
 	public Vector3 velocity;
@@ -63,7 +63,6 @@ public class TravelModelInterface : MonoBehaviour  {
 	void Start () {
 		controller = GetComponent<HIVEFPSController>();
 		trialControl = GetComponent<TrialControl>();
-		gestureType = TRAVEL_TYPE.NOTHING;
 		walkingRotVelQueue = new VelocityQueue();
 		walkingRotVelQueue.SetQueueSize(20);
 		studyRecorder = GameObject.Find("StudyRecorder").GetComponent<StudyRecorder>();
@@ -218,12 +217,15 @@ public class TravelModelInterface : MonoBehaviour  {
 			}
 			gestureType = gesture;
 		}
+		Debug.Log("Target: " + targetGestureType.ToString() + "; Current: " + gestureType.ToString());
 		if(targetGestureType == gestureType) {
+			Debug.Log("Correct Switch");
 			studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
 			trialControl.modeSwitchText.enabled = false;
 			trialControl.StartNextTrial();
 		}
 		else {
+			Debug.Log("Incorrect Switch");
 			errorSwitchNum++;
 			studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
 		}
@@ -234,6 +236,7 @@ public class TravelModelInterface : MonoBehaviour  {
 	}
 
 	public void SetTargetGestureType (TRAVEL_TYPE gesture) {
+		Debug.Log("SetTarget: " + targetGestureType.ToString());
 		targetGestureType = gesture;
 		modeSwitchTimer = 0;
 		errorSwitchNum = 0;

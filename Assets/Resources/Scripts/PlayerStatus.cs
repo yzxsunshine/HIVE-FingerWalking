@@ -8,6 +8,7 @@ public class PlayerStatus : MonoBehaviour {
 	public float segwayCollisionTime = 0;
 	private TravelModelInterface travelModelInterface;
 	private TrialControl trialControl;
+	public float PLAYER_HEIGHT = 1.8f;
 	// Use this for initialization
 	void Awake () {
 		travelModelInterface = GetComponent<TravelModelInterface> ();
@@ -54,5 +55,27 @@ public class PlayerStatus : MonoBehaviour {
 
 	public CONTROL_TYPE GetControlType() {
 		return trialControl.controlType;
+	}
+
+	public void DisableControl() {
+		GetComponent<TouchPadGesture>().enabled = false;
+		GetComponent<JoystickGesture>().enabled = false;
+	}
+
+	public void EnableControl(CONTROL_TYPE controlType) {
+		switch (controlType) {
+		case CONTROL_TYPE.JOYSTICK:
+			GetComponent<TouchPadGesture>().enabled = false;
+			GetComponent<JoystickGesture>().enabled = true;
+			break;
+		case CONTROL_TYPE.FORCEPAD_GESTURE:
+			GetComponent<TouchPadGesture>().enabled = true;
+			GetComponent<JoystickGesture>().enabled = false;
+			break;
+		case CONTROL_TYPE.BODY_DRIVEN:
+			GetComponent<TouchPadGesture>().enabled = false;
+			GetComponent<JoystickGesture>().enabled = false;
+			break;
+		}
 	}
 }

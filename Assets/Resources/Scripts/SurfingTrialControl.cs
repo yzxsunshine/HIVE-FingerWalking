@@ -55,7 +55,7 @@ public class SurfingTrialControl : MonoBehaviour {
 		}
 	}
 
-	public Transform GenerateSamples(Transform startPoint, Transform endPoint) {
+	public StoreTransform GenerateSamples(Transform startPoint, Transform endPoint) {
 		startPt = startPoint.position;
 		endPt = endPoint.position;
 		wayPoints = new GameObject[wayPointNum];
@@ -70,15 +70,14 @@ public class SurfingTrialControl : MonoBehaviour {
 
 		float deltaDegreePitch = pitchPeriod * Mathf.PI * 2 / wayPointNum;
 		float deltaDegreeYaw = yawPeriod * Mathf.PI * 2 / wayPointNum;
-		float angleBetweenZ = Mathf.Acos(Vector3.Dot(direction, -Vector3.forward));
+		float angleBetweenZ = Mathf.Acos(Vector3.Dot(direction, Vector3.forward));
 		for (int i=0; i<wayPointNum; i++) {
 			float degree = (i - halfSampleNum) * deltaDegree;
-
 			float xozDistance = Mathf.Sin(degree) * radius;
-			float perturbYaw = Mathf.Cos(i + 1 / wayPointNum * 2 * Mathf.PI * yawPeriod) * yawAmplification;
-			float perturbPitch = Mathf.Cos(i + 1 / wayPointNum * 2 * Mathf.PI * pitchPeriod) * pitchAmplification;
-			float x_offset = midPoint.x + xozDistance / direction.x + Mathf.Cos(angleBetweenZ) * perturbYaw;
-			float z_offset = midPoint.z + xozDistance / direction.z + Mathf.Sin(angleBetweenZ) * perturbYaw;
+			float perturbYaw = Mathf.Cos(1.0f * (i + 1) / wayPointNum * 2 * Mathf.PI * yawPeriod) * yawAmplification;
+			float perturbPitch = Mathf.Cos(1.0f * (i + 1) / wayPointNum * 2 * Mathf.PI * pitchPeriod) * pitchAmplification;
+			float x_offset = midPoint.x + xozDistance * direction.x + Mathf.Cos(angleBetweenZ) * perturbYaw;
+			float z_offset = midPoint.z + xozDistance * direction.z + Mathf.Sin(angleBetweenZ) * perturbYaw;
 			float y_offset = Mathf.Cos(degree) * radius + perturbPitch;
 			wayPoints[i] = Instantiate(Resources.Load("Prefabs/WayPointSphere", typeof(GameObject))) as GameObject;
 			wayPoints[i].transform.position = new Vector3(x_offset, y_offset + midPoint.y + startPt.y, z_offset);
@@ -91,8 +90,10 @@ public class SurfingTrialControl : MonoBehaviour {
 		instruction = playerStatus.GetStatusTableHead ();
 		recorder.RecordLine(instruction);
 
-		Transform startTransform = startPoint;
+		StoreTransform startTransform = new StoreTransform();
+		startTransform.position = startPt;
 		startTransform.forward = endPt - startPt;
+		startTransform.forward.Normalize();
 		return startTransform;
 	}
 }

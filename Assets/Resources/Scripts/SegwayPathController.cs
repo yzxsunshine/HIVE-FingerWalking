@@ -97,7 +97,7 @@ public class SegwayPathController : MonoBehaviour {
 		return wayPointTriggers[id];
 	}
 
-	public Transform SetSegwayPath (int difficulty, int startPointID, int LorR) {
+	public StoreTransform SetSegwayPath (int difficulty, int startPointID, int LorR) {
 		if (difficulty > 3) {
 			difficulty = 3;
 		}
@@ -141,21 +141,22 @@ public class SegwayPathController : MonoBehaviour {
 		arrowControl.SetTarget (wayPointTriggers [wayPoints [1]].transform);
 		currentWayPts = wayPoints;
 		timeStampWayPoints = new float[wayPoints.Length];
-		timeStampWayPoints [0] = 0.0f;
 		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), difficulty, (int) TRAVEL_TYPE.SEGWAY);
 		timeStamp = 0;
 		string instruction = "#Segway Trial Path#";
 		recorder.RecordLine(instruction);
 		instruction = playerStatus.GetStatusTableHead ();
 		recorder.RecordLine(instruction);
-		Transform startTransform = wayPointTriggers [currentWayPts [0]].transform;
+		StoreTransform startTransform = new StoreTransform();
+		startTransform.position = wayPointTriggers [currentWayPts [0]].transform.position;
 		startTransform.forward = wayPointTriggers [currentWayPts [1]].transform.position - startTransform.position;
+		startTransform.forward.Normalize();
 		return startTransform;
 	}
 
 	public bool ActiveNextWayPoint () {
 		wayPointTriggers [currentWayPts [currentPosition]].GetComponent<BoxCollider> ().enabled = false;
-		timeStampWayPoints [currentPosition + 1] = timeStamp;
+		timeStampWayPoints [currentPosition] = timeStamp;
 		if (currentPosition < currentWayPts.Length - 1) {
 			currentPosition++;
 			wayPointTriggers [currentWayPts [currentPosition]].GetComponent<BoxCollider> ().enabled = true;

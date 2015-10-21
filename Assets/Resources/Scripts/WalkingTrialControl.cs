@@ -77,7 +77,7 @@ public class WalkingTrialControl : MonoBehaviour {
 		}
 	}
 
-	public Transform SetWalkingPath(int difficulty, int LorR, Transform characterTransform) {
+	public StoreTransform SetWalkingPath(int difficulty, int LorR, Transform characterTransform) {
 		Vector3[] wayPointsPositions = pathes [difficulty, LorR].wayPoints;
 		currentWayPts = new Transform[wayPointsPositions.Length];
 		currentWayPtPositions = new Vector3[wayPointsPositions.Length];
@@ -85,6 +85,7 @@ public class WalkingTrialControl : MonoBehaviour {
 		currentWayPtPositions [0] = characterTransform.position;
 		for (int i=1; i<wayPointsPositions.Length; i++) {
 			Vector3 wayPoint = characterTransform.localToWorldMatrix.MultiplyPoint (wayPointsPositions [i]);
+			wayPoint.y = playerStatus.PLAYER_HEIGHT;
 			GameObject obj = Instantiate(Resources.Load("Prefabs/JackoLantern", typeof(GameObject))) as GameObject;
 			obj.transform.position = wayPoint;
 			currentWayPts[i] = obj.transform;
@@ -99,7 +100,11 @@ public class WalkingTrialControl : MonoBehaviour {
 		recorder.RecordLine(instruction);
 		instruction = playerStatus.GetStatusTableHead ();
 		recorder.RecordLine(instruction);
-		return characterTransform;
+		StoreTransform startTransform = new StoreTransform();
+		startTransform.position = characterTransform.position;
+		startTransform.forward = characterTransform.forward;
+		startTransform.forward.Normalize();
+		return startTransform;
 	}
 
 	public bool ActiveNextWayPoint () {
