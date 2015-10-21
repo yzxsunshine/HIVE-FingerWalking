@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WalkingPath {
 	public Vector3[] wayPoints;
-	static public float segmentDistance = 50.0f;
+	static public float segmentDistance = 40.0f;
 	static public float[] angleList = new float[3]{72, 108, 144};
 	public WalkingPath(int pathLength, int difficulty, int LorR) {
 		wayPoints = new Vector3[pathLength];
@@ -40,10 +40,12 @@ public class WalkingTrialControl : MonoBehaviour {
 	private int currentWayPoint;
 	private ArrowControl arrowControl;
 	private Transform[] currentWayPts;
+	private Vector3[] currentWayPtPositions;
 	private PlayerStatus playerStatus;
 	private StudyRecorder recorder;
 	private float timeStamp;
 	private float[] timeStampWayPoints = null;
+	private TrialControl trialControl;
 	// Use this for initialization
 	void Awake () {
 		character = GameObject.Find ("Character");
@@ -52,7 +54,7 @@ public class WalkingTrialControl : MonoBehaviour {
 
 		for (int i=0; i<4; i++) {
 			for (int j=0; j<2; j++) {
-				pathes [i, j] = new WalkingPath (5, i, j);
+				pathes [i, j] = new WalkingPath (3, i, j);
 			}
 		}
 		arrowControl = GameObject.Find ("arrow").GetComponent<ArrowControl> ();
@@ -63,7 +65,7 @@ public class WalkingTrialControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		trialControl = character.GetComponent<TrialControl>();
 	}
 	
 	// Update is called once per frame
@@ -75,57 +77,61 @@ public class WalkingTrialControl : MonoBehaviour {
 		}
 	}
 
-	public void SetWalkingPath(int difficulty, int LorR, Transform characterTransform) {
+	public Transform SetWalkingPath(int difficulty, int LorR, Transform characterTransform) {
 		Vector3[] wayPointsPositions = pathes [difficulty, LorR].wayPoints;
 		currentWayPts = new Transform[wayPointsPositions.Length];
+		currentWayPtPositions = new Vector3[wayPointsPositions.Length];
 		currentWayPts [0] = characterTransform;
+		currentWayPtPositions [0] = characterTransform.position;
 		for (int i=1; i<wayPointsPositions.Length; i++) {
 			Vector3 wayPoint = characterTransform.localToWorldMatrix.MultiplyPoint (wayPointsPositions [i]);
 			GameObject obj = Instantiate(Resources.Load("Prefabs/JackoLantern", typeof(GameObject))) as GameObject;
 			obj.transform.position = wayPoint;
 			currentWayPts[i] = obj.transform;
+			currentWayPtPositions[i] = obj.transform.position;
 		}
 		currentWayPoint = 1;
 		arrowControl.SetTarget (currentWayPts[currentWayPoint]);
 		timeStampWayPoints = new float[currentWayPts.Length];
-		timeStampWayPoints [0] = 0.0f;
 		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), difficulty, (int) TRAVEL_TYPE.WALKING);
 		timeStamp = 0;
 		string instruction = "#Walking Trial Path#";
 		recorder.RecordLine(instruction);
 		instruction = playerStatus.GetStatusTableHead ();
 		recorder.RecordLine(instruction);
+		return characterTransform;
 	}
 
 	public bool ActiveNextWayPoint () {
-		timeStampWayPoints [currentWayPoint + 1] = timeStamp;
+		timeStampWayPoints [currentWayPoint] = timeStamp;
 		if (currentWayPoint < currentWayPts.Length - 1) {
 			currentWayPoint++;
 			arrowControl.SetTarget (currentWayPts [currentWayPoint]);
 			return false;
 		} else {
 			arrowControl.ResetTarget();
-			string instruction = "#Segway Trial Way Points#";
+			string instruction = "#Walking Trial Way Points#";
 			recorder.RecordLine(instruction);
 			instruction = "#TimeStamp#\t" + "#WayPonitX#\t" + "#WayPonitY#\t" + "#WayPonitZ#\t";
 			instruction += "#OrientationX#\t" + "#OrientationY#\t" + "#OrientationZ#\t" + "#OrientationW#\t";
 			recorder.RecordLine(instruction);
 			
 			for (int i=0; i<currentWayPts.Length; i++) {	// dump all waypoints and timestamp to file
-				Vector3 wayPtPos = currentWayPts[i].position;
+				Vector3 wayPtPos = currentWayPtPositions[i];
 				string line = "" + timeStampWayPoints[i] 
 							+ "\t" + wayPtPos.x
 							+ "\t" + wayPtPos.y
 							+ "\t" + wayPtPos.z
-							+ "\t" + currentWayPts[i].rotation.x
-							+ "\t" + currentWayPts[i].rotation.y
-							+ "\t" + currentWayPts[i].rotation.z
-							+ "\t" + currentWayPts[i].rotation.w;
+							+ "\t" + 0//currentWayPts[i].rotation.x
+							+ "\t" + 0//currentWayPts[i].rotation.y
+							+ "\t" + 0//currentWayPts[i].rotation.z
+							+ "\t" + 0;//currentWayPts[i].rotation.w;
 				recorder.RecordLine(line);
 			}
 			currentWayPts = null;
 			timeStampWayPoints = null;
 			recorder.StopTrialFileWriter();
+			trialControl.FinishTrial();
 			return true;	// trial ended
 		}
 	}

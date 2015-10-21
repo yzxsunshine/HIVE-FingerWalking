@@ -15,7 +15,7 @@ public class ArrowControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (target != null) {
-			if (playerStatus.GetGestureType() != GESTURE_TYPE.SURFING) {
+			if (playerStatus.GetGestureType() != TRAVEL_TYPE.SURFING) {
 				this.transform.forward = new Vector3(target.position.x - transform.position.x, 0, target.position.z - transform.position.z);
 			}
 			else {

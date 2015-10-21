@@ -22,7 +22,7 @@ public class JoystickParams {
 };
 
 public class JoystickGesture : MonoBehaviour {
-	private GESTURE_TYPE gestureType = GESTURE_TYPE.WALKING;
+	private TRAVEL_TYPE gestureType = TRAVEL_TYPE.WALKING;
 	public float rightHorizontal;
 	public float rightVertical;
 	public float leftHorizontal;
@@ -43,18 +43,18 @@ public class JoystickGesture : MonoBehaviour {
 	void Update () {
 		//GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 		if(Input.GetKey("joystick button 0")) {
-			travelModelInterface.SetTargetGestureType (GESTURE_TYPE.WALKING);
-			travelModelInterface.SetGestureType (GESTURE_TYPE.WALKING);
+			travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.WALKING);
+			travelModelInterface.SetGestureType (TRAVEL_TYPE.WALKING);
 			Debug.Log("Walking");
 		}
 		else if(Input.GetKey("joystick button 1")) {
-			travelModelInterface.SetTargetGestureType (GESTURE_TYPE.SEGWAY);
-			travelModelInterface.SetGestureType (GESTURE_TYPE.SEGWAY);
+			travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SEGWAY);
+			travelModelInterface.SetGestureType (TRAVEL_TYPE.SEGWAY);
 			Debug.Log("Segway");
 		}
 		else if(Input.GetKey("joystick button 2")) {
-			travelModelInterface.SetTargetGestureType (GESTURE_TYPE.SURFING);
-			travelModelInterface.SetGestureType (GESTURE_TYPE.SURFING);
+			travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SURFING);
+			travelModelInterface.SetGestureType (TRAVEL_TYPE.SURFING);
 			Debug.Log("Surfing");
 		}
 		else if(Input.GetKey("joystick button 6")) {
@@ -86,18 +86,18 @@ public class JoystickGesture : MonoBehaviour {
 		Vector3 rotVel = new Vector3 ();
 
 		switch (travelModelInterface.GetGestureType ()) {
-		case GESTURE_TYPE.WALKING:
+		case TRAVEL_TYPE.WALKING:
 			// right hand joystick control the translation, left hand joystick control rotation
 			moveVel = new Vector3 (leftHorizontal, 0, leftVertical) * joystickParams.walkingSpeed;
 			rotVel = new Vector3 (0, rightHorizontal, 0) * joystickParams.walkingAngularSpeed;
 			this.GetComponent ("HIVEFPSController").SendMessage ("SetWalking");
 			break;
-		case GESTURE_TYPE.SEGWAY:
+		case TRAVEL_TYPE.SEGWAY:
 			moveVel = Vector3.forward * leftVertical * joystickParams.segwaySpeed;
 			rotVel = new Vector3 (0, leftHorizontal, 0) * joystickParams.segwayAngularSpeed;
 			this.GetComponent ("HIVEFPSController").SendMessage ("SetSegway");
 			break;
-		case GESTURE_TYPE.SURFING:
+		case TRAVEL_TYPE.SURFING:
 			moveVel = -Vector3.forward * rightVertical * joystickParams.surfingSpeed;
 
 			if (flipSurfPitch) {

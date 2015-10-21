@@ -193,7 +193,7 @@ public class TouchPadGesture : MonoBehaviour {
 		} else if (t.TouchId == rightTurnForce.Key) {
 			rightTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
 		} else {
-			if (travel_model_interface.GetGestureType() == GESTURE_TYPE.WALKING) {
+			if (travel_model_interface.GetGestureType() == TRAVEL_TYPE.WALKING) {
 			}
 			removeTrail (t);
 			curFingerNum--;
@@ -277,12 +277,12 @@ public class TouchPadGesture : MonoBehaviour {
 			if(num == 2)
 				twoFingerFrames++;
 		}
-		GESTURE_TYPE curGestureType = travel_model_interface.GetGestureType();
+		TRAVEL_TYPE curGestureType = travel_model_interface.GetGestureType();
 		if(leftTurnForce.Key >= 0 || rightTurnForce.Key >= 0) {
-			curGestureType = GESTURE_TYPE.WALKING;
+			curGestureType = TRAVEL_TYPE.WALKING;
 		}
 		else if(curFingerNum == 0) {
-			curGestureType = GESTURE_TYPE.NOTHING;
+			curGestureType = TRAVEL_TYPE.NOTHING;
 			//Debug.Log("Do Nothing");
 		}
 		else if(twoFingerFrames >= fingerNumQueueLength * 0.8) {
@@ -291,29 +291,29 @@ public class TouchPadGesture : MonoBehaviour {
 				diff = fingerPositions[key] - diff;
 			}
 			
-			curGestureType = GESTURE_TYPE.RESTING; 
+			curGestureType = TRAVEL_TYPE.RESTING; 
 			int i = 0;
 			if(diff.x < 0)
 				i = 1;	// make sure the left finger is 0, and right finger is 1
 			if (Mathf.Abs(diff.y) / Mathf.Abs(diff.x) > Mathf.Tan(Mathf.PI * 0.4f) ) {	// add more constraints for triggring the first segway
-				if(travel_model_interface.GetGestureType() != GESTURE_TYPE.SURFING) {
-					curGestureType = GESTURE_TYPE.SURFING;
+				if(travel_model_interface.GetGestureType() != TRAVEL_TYPE.SURFING) {
+					curGestureType = TRAVEL_TYPE.SURFING;
 					Debug.Log("Skate Board");
 				}
 				else {
-					curGestureType = GESTURE_TYPE.SURFING;
+					curGestureType = TRAVEL_TYPE.SURFING;
 					Debug.Log("Skate Board");
 				}
 			}
 			else {
 				if(Mathf.Abs(diff.x) > Mathf.Abs(diff.y) ) {
-					if(travel_model_interface.GetGestureType() != GESTURE_TYPE.SEGWAY) {
+					if(travel_model_interface.GetGestureType() != TRAVEL_TYPE.SEGWAY) {
 						if (Mathf.Abs(diff.y) / Mathf.Abs(diff.x) < Mathf.Tan(Mathf.PI * 0.1f) ) {	// add more constraints for triggring the first segway
 							foreach(var key in fingerPositions.Keys) {
 								segwayBasePosition[i] = fingerPositions[key];
 								i = (i + 1) % 2;
 							}
-							curGestureType = GESTURE_TYPE.SEGWAY;
+							curGestureType = TRAVEL_TYPE.SEGWAY;
 							Debug.Log("Segway");
 						}
 						else {
@@ -321,21 +321,21 @@ public class TouchPadGesture : MonoBehaviour {
 						}
 					}
 					else {
-						curGestureType = GESTURE_TYPE.SEGWAY;
+						curGestureType = TRAVEL_TYPE.SEGWAY;
 						Debug.Log("Segway");
 					}
 				}
-				else if(travel_model_interface.GetGestureType() == GESTURE_TYPE.SEGWAY || travel_model_interface.GetGestureType() == GESTURE_TYPE.SURFING){
+				else if(travel_model_interface.GetGestureType() == TRAVEL_TYPE.SEGWAY || travel_model_interface.GetGestureType() == TRAVEL_TYPE.SURFING){
 					curGestureType = travel_model_interface.GetGestureType();
 				}
 			}
 		}
 		else if (curFingerNum > 0){
-			curGestureType = GESTURE_TYPE.WALKING;
+			curGestureType = TRAVEL_TYPE.WALKING;
 		}
 		else {
 			// do nothing
-			curGestureType = GESTURE_TYPE.NOTHING;
+			curGestureType = TRAVEL_TYPE.NOTHING;
 		}
 		travel_model_interface.SetTargetGestureType (curGestureType);
 		travel_model_interface.SetGestureType (curGestureType);
@@ -358,7 +358,7 @@ public class TouchPadGesture : MonoBehaviour {
 			i++;
 		}
 		switch(travel_model_interface.GetGestureType()) {
-		case GESTURE_TYPE.WALKING:
+		case TRAVEL_TYPE.WALKING:
 			if(leftTurnForce.Key > 0 && rightTurnForce.Key > 0) {
 			}
 			else if(leftTurnForce.Key >= 0) {
@@ -405,7 +405,7 @@ public class TouchPadGesture : MonoBehaviour {
 				trail.GetComponent<LineRenderer>().SetPosition(1, baseCorner + pastFinger);
 			}	*/
 			break;
-		case GESTURE_TYPE.SEGWAY:
+		case TRAVEL_TYPE.SEGWAY:
 			int left = 0;
 			int right = 1;
 			
@@ -442,7 +442,7 @@ public class TouchPadGesture : MonoBehaviour {
 			Debug.Log("Segway Speed = " + speedDiff +", Yaw Speed = " + yawDiff + ", " + direction);
 			this.GetComponent("HIVEFPSController").SendMessage("SetSegway");
 			break;
-		case GESTURE_TYPE.SURFING:
+		case TRAVEL_TYPE.SURFING:
 			int front = 0;
 			int back = 1;
 			

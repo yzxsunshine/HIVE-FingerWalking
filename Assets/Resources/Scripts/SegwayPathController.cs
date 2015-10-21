@@ -20,6 +20,7 @@ public class SegwayPathController : MonoBehaviour {
 	private StudyRecorder recorder;
 	private float timeStamp;
 	private float[] timeStampWayPoints = null;
+	private TrialControl trialControl;
 	// Use this for initialization
 	void Awake () {
 		wayPointTriggers = new GameObject[25];
@@ -89,20 +90,24 @@ public class SegwayPathController : MonoBehaviour {
 	}
 
 	void Start() {
-
+		trialControl = character.GetComponent<TrialControl>();
 	}
 
-	public void SetSegwayPath (int difficulty, int LorR) {
+	public GameObject GetWayPointTrigger(int id) {
+		return wayPointTriggers[id];
+	}
+
+	public Transform SetSegwayPath (int difficulty, int startPointID, int LorR) {
 		if (difficulty > 3) {
 			difficulty = 3;
 		}
-		currentPosition = currentPosition % 4;
+		startPointID = startPointID % 4;
 		if (LorR <= 0)
 			LorR = 0;
 		else
 			LorR = 1;
 
-		int[] wayPoints = pathes[difficulty, currentPosition, LorR].wayPoints;
+		int[] wayPoints = pathes[difficulty, startPointID, LorR].wayPoints;
 		wayPointTriggers[wayPoints[0]].GetComponent<BoxCollider>().enabled = true;
 		for (int i=0; i<wayPoints.Length; i++) {
 			if (i < wayPoints.Length - 1) {
@@ -143,6 +148,9 @@ public class SegwayPathController : MonoBehaviour {
 		recorder.RecordLine(instruction);
 		instruction = playerStatus.GetStatusTableHead ();
 		recorder.RecordLine(instruction);
+		Transform startTransform = wayPointTriggers [currentWayPts [0]].transform;
+		startTransform.forward = wayPointTriggers [currentWayPts [1]].transform.position - startTransform.position;
+		return startTransform;
 	}
 
 	public bool ActiveNextWayPoint () {
@@ -172,6 +180,7 @@ public class SegwayPathController : MonoBehaviour {
 			currentWayPts = null;
 			timeStampWayPoints = null;
 			recorder.StopTrialFileWriter();
+			trialControl.FinishTrial();
 			return true;	// trial ended
 		}
 	}

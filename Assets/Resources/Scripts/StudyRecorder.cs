@@ -8,7 +8,9 @@ public class StudyRecorder : MonoBehaviour {
 	public TRAVEL_TYPE currentTrialTravelType;
 	public LEVEL_TYPE currentTrialLevel;
 	public StreamWriter currentTrialWriter;
+	public StreamWriter contextSwitchWriter;
 	private string trialDirectory;
+
 	// Use this for initialization
 	void Start () {
 		string directoryName = "subject_" + ConfigurationHandler.subjectID;
@@ -28,6 +30,14 @@ public class StudyRecorder : MonoBehaviour {
 		catch (IOException ex)
 		{
 			Application.Quit();	// don't overwrite existing study
+		}
+
+		string fileName = trialDirectory + "/subject_" + ConfigurationHandler.subjectID;
+		fileName += "_context_switch.txt";
+		if (!File.Exists (fileName)) {
+			contextSwitchWriter = File.CreateText (fileName);
+		} else {
+			contextSwitchWriter = File.AppendText(fileName);
 		}
 	}
 	
@@ -58,6 +68,44 @@ public class StudyRecorder : MonoBehaviour {
 	public bool RecordLine(string line) {
 		if (currentTrialWriter != null) {
 			currentTrialWriter.WriteLine(line);
+			return true;
+		}
+		return false;
+	}
+
+	public void StopContextSwitchRecorder () {
+		contextSwitchWriter.Flush ();
+		contextSwitchWriter.Close ();
+		contextSwitchWriter = null;
+	}
+
+	public bool RecordContextSwitch(float timeStamp, int errorSwitchNum, TRAVEL_TYPE targetMode, TRAVEL_TYPE currentMode) {
+		string line = "" + timeStamp + "_" + errorSwitchNum + "_[T]";
+		switch (targetMode) {
+		case TRAVEL_TYPE.WALKING:
+			line += "Walking";
+			break;
+		case TRAVEL_TYPE.SEGWAY:
+			line += "Segway";
+			break;
+		case TRAVEL_TYPE.SURFING:
+			line += "Surfing";
+			break;
+		}
+		line += "_[C]";
+		switch (currentMode) {
+		case TRAVEL_TYPE.WALKING:
+			line += "Walking";
+			break;
+		case TRAVEL_TYPE.SEGWAY:
+			line += "Segway";
+			break;
+		case TRAVEL_TYPE.SURFING:
+			line += "Surfing";
+			break;
+		}
+		if (contextSwitchWriter != null) {
+			contextSwitchWriter.WriteLine(line);
 			return true;
 		}
 		return false;

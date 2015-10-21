@@ -36,7 +36,7 @@ public class PlayerStatus : MonoBehaviour {
 		segwayCollisionTime = 0;
 	}
 
-	public GESTURE_TYPE GetGestureType() {
+	public TRAVEL_TYPE GetGestureType() {
 		return travelModelInterface.GetGestureType ();
 	}
 

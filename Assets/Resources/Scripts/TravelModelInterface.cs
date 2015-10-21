@@ -2,14 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum GESTURE_TYPE {
-	NOTHING,
-	WALKING,
-	SEGWAY,
-	SURFING,
-	RESTING
-};
-
 public class VelocityQueue {
 	public Queue<Vector3> queue;
 	public int size;
@@ -31,16 +23,16 @@ public class VelocityQueue {
 		weights_surfing[size - 1] += Mathf.Pow(0.5f, size) * variant_ratio;
 	}
 	
-	public Vector3 GetAvgVelocity(Vector3 vel, GESTURE_TYPE type) {
+	public Vector3 GetAvgVelocity(Vector3 vel, TRAVEL_TYPE type) {
 		Vector3 outVel = Vector3.zero;
 		queue.Dequeue();
 		queue.Enqueue(vel);
 		int i=0; 
 		foreach(Vector3 v in queue) {
-			if (type == GESTURE_TYPE.WALKING || type == GESTURE_TYPE.SEGWAY) {
+			if (type == TRAVEL_TYPE.WALKING || type == TRAVEL_TYPE.SEGWAY) {
 				outVel += weights[i] * v;
 			}
-			else if (type == GESTURE_TYPE.SURFING) {
+			else if (type == TRAVEL_TYPE.SURFING) {
 				outVel += weights_surfing[i] * v;
 			}
 			i++;
@@ -51,8 +43,8 @@ public class VelocityQueue {
 
 
 public class TravelModelInterface : MonoBehaviour  {
-	private GESTURE_TYPE gestureType;
-	private GESTURE_TYPE targetGestureType;
+	private TRAVEL_TYPE gestureType;
+	private TRAVEL_TYPE targetGestureType;
 	private HIVEFPSController controller;
 
 	public Vector3 velocity;
@@ -63,12 +55,18 @@ public class TravelModelInterface : MonoBehaviour  {
 	private VelocityQueue walkingRotVelQueue;
 	private VelocityQueue segwayRotVelQueue;
 	private bool pressureBasedSegwayOn = false;
+	private TrialControl trialControl;
+	private StudyRecorder studyRecorder;
+	private float modeSwitchTimer = 0;
+	private int errorSwitchNum = 0;
 	// Use this for initialization
 	void Start () {
 		controller = GetComponent<HIVEFPSController>();
-		gestureType = GESTURE_TYPE.WALKING;
+		trialControl = GetComponent<TrialControl>();
+		gestureType = TRAVEL_TYPE.NOTHING;
 		walkingRotVelQueue = new VelocityQueue();
 		walkingRotVelQueue.SetQueueSize(20);
+		studyRecorder = GameObject.Find("StudyRecorder").GetComponent<StudyRecorder>();
 	}
 	
 	// Update is called once per frame
@@ -120,23 +118,24 @@ public class TravelModelInterface : MonoBehaviour  {
 	//	else if(Input.GetKeyDown(KeyCode.W)) {
 	//		walkingAngleSpeed += 0.005f;
 	//	}
+		modeSwitchTimer += Time.deltaTime;
 	}
 
 	public void SetVelocity(Vector3 moveVel, Vector3 rotVel) {
 		Vector3 avgVel;
 		switch (gestureType) {
-		case GESTURE_TYPE.WALKING:
+		case TRAVEL_TYPE.WALKING:
 			avgVel = walkingRotVelQueue.GetAvgVelocity(rotVel, gestureType);
 			transform.Rotate(avgVel);
 			break;
-		case GESTURE_TYPE.SEGWAY:
+		case TRAVEL_TYPE.SEGWAY:
 			avgVel = segwayRotVelQueue.GetAvgVelocity(rotVel, gestureType);
 			if(!pressureBasedSegwayOn)
 				transform.Rotate(Vector3.up, avgVel.y);
 			else
 				transform.Rotate(Vector3.up, avgVel.y);
 			break;
-		case GESTURE_TYPE.SURFING:
+		case TRAVEL_TYPE.SURFING:
 			avgVel = surfingRotVelQueue.GetAvgVelocity(rotVel, gestureType);
 			transform.Rotate(Vector3.up, avgVel.y);
 			transform.eulerAngles = new Vector3(avgVel.x, transform.eulerAngles.y, 0);
@@ -151,11 +150,11 @@ public class TravelModelInterface : MonoBehaviour  {
 		rotation = rotVel;
 	}
 
-	public void SetGestureType (GESTURE_TYPE gesture) {
+	public void SetGestureType (TRAVEL_TYPE gesture) {
 		if (gestureType != gesture) {
 
 			// start a new metaphor, the last one is segway, destroy segway drawing
-			/*else if(gestureType == GESTURE_TYPE.SEGWAY) {	// last one is SEGWAY, remove baseline
+			/*else if(gestureType == TRAVEL_TYPE.SEGWAY) {	// last one is SEGWAY, remove baseline
 				if(baseTip1 != null) {
 					Destroy(baseTip1);
 					baseTip1 = null;
@@ -172,7 +171,7 @@ public class TravelModelInterface : MonoBehaviour  {
 				}
 			}
 			// start a new metaphor, the new one is segway, set initial position
-			else if(gesture == GESTURE_TYPE.SEGWAY) {
+			else if(gesture == TRAVEL_TYPE.SEGWAY) {
 				baseTip1 = Instantiate(Resources.Load("Prefabs/base_finger_tip", typeof(GameObject))) as GameObject;
 				RectTransform rectTrans1 = baseTip1.GetComponent<RectTransform>();
 				rectTrans1.anchoredPosition = new Vector2(0, 0);
@@ -196,7 +195,7 @@ public class TravelModelInterface : MonoBehaviour  {
 				
 				dashline.transform.parent = GameObject.Find("Canvas").transform;
 			}*/
-			if (gestureType == GESTURE_TYPE.SURFING) {	// surfing finished, correct view
+			if (gestureType == TRAVEL_TYPE.SURFING) {	// surfing finished, correct view
 				Vector3 forward = transform.forward;
 				Vector3 up = new Vector3(0, 1.0f, 0);
 				Vector3 xAxis = Vector3.Cross(transform.up, forward);
@@ -205,31 +204,42 @@ public class TravelModelInterface : MonoBehaviour  {
 				transform.forward = forward;
 			}
 
-			if (gesture == GESTURE_TYPE.SURFING) {
+			if (gesture == TRAVEL_TYPE.SURFING) {
 				surfingRotVelQueue = new VelocityQueue();
 				surfingRotVelQueue.SetQueueSize(20);
 			}
-			else if (gesture == GESTURE_TYPE.SEGWAY) {
+			else if (gesture == TRAVEL_TYPE.SEGWAY) {
 				segwayRotVelQueue = new VelocityQueue();
 				segwayRotVelQueue.SetQueueSize(20);
 			}
-			else if (gesture == GESTURE_TYPE.WALKING) {
+			else if (gesture == TRAVEL_TYPE.WALKING) {
 				walkingRotVelQueue = new VelocityQueue();
 				walkingRotVelQueue.SetQueueSize(20);
 			}
 			gestureType = gesture;
 		}
+		if(targetGestureType == gestureType) {
+			studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
+			trialControl.modeSwitchText.enabled = false;
+			trialControl.StartNextTrial();
+		}
+		else {
+			errorSwitchNum++;
+			studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
+		}
 	}
 
-	public GESTURE_TYPE GetGestureType () {
+	public TRAVEL_TYPE GetGestureType () {
 		return gestureType;
 	}
 
-	public void SetTargetGestureType (GESTURE_TYPE gesture) {
+	public void SetTargetGestureType (TRAVEL_TYPE gesture) {
 		targetGestureType = gesture;
+		modeSwitchTimer = 0;
+		errorSwitchNum = 0;
 	}
 	
-	public GESTURE_TYPE GetTargetGestureType () {
+	public TRAVEL_TYPE GetTargetGestureType () {
 		return targetGestureType;
 	}
 

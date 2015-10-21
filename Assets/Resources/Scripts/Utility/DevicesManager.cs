@@ -55,7 +55,7 @@ public class DevicesManager : MonoBehaviour {
 	private string hmd_buttons = "";
 	public Vector3 hmd_euler;
 	private Vector3 calib_euler;
-	
+	private HMDCamera camScript;
 	//-----------------------------------------------TactaCage related------------------------------------//	
 	/* Wind System */
 	/*TactaBoard tb;
@@ -80,6 +80,7 @@ public class DevicesManager : MonoBehaviour {
 	}
 
 	void Start() {
+		camScript = camScript = GameObject.Find("Main Camera").GetComponent<HMDCamera>();
 		CalibrateCamera(); // we should remove it after the test
 	
 	}
@@ -133,7 +134,6 @@ public class DevicesManager : MonoBehaviour {
 		//Find the camera script and call its UpdateCamera() function
 			//if the current level is a study level, we will get is camera and update it later
 			//Camera myCam = ;
-		HMDCamera camScript = GameObject.Find("Character").GetComponentInChildren<HMDCamera>();
         camScript.UpdateCamera(hmd_euler.x - calib_euler.x, hmd_euler.y - calib_euler.y,
 		                       hmd_euler.z - calib_euler.z);
 	}

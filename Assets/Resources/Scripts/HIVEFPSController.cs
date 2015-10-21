@@ -21,7 +21,7 @@ public class HIVEFPSController : MonoBehaviour {
 	public Vector3 targetVelocity;
 	public Vector3 targetPosition;
 	public Quaternion targetRotation;
-	public GESTURE_TYPE gestureType;
+	public TRAVEL_TYPE gestureType;
 	public int pos_or_vel = 1;
 
 	private bool grounded = false;
@@ -39,7 +39,7 @@ public class HIVEFPSController : MonoBehaviour {
 		float mag = 0.0f;
 		//rigidbody.rotation = targetRotation;
 		switch (gestureType) {
-		case GESTURE_TYPE.WALKING:
+		case TRAVEL_TYPE.WALKING:
 // Calculate how fast we should be moving
 //Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 //targetVelocity = transform.TransformDirection(targetVelocity);
@@ -58,7 +58,7 @@ public class HIVEFPSController : MonoBehaviour {
 			}
 			break;
 
-		case GESTURE_TYPE.SEGWAY:
+		case TRAVEL_TYPE.SEGWAY:
 			mag = Mathf.Clamp (curMag - prevMag, maxSegwayVelocityDecrease, maxSegwayVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
@@ -66,13 +66,13 @@ public class HIVEFPSController : MonoBehaviour {
 			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
 
 			break;
-		case GESTURE_TYPE.SURFING:
+		case TRAVEL_TYPE.SURFING:
 			mag = Mathf.Clamp (curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
 			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
 			break;
-		case GESTURE_TYPE.NOTHING: 
+		case TRAVEL_TYPE.NOTHING: 
 			mag = Mathf.Clamp (curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
@@ -121,19 +121,19 @@ public class HIVEFPSController : MonoBehaviour {
 	}
 
 	public void SetSurfing () {
-		gestureType = GESTURE_TYPE.SURFING;
+		gestureType = TRAVEL_TYPE.SURFING;
 		grounded = false;
 		gravity = 0.0f;
 	}
 	
 	public void SetWalking () {
-		gestureType = GESTURE_TYPE.WALKING;
+		gestureType = TRAVEL_TYPE.WALKING;
 		grounded = true;
 		gravity = 10.0f;
 	}
 
 	public void SetSegway () {
-		gestureType = GESTURE_TYPE.SEGWAY;
+		gestureType = TRAVEL_TYPE.SEGWAY;
 		grounded = true;
 		gravity = 10.0f;
 	}

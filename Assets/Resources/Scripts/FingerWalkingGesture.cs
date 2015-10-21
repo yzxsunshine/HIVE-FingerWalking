@@ -77,7 +77,7 @@ public class FingerWalkingGesture : MonoBehaviour
 	Rect touchPadRect;
 	Rect leftRect;
 	Rect rightRect;
-	GESTURE_TYPE gestureType;
+	TRAVEL_TYPE gestureType;
 
 
 	void Start() {
@@ -199,7 +199,7 @@ public class FingerWalkingGesture : MonoBehaviour
 		} else if (t.TouchId == rightTurnForce.Key) {
 			rightTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
 		} else {
-			if (travel_model_interface.GetGestureType() == GESTURE_TYPE.WALKING) {
+			if (travel_model_interface.GetGestureType() == TRAVEL_TYPE.WALKING) {
 				status++;
 				if (status > 2)
 					status = 1;
@@ -303,12 +303,12 @@ public class FingerWalkingGesture : MonoBehaviour
 			if(num == 2)
 				twoFingerFrames++;
 		}
-		GESTURE_TYPE curGestureType = travel_model_interface.GetGestureType();
+		TRAVEL_TYPE curGestureType = travel_model_interface.GetGestureType();
 		if(leftTurnForce.Key > 0 || rightTurnForce.Key > 0) {
-				curGestureType = GESTURE_TYPE.WALKING;
+				curGestureType = TRAVEL_TYPE.WALKING;
 			}
 		else if(curFingerNum == 0) {
-				curGestureType = GESTURE_TYPE.NOTHING;
+				curGestureType = TRAVEL_TYPE.NOTHING;
 				Debug.Log("Do Nothing");
 			}
 		else if(twoFingerFrames >= fingerNumQueueLength * 0.8) {
@@ -317,11 +317,11 @@ public class FingerWalkingGesture : MonoBehaviour
 				diff = fingerPositions[key] - diff;
 			}
 
-			curGestureType = GESTURE_TYPE.RESTING; 
+			curGestureType = TRAVEL_TYPE.RESTING; 
 			int i = 0;
 			if(diff.x < 0)
 				i = 1;	// make sure the left finger is 0, and right finger is 1
-			if(travel_model_interface.GetGestureType() != GESTURE_TYPE.RESTING) {	// set resting pose
+			if(travel_model_interface.GetGestureType() != TRAVEL_TYPE.RESTING) {	// set resting pose
 				foreach(var key in fingerPositions.Keys) {
 					restingBasePosition[i] = fingerPositions[key];
 					i = (i + 1) % 2;
@@ -329,12 +329,12 @@ public class FingerWalkingGesture : MonoBehaviour
 			}
 
 			if (Mathf.Abs(diff.y) / Mathf.Abs(diff.x) > Mathf.Tan(Mathf.PI * 0.4f) ) {	// add more constraints for triggring the first segway
-				if(travel_model_interface.GetGestureType() != GESTURE_TYPE.SURFING) {
-					curGestureType = GESTURE_TYPE.SURFING;
+				if(travel_model_interface.GetGestureType() != TRAVEL_TYPE.SURFING) {
+					curGestureType = TRAVEL_TYPE.SURFING;
 					Debug.Log("Skate Board");
 				}
 				else {
-					curGestureType = GESTURE_TYPE.SURFING;
+					curGestureType = TRAVEL_TYPE.SURFING;
 					Debug.Log("Skate Board");
 				}
 			}
@@ -348,13 +348,13 @@ public class FingerWalkingGesture : MonoBehaviour
 				}
 
 				if(dist[0] > minMove && dist[1] > minMove && Mathf.Abs(diff.x) > Mathf.Abs(diff.y) ) {
-					if(travel_model_interface.GetGestureType() != GESTURE_TYPE.SEGWAY) {
+					if(travel_model_interface.GetGestureType() != TRAVEL_TYPE.SEGWAY) {
 						if (Mathf.Abs(diff.y) / Mathf.Abs(diff.x) < Mathf.Tan(Mathf.PI * 0.1f) ) {	// add more constraints for triggring the first segway
 							foreach(var key in fingerPositions.Keys) {
 								segwayBasePosition[i] = fingerPositions[key];
 								i = (i + 1) % 2;
 							}
-							curGestureType = GESTURE_TYPE.SEGWAY;
+							curGestureType = TRAVEL_TYPE.SEGWAY;
 							Debug.Log("Segway");
 						}
 						else {
@@ -362,26 +362,26 @@ public class FingerWalkingGesture : MonoBehaviour
 						}
 					}
 					else {
-						curGestureType = GESTURE_TYPE.SEGWAY;
+						curGestureType = TRAVEL_TYPE.SEGWAY;
 						Debug.Log("Segway");
 					}
 				}
-				else if(travel_model_interface.GetGestureType() == GESTURE_TYPE.SEGWAY || travel_model_interface.GetGestureType() == GESTURE_TYPE.SURFING){
+				else if(travel_model_interface.GetGestureType() == TRAVEL_TYPE.SEGWAY || travel_model_interface.GetGestureType() == TRAVEL_TYPE.SURFING){
 					curGestureType = travel_model_interface.GetGestureType();
 				}
 			}
 
 		}
 		else if (curFingerNum > 0){
-			curGestureType = GESTURE_TYPE.WALKING;
+			curGestureType = TRAVEL_TYPE.WALKING;
 		}
 		else {
 			// do nothing
-			curGestureType = GESTURE_TYPE.NOTHING;
+			curGestureType = TRAVEL_TYPE.NOTHING;
 		}
 
 		// start a new metaphor, the last one is SURFING, reset states
-		if(travel_model_interface.GetGestureType() != curGestureType && travel_model_interface.GetGestureType() == GESTURE_TYPE.SURFING) {
+		if(travel_model_interface.GetGestureType() != curGestureType && travel_model_interface.GetGestureType() == TRAVEL_TYPE.SURFING) {
 			Vector3 forward = transform.forward;
 			Vector3 up = new Vector3(0, 1.0f, 0);
 			Vector3 xAxis = Vector3.Cross(transform.up, forward);
@@ -390,7 +390,7 @@ public class FingerWalkingGesture : MonoBehaviour
 			transform.forward = forward;
 		}
 		// start a new metaphor, the last one is segway, destroy segway drawing
-		else if(travel_model_interface.GetGestureType() != curGestureType && travel_model_interface.GetGestureType() == GESTURE_TYPE.SEGWAY) {	// last one is SEGWAY, remove baseline
+		else if(travel_model_interface.GetGestureType() != curGestureType && travel_model_interface.GetGestureType() == TRAVEL_TYPE.SEGWAY) {	// last one is SEGWAY, remove baseline
 			if(baseTip1 != null) {
 				Destroy(baseTip1);
 				baseTip1 = null;
@@ -407,7 +407,7 @@ public class FingerWalkingGesture : MonoBehaviour
 			}
 		}
 		// start a new metaphor, the new one is segway, set initial position
-		else if(gestureType != curGestureType && curGestureType == GESTURE_TYPE.SEGWAY) {
+		else if(gestureType != curGestureType && curGestureType == TRAVEL_TYPE.SEGWAY) {
 			baseTip1 = Instantiate(Resources.Load("Prefabs/base_finger_tip", typeof(GameObject))) as GameObject;
 			RectTransform rectTrans1 = baseTip1.GetComponent<RectTransform>();
 			rectTrans1.anchoredPosition = new Vector2(0, 0);
@@ -431,11 +431,11 @@ public class FingerWalkingGesture : MonoBehaviour
 			
 			dashline.transform.parent = GameObject.Find("Canvas").transform;
 		}
-		else if (gestureType != curGestureType && curGestureType == GESTURE_TYPE.SURFING) {
+		else if (gestureType != curGestureType && curGestureType == TRAVEL_TYPE.SURFING) {
 			surfingRotVelQueue = new VelocityQueue();
 			surfingRotVelQueue.SetQueueSize(20);
 		}
-		else if (gestureType != curGestureType && curGestureType == GESTURE_TYPE.WALKING) {
+		else if (gestureType != curGestureType && curGestureType == TRAVEL_TYPE.WALKING) {
 			walkingRotVelQueue = new VelocityQueue();
 			walkingRotVelQueue.SetQueueSize(20);
 		}
@@ -458,7 +458,7 @@ public class FingerWalkingGesture : MonoBehaviour
 			i++;
 		}
 		switch(gestureType) {
-		case GESTURE_TYPE.WALKING:
+		case TRAVEL_TYPE.WALKING:
 			if(leftTurnForce.Key >= 0 && rightTurnForce.Key >= 0) {
 			}
 			else if(leftTurnForce.Key >= 0) {
@@ -535,7 +535,7 @@ public class FingerWalkingGesture : MonoBehaviour
 				trail.GetComponent<LineRenderer>().SetPosition(1, baseCorner + pastFinger);
 			}	*/
 			break;
-		case GESTURE_TYPE.SEGWAY:
+		case TRAVEL_TYPE.SEGWAY:
 			int left = 0;
 			int right = 1;
 			
@@ -570,7 +570,7 @@ public class FingerWalkingGesture : MonoBehaviour
 			Debug.Log("Segway Speed = " + speedDiff +", Yaw Speed = " + yawDiff + ", " + direction);
 			this.GetComponent("HIVEFPSController").SendMessage("SetSegway");
 			break;
-		case GESTURE_TYPE.SURFING:
+		case TRAVEL_TYPE.SURFING:
 			int front = 0;
 			int back = 1;
 

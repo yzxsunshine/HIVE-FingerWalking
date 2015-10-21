@@ -19,6 +19,7 @@ public class TriggerEvent : MonoBehaviour {
 	// 1 (sqrt(5) + 1) / 2
 	void OnTriggerEnter() {
 		walkingTrialControl.ActiveNextWayPoint ();
+
 		GameObject.Destroy (this.gameObject);
 	}
 }
