@@ -10,6 +10,7 @@ public class SurfingTrialControl : MonoBehaviour {
 	private GameObject character;
 	private PlayerStatus playerStatus;
 	private StudyRecorder recorder;
+	private ArrowControl arrowControl;
 	private float timeStamp;
 	private TrialControl trialControl;
 	private float yawPeriod = 1.0f;
@@ -21,6 +22,7 @@ public class SurfingTrialControl : MonoBehaviour {
 		character = GameObject.Find("Character");
 		playerStatus = character.GetComponent<PlayerStatus> ();
 		recorder = GameObject.Find ("StudyRecorder").GetComponent<StudyRecorder> ();
+		arrowControl = GameObject.Find ("arrow").GetComponent<ArrowControl> ();
 	}
 
 	void Start() {
@@ -32,8 +34,10 @@ public class SurfingTrialControl : MonoBehaviour {
 		if (wayPoints != null) {
 			Vector3 currentPos = character.transform.position;
 			float totalDistance = (endPt - startPt).magnitude;
-			float passedDistance = (currentPos - startPt).magnitude;
-			int passedSphereNum = Mathf.FloorToInt(passedDistance / totalDistance * wayPointNum);
+			Vector3 targetDirection = (endPt - startPt);
+			targetDirection.Normalize();
+			float passedDistance = Vector3.Dot(currentPos - startPt, targetDirection);
+			int passedSphereNum = Mathf.Max(Mathf.FloorToInt(passedDistance / totalDistance * wayPointNum), 0);
 			for (int i = 0; i < passedSphereNum; i++) {
 				//wayPoints[i].GetComponent<Renderer>().enabled = false;
 				GameObject.Destroy(wayPoints[i]);
@@ -41,7 +45,9 @@ public class SurfingTrialControl : MonoBehaviour {
 			for (int i = passedSphereNum; i < wayPointNum; i++) {
 				if(wayPoints[i] != null) {
 					float alpha = 1.0f * (wayPointNum - i + passedSphereNum - 1) / wayPointNum;
-					wayPoints[i].GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.8f * alpha * alpha * alpha);
+					Color color = wayPoints[i].GetComponent<Renderer>().material.color;
+					color.a = 0.8f * alpha * alpha * alpha;
+					wayPoints[i].GetComponent<Renderer>().material.color = color;
 				}
 			}
 			string line = "" + timeStamp + "\t" + playerStatus.GetCurrentTransformLine();
@@ -81,7 +87,7 @@ public class SurfingTrialControl : MonoBehaviour {
 			float y_offset = Mathf.Cos(degree) * radius + perturbPitch;
 			wayPoints[i] = Instantiate(Resources.Load("Prefabs/WayPointSphere", typeof(GameObject))) as GameObject;
 			wayPoints[i].transform.position = new Vector3(x_offset, y_offset + midPoint.y + startPt.y, z_offset);
-			wayPoints[i].GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, (wayPointNum - i - 1) * 0.8f / wayPointNum);
+			//wayPoints[i].GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, (wayPointNum - i - 1) * 0.8f / wayPointNum);
 		}
 		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), 0, (int) TRAVEL_TYPE.SURFING);
 		timeStamp = 0;
@@ -94,6 +100,7 @@ public class SurfingTrialControl : MonoBehaviour {
 		startTransform.position = startPt;
 		startTransform.forward = endPt - startPt;
 		startTransform.forward.Normalize();
+		arrowControl.SetTarget (GoalScript.CreateGoal(endPt).transform);
 		return startTransform;
 	}
 }

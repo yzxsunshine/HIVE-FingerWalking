@@ -1,4 +1,4 @@
-﻿#define DEBUG_DISPLAY
+﻿//#define DEBUG_DISPLAY
 
 using UnityEngine;
 using System.Collections;
@@ -7,12 +7,14 @@ public class PlayerStatus : MonoBehaviour {
 	public int segwayCollisionNum = 0;
 	public float segwayCollisionTime = 0;
 	private TravelModelInterface travelModelInterface;
+	private HIVEFPSController fpsController;
 	private TrialControl trialControl;
 	public float PLAYER_HEIGHT = 1.8f;
 	// Use this for initialization
 	void Awake () {
 		travelModelInterface = GetComponent<TravelModelInterface> ();
 		trialControl = GetComponent<TrialControl> ();
+		fpsController = GetComponent<HIVEFPSController>();
 		ResetPlayerStatus ();
 	}
 
@@ -60,6 +62,7 @@ public class PlayerStatus : MonoBehaviour {
 	public void DisableControl() {
 		GetComponent<TouchPadGesture>().enabled = false;
 		GetComponent<JoystickGesture>().enabled = false;
+		travelModelInterface.DisableMove();
 	}
 
 	public void EnableControl(CONTROL_TYPE controlType) {
@@ -77,5 +80,6 @@ public class PlayerStatus : MonoBehaviour {
 			GetComponent<JoystickGesture>().enabled = false;
 			break;
 		}
+		fpsController.EnableMove();
 	}
 }

@@ -97,21 +97,33 @@ public class SegwayPathController : MonoBehaviour {
 		return wayPointTriggers[id];
 	}
 
-	public StoreTransform SetSegwayPath (int difficulty, int startPointID, int LorR) {
-		if (difficulty > 3) {
-			difficulty = 3;
+	private void CloseWayPoints() {
+		for (int i = 0; i < 25; i++) {
+			string objName = "SegwayWaypoint_" + i;
+			wayPointTriggers[i] = GameObject.Find(objName);
+			for(int j = 0; j < wayPointTriggers[i].transform.childCount; j++) {
+				string blockerName = wayPointTriggers[i].transform.GetChild(j).gameObject.name;
+				if(blockerName[0] == 'B') {
+					BoxCollider[] colliders = wayPointTriggers[i].transform.GetChild(j).gameObject.GetComponentsInChildren<BoxCollider>();
+					for(int k=0; k<colliders.Length; k++) {
+						colliders[k].enabled = true;
+					}
+					GameObject tape_1 = GameObject.Find(blockerName + "/barrierTape");
+					MeshRenderer[] render_1 = tape_1.GetComponentsInChildren<MeshRenderer>();
+					for(int k=0; k<render_1.Length; k++) {
+						render_1[k].enabled = true;
+					}
+				}
+			}
+			//wayPointTriggers[i].GetComponent<BoxCollider>().enabled = false;
 		}
-		startPointID = startPointID % 4;
-		if (LorR <= 0)
-			LorR = 0;
-		else
-			LorR = 1;
+	}
 
-		int[] wayPoints = pathes[difficulty, startPointID, LorR].wayPoints;
-		wayPointTriggers[wayPoints[0]].GetComponent<BoxCollider>().enabled = true;
-		for (int i=0; i<wayPoints.Length; i++) {
-			if (i < wayPoints.Length - 1) {
-				string blockerName = "BarrierTape-"+wayPoints[i]+"-"+wayPoints[i+1];
+	private void OpenWayPointsAt(int curPos, int forwardNum, int[] wayPts) {
+		CloseWayPoints();
+		for (int i=curPos; i<wayPts.Length && i < curPos + forwardNum; i++) {
+			if (i < wayPts.Length - 1) {
+				string blockerName = "BarrierTape-"+wayPts[i]+"-"+wayPts[i+1];
 				GameObject blocker = GameObject.Find(blockerName);
 				BoxCollider[] colliders = blocker.GetComponentsInChildren<BoxCollider>();
 				for(int j=0; j<colliders.Length; j++) {
@@ -124,7 +136,7 @@ public class SegwayPathController : MonoBehaviour {
 				}
 			}
 			if(i > 0) {
-				string blockerName_2 = "BarrierTape-"+wayPoints[i]+"-"+wayPoints[i-1];
+				string blockerName_2 = "BarrierTape-"+wayPts[i]+"-"+wayPts[i-1];
 				GameObject blocker_2 = GameObject.Find(blockerName_2);
 				BoxCollider[] colliders_2 = blocker_2.GetComponentsInChildren<BoxCollider>();
 				for(int j=0; j<colliders_2.Length; j++) {
@@ -138,6 +150,21 @@ public class SegwayPathController : MonoBehaviour {
 				}
 			}
 		}
+	}
+	
+	public StoreTransform SetSegwayPath (int difficulty, int startPointID, int LorR) {
+		if (difficulty > 3) {
+			difficulty = 3;
+		}
+		startPointID = startPointID % 4;
+		if (LorR <= 0)
+			LorR = 0;
+		else
+			LorR = 1;
+
+		int[] wayPoints = pathes[difficulty, startPointID, LorR].wayPoints;
+		wayPointTriggers[wayPoints[0]].GetComponent<BoxCollider>().enabled = true;
+		OpenWayPointsAt(0, 2, wayPoints);
 		arrowControl.SetTarget (wayPointTriggers [wayPoints [1]].transform);
 		currentWayPts = wayPoints;
 		timeStampWayPoints = new float[wayPoints.Length];
@@ -151,6 +178,8 @@ public class SegwayPathController : MonoBehaviour {
 		startTransform.position = wayPointTriggers [currentWayPts [0]].transform.position;
 		startTransform.forward = wayPointTriggers [currentWayPts [1]].transform.position - startTransform.position;
 		startTransform.forward.Normalize();
+		currentPosition = 0;
+		GoalScript.CreateGoal(wayPointTriggers[wayPoints[wayPoints.Length - 1]].transform.position);
 		return startTransform;
 	}
 
@@ -158,9 +187,11 @@ public class SegwayPathController : MonoBehaviour {
 		wayPointTriggers [currentWayPts [currentPosition]].GetComponent<BoxCollider> ().enabled = false;
 		timeStampWayPoints [currentPosition] = timeStamp;
 		if (currentPosition < currentWayPts.Length - 1) {
+			OpenWayPointsAt(currentPosition, 2, currentWayPts);
 			currentPosition++;
 			wayPointTriggers [currentWayPts [currentPosition]].GetComponent<BoxCollider> ().enabled = true;
 			arrowControl.SetTarget (wayPointTriggers [currentWayPts [currentPosition]].transform);
+
 			return false;
 		} else {
 			arrowControl.ResetTarget();

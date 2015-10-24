@@ -106,6 +106,5 @@ public class JoystickGesture : MonoBehaviour {
 		}
 
 		travelModelInterface.SetVelocity (moveVel, rotVel);
-		GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 	}
 }

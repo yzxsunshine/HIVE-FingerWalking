@@ -12,17 +12,17 @@
 	  <joystick
 		walking_speed = "10.0"
 		walking_angular_speed = "1.0"
-		segway_speed = "30.0"
+		segway_speed = "50.0"
 		segway_angular_speed = "1.0"
-		surfing_speed = "50.0"
+		surfing_speed = "100.0"
 		surfing_pitch_speed = "20.0"
-		surfing_yaw_speed = "1.0">
+		surfing_yaw_speed = "0.5">
 	  </joystick>
 	  <forcepad
 		min_finger_move = "5.0"
 		min_finger_speed = "5.0"
 		max_finger_speed = "10.0"
-		walking_angular_speed = "10.0"
+		walking_angular_speed = "3.0"
 		segway_speed = "50.0"
 		segway_pressure_angular_speed = "10.0"
 		segway_angular_speed = "0.01"

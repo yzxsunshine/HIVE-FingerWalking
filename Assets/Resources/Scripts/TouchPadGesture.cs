@@ -70,7 +70,7 @@ public class TouchPadGesture : MonoBehaviour {
 	Rect rightRect;
 
 	private Queue<int> fingerNumQueue;
-	private int fingerNumQueueLength = 5;
+	private int fingerNumQueueLength = 2;
 
 
 	private Vector2[] segwayBasePosition = new Vector2[2];
@@ -103,6 +103,8 @@ public class TouchPadGesture : MonoBehaviour {
 		widgetRatio = new Vector2(widgetSize.x / Screen.width, widgetSize.y / Screen.height);
 		travel_model_interface = GetComponent<TravelModelInterface>();
 		forcePadParams = ConfigurationHandler.forcePadParams;
+		leftTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
+		rightTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
 	}
 
 	void InitTouches() {	// called every update in TrackingComponentBase, before HandleTouches and FinishTouches
@@ -121,7 +123,6 @@ public class TouchPadGesture : MonoBehaviour {
 		
 			//Debug.Log(moveVel.ToString());
 			travel_model_interface.SetVelocity (moveVel, rotVel);
-			GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 		
 		}
 	}
@@ -156,10 +157,10 @@ public class TouchPadGesture : MonoBehaviour {
 		
 		if (leftRect.Contains (t.TouchPoint)) {
 			leftTurnForce = new KeyValuePair<int, float> (t.TouchId, Mathf.Abs ((float)t.Properties.Force));
-			Debug.Log ("add id=" + t.FingerId + ", turn left=" + ", value=" + leftTurnForce.Value);
+			Debug.Log ("add id=" + t.TouchId + ", turn left=" + ", value=" + leftTurnForce.Value);
 		} else if (rightRect.Contains (t.TouchPoint)) {
 			rightTurnForce = new KeyValuePair<int, float> (t.TouchId, Mathf.Abs ((float)t.Properties.Force));
-			Debug.Log ("add id=" + t.FingerId + ", turn right" + ", value=" + rightTurnForce.Value);
+			Debug.Log ("add id=" + t.TouchId + ", turn right" + ", value=" + rightTurnForce.Value);
 		} else {
 			addTrail (t);
 			curFingerNum++;
@@ -193,8 +194,8 @@ public class TouchPadGesture : MonoBehaviour {
 		} else if (t.TouchId == rightTurnForce.Key) {
 			rightTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
 		} else {
-			if (travel_model_interface.GetGestureType() == TRAVEL_TYPE.WALKING) {
-			}
+			//if (travel_model_interface.GetGestureType() == TRAVEL_TYPE.WALKING) {
+		//	}
 			removeTrail (t);
 			curFingerNum--;
 		}
@@ -228,7 +229,7 @@ public class TouchPadGesture : MonoBehaviour {
 			fingerPositions[t.TouchId] = t.TouchPoint;
 			fingerForce[t.TouchId] = (float) t.Properties.Force;
 			fingerTrails[t.TouchId].Add(t);
-			Debug.Log("id = " + t.TouchId + ", force = " + t.Properties.Force);
+//			Debug.Log("id = " + t.TouchId + ", force = " + t.Properties.Force);
 		}
 		
 		RectTransform rectTrans = fingerTips[t.TouchId].GetComponent<RectTransform>();
@@ -278,7 +279,7 @@ public class TouchPadGesture : MonoBehaviour {
 				twoFingerFrames++;
 		}
 		TRAVEL_TYPE curGestureType = travel_model_interface.GetGestureType();
-		if(leftTurnForce.Key >= 0 || rightTurnForce.Key >= 0) {
+		if(leftTurnForce.Key > 0 || rightTurnForce.Key > 0) {
 			curGestureType = TRAVEL_TYPE.WALKING;
 		}
 		else if(curFingerNum == 0) {
@@ -337,7 +338,8 @@ public class TouchPadGesture : MonoBehaviour {
 			// do nothing
 			curGestureType = TRAVEL_TYPE.NOTHING;
 		}
-		travel_model_interface.SetGestureType (curGestureType);
+		if(curGestureType != TRAVEL_TYPE.NOTHING)
+			travel_model_interface.SetGestureType (curGestureType);
 
 	}
 
@@ -351,6 +353,8 @@ public class TouchPadGesture : MonoBehaviour {
 		float avgDisplacement = 0.0f;
 		moveVel = new Vector3 (0, 0, 0);
 		rotVel = new Vector3 (0, 0, 0);
+		if (leftTurnForce.Key <= 0 && rightTurnForce.Key <= 0 && curFingerNum <= 0)
+			return;
 		foreach (var pos in fingerPositions) {
 			fingers[i] = pos.Value;
 			forces[i] = fingerForce[pos.Key];

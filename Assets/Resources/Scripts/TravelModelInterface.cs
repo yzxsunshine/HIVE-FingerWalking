@@ -59,6 +59,7 @@ public class TravelModelInterface : MonoBehaviour  {
 	private StudyRecorder studyRecorder;
 	private float modeSwitchTimer = 0;
 	private int errorSwitchNum = 0;
+	private bool hasControl = true;
 	// Use this for initialization
 	void Start () {
 		controller = GetComponent<HIVEFPSController>();
@@ -140,17 +141,18 @@ public class TravelModelInterface : MonoBehaviour  {
 			transform.eulerAngles = new Vector3(avgVel.x, transform.eulerAngles.y, 0);
 			break;
 		}
-	
 		Vector3 transVel = transform.TransformDirection (moveVel);
+		
 		controller.SetVelocity(transVel);
 		//this.GetComponent("HIVEFPSController").SendMessage("SetRotation", rotation);
 		controller.SendMessage("DoStep");
 		velocity = moveVel;
 		rotation = rotVel;
+		//GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 	}
 
 	public void SetGestureType (TRAVEL_TYPE gesture) {
-		if (gestureType != gesture) {
+		if (gesture == targetGestureType && gestureType != gesture) {
 
 			// start a new metaphor, the last one is segway, destroy segway drawing
 			/*else if(gestureType == TRAVEL_TYPE.SEGWAY) {	// last one is SEGWAY, remove baseline
@@ -222,7 +224,7 @@ public class TravelModelInterface : MonoBehaviour  {
 			Debug.Log("Correct Switch");
 			studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
 			trialControl.modeSwitchText.enabled = false;
-			trialControl.StartNextTrial();
+			//trialControl.StartNextTrial();
 		}
 		else {
 			Debug.Log("Incorrect Switch");
@@ -253,4 +255,13 @@ public class TravelModelInterface : MonoBehaviour  {
 	public bool IsPressureSegway() {
 		return pressureBasedSegwayOn;
 	}
+
+	public void EnableMove() {
+		hasControl = true;
+	}
+	
+	public void DisableMove () {
+		hasControl = false;
+	}
+
 }

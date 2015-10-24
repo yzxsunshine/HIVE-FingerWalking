@@ -6,10 +6,13 @@ public class ArrowControl : MonoBehaviour {
 	private MeshRenderer renderer = null;
 	private PlayerStatus playerStatus;
 	// Use this for initialization
-	void Start () {
-		playerStatus = GameObject.Find ("Character").GetComponent<PlayerStatus> ();
+	void Awake () {
 		renderer = GetComponentInChildren<MeshRenderer> ();
 		renderer.enabled = false;
+	}
+
+	void Start() {
+		playerStatus = GameObject.Find ("Character").GetComponent<PlayerStatus> ();
 	}
 	
 	// Update is called once per frame

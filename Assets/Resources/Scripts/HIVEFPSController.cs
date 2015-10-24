@@ -12,6 +12,8 @@ public class HIVEFPSController : MonoBehaviour {
 	public float maxSegwayVelocityDecrease = -2.0f;
 	public float maxSurfVelocityIncrease = 10.0f;
 	public float maxSurfVelocityDecrease = -5.0f;
+	public float maxResetVelocityIncrease = 5.0f;
+	public float maxResetVelocityDecrease = -5.0f;
 
 	private float maxInertiaChange = 0.0f;
 	public bool canJump = true;
@@ -23,6 +25,7 @@ public class HIVEFPSController : MonoBehaviour {
 	public Quaternion targetRotation;
 	public TRAVEL_TYPE gestureType;
 	public int pos_or_vel = 1;
+	private bool hasControl = true;
 
 	private bool grounded = false;
 	void Awake ()
@@ -30,7 +33,11 @@ public class HIVEFPSController : MonoBehaviour {
 		GetComponent<Rigidbody>().freezeRotation = true;
 		GetComponent<Rigidbody>().useGravity = false;
 	}
-	
+
+	public void Reset () {
+
+	}
+
 	public void DoStep () {
 		Vector3 velocity = GetComponent<Rigidbody>().velocity;
 		Vector3 velocityChange = (targetVelocity - velocity);
@@ -38,6 +45,10 @@ public class HIVEFPSController : MonoBehaviour {
 		float curMag = targetVelocity.magnitude;
 		float mag = 0.0f;
 		//rigidbody.rotation = targetRotation;
+		if(!hasControl) {
+			GetComponent<Rigidbody>().velocity = Vector3.zero;
+			return;
+		}
 		switch (gestureType) {
 		case TRAVEL_TYPE.WALKING:
 // Calculate how fast we should be moving
@@ -77,6 +88,14 @@ public class HIVEFPSController : MonoBehaviour {
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
 			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
+			break;
+		case TRAVEL_TYPE.RESET:
+			mag = Mathf.Clamp (curMag, maxResetVelocityDecrease, maxResetVelocityIncrease);
+			velocityChange.Normalize ();
+			velocityChange = velocityChange * Mathf.Abs (mag);
+			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
+			break;
+		default:
 			break;
 		}
 	
@@ -136,6 +155,22 @@ public class HIVEFPSController : MonoBehaviour {
 		gestureType = TRAVEL_TYPE.SEGWAY;
 		grounded = true;
 		gravity = 10.0f;
+	}
+
+	public TRAVEL_TYPE SetReset () {
+		TRAVEL_TYPE prevType = gestureType;
+		gestureType = TRAVEL_TYPE.RESET;
+		grounded = true;
+		gravity = 10.0f;
+		return prevType;
+	}
+
+	public void EnableMove() {
+		hasControl = true;
+	}
+
+	public void DisableMove () {
+		hasControl = false;
 	}
 
 }
