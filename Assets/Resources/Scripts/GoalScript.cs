@@ -2,10 +2,16 @@
 using System.Collections;
 
 public class GoalScript : MonoBehaviour {
-
+	private PlayerStatus playerStatus;
+	private SegwayPathController segwayPathControl;
+	private WalkingTrialControl walkingTrialControl;
+	private SurfingTrialControl surfingTrialControl;
 	// Use this for initialization
 	void Start () {
-	
+		playerStatus = GameObject.Find("Character").GetComponent<PlayerStatus>();
+		segwayPathControl = GameObject.Find ("SegwayWayPointsManager").GetComponent<SegwayPathController> ();
+		walkingTrialControl = GameObject.Find ("WalkingTrialManager").GetComponent<WalkingTrialControl> ();
+		surfingTrialControl = GameObject.Find ("SurfingTrialManager").GetComponent<SurfingTrialControl> ();
 	}
 	
 	// Update is called once per frame
@@ -14,6 +20,12 @@ public class GoalScript : MonoBehaviour {
 	}
 
 	void OnTriggerEnter() {
+		if(playerStatus.GetGestureType() == TRAVEL_TYPE.SEGWAY) {
+			segwayPathControl.ActiveNextWayPoint();
+		}
+		else if(playerStatus.GetGestureType() == TRAVEL_TYPE.SURFING) {
+			surfingTrialControl.CompleteSurfingTrial();
+		}
 		GameObject.Destroy(this.gameObject);
 	}
 

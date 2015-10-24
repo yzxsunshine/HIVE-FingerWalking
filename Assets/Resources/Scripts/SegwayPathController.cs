@@ -217,6 +217,18 @@ public class SegwayPathController : MonoBehaviour {
 		}
 	}
 
+	public Transform GetCurrentWayPoint() {
+		return wayPointTriggers [currentWayPts [currentPosition]].transform;
+	}
+
+	public Transform GetNextWayPoint() {
+		if (currentPosition < currentWayPts.Length - 1) {
+			return wayPointTriggers [currentWayPts [currentPosition + 1]].transform;
+		}
+		else
+			return null;
+	}
+
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (currentWayPts != null) {

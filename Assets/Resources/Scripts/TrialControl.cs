@@ -167,6 +167,10 @@ public class TrialControl : MonoBehaviour {
 				}
 			}
 		}
+
+		if(Input.GetKeyDown(KeyCode.Space)) {
+			ResetToLatestPoint();
+		}
 	}
 
 	public StoreTransform GenerateTrial() {
@@ -201,8 +205,8 @@ public class TrialControl : MonoBehaviour {
 			currentStartWayPointID = startWayPointCalculator.GetClosestWayPointID(character.transform);
 			GenerateTrial();
 			character.transform.up = Vector3.up;
-			cutSceneManager.cutSceneOn = true;
 			playerStatus.DisableControl();
+			cutSceneManager.cutSceneOn = true;
 			typeBeforeReset = fpsController.SetReset();
 		}
 		else {
@@ -259,5 +263,25 @@ public class TrialControl : MonoBehaviour {
 
 
 		//playerStatus.DisableControl();
+	}
+
+	public void ResetToLatestPoint() {
+		switch (trialSequence[currentTrialID].mode) {
+		case TRAVEL_TYPE.WALKING:
+			break;
+		case TRAVEL_TYPE.SEGWAY:
+			Transform curWayPt = segwayPathControl.GetCurrentWayPoint();
+			Transform nextWayPt = segwayPathControl.GetNextWayPoint();
+			if(nextWayPt != null)
+				character.transform.forward = nextWayPt.position - curWayPt.position;
+			character.transform.position = curWayPt.position;
+			break;
+		case TRAVEL_TYPE.SURFING:
+			Vector3 closestPt = surfingTrialControl.GetClosetPointOnPath(character.transform.position);
+			Vector3 endPt = surfingTrialControl.GetEndPoint();
+			character.transform.forward = endPt - closestPt;
+			character.transform.position = closestPt;
+			break;
+		}
 	}
 }

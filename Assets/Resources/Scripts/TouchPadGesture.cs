@@ -81,6 +81,7 @@ public class TouchPadGesture : MonoBehaviour {
 	private Vector3 rotVel;
 
 	public ForcePadParams forcePadParams;
+	public bool hasControl;
 
 
 	// Use this for initialization
@@ -122,7 +123,8 @@ public class TouchPadGesture : MonoBehaviour {
 			//Vector3 moveVel = velQueue.GetAvgVelocity(velocity, gestureType);
 		
 			//Debug.Log(moveVel.ToString());
-			travel_model_interface.SetVelocity (moveVel, rotVel);
+			if(travel_model_interface.HasControl())
+				travel_model_interface.SetVelocity (moveVel, rotVel);
 		
 		}
 	}
@@ -411,7 +413,8 @@ public class TouchPadGesture : MonoBehaviour {
 		case TRAVEL_TYPE.SEGWAY:
 			int left = 0;
 			int right = 1;
-			
+			if(curFingerNum < 2)
+				break;
 			if(fingers[0].x > fingers[1].x) {
 				left = 1;
 				right = 0;
@@ -448,7 +451,8 @@ public class TouchPadGesture : MonoBehaviour {
 		case TRAVEL_TYPE.SURFING:
 			int front = 0;
 			int back = 1;
-			
+			if(curFingerNum < 2)
+				break;
 			if(fingers[0].y > fingers[1].y) {
 				front = 1;
 				back = 0;

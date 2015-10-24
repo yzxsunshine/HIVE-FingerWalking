@@ -53,12 +53,29 @@ public class SurfingTrialControl : MonoBehaviour {
 			string line = "" + timeStamp + "\t" + playerStatus.GetCurrentTransformLine();
 			recorder.RecordLine(line);
 			if (passedSphereNum >= wayPointNum) {
-				wayPoints = null;
-				recorder.StopTrialFileWriter();
-				trialControl.FinishTrial();
+				CompleteSurfingTrial();
 			}
 			timeStamp += Time.deltaTime;
 		}
+	}
+
+	public void CompleteSurfingTrial() {
+		wayPoints = null;
+		recorder.StopTrialFileWriter();
+		trialControl.FinishTrial();
+	}
+
+	public Vector3 GetEndPoint() {
+		return endPt;
+	}
+
+	public Vector3 GetClosetPointOnPath (Vector3 pos) {
+		float totalDistance = (endPt - startPt).magnitude;
+		Vector3 targetDirection = (endPt - startPt);
+		targetDirection.Normalize();
+		float passedDistance = Vector3.Dot(pos - startPt, targetDirection);
+		Vector3 closestPt = startPt + targetDirection * passedDistance;
+		return closestPt;
 	}
 
 	public StoreTransform GenerateSamples(Transform startPoint, Transform endPoint) {

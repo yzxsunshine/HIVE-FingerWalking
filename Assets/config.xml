@@ -6,7 +6,7 @@
   </devices>
   <subject
     subject_id = "7" 
-	controller_type = "joystick">
+	controller_type = "forcepad">
   </subject>
   <travel_interfaces>
 	  <joystick
@@ -28,7 +28,7 @@
 		segway_angular_speed = "0.01"
 		segway_offset_speed = "80.0"
 		surfing_speed = "100.0"
-		surfing_pitch_speed = "62.8"
+		surfing_pitch_speed = "80.0"
 		surfing_yaw_speed = "0.01">
 	  </forcepad>
   </travel_interfaces>

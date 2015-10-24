@@ -264,4 +264,7 @@ public class TravelModelInterface : MonoBehaviour  {
 		hasControl = false;
 	}
 
+	public bool HasControl() {
+		return hasControl;
+	}
 }

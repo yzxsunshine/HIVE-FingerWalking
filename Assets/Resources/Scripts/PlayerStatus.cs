@@ -80,6 +80,7 @@ public class PlayerStatus : MonoBehaviour {
 			GetComponent<JoystickGesture>().enabled = false;
 			break;
 		}
-		fpsController.EnableMove();
+		travelModelInterface.EnableMove();
+		//fpsController.EnableMove();
 	}
 }
