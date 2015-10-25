@@ -50,11 +50,10 @@ public class StudyRecorder : MonoBehaviour {
 		string fileName = trialDirectory + "/subject_" + ConfigurationHandler.subjectID;
 		fileName += "_trial_" + controller + "_" + level + "_" + travelType;
 		fileName += ".txt";
-		if (!File.Exists (fileName)) {
-			currentTrialWriter = File.CreateText (fileName);
-		} else {
-			currentTrialWriter = File.AppendText(fileName);
-		}
+		if (File.Exists (fileName)) {
+			File.Delete(fileName);
+		} 
+		currentTrialWriter = File.CreateText (fileName);
 		return currentTrialWriter;
 	}
 	

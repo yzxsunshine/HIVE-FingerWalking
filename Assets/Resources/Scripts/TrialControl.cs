@@ -188,6 +188,7 @@ public class TrialControl : MonoBehaviour {
 		case TRAVEL_TYPE.SURFING: 
 			Transform startPts = startWayPointCalculator.GetTransformByID(currentStartWayPointID);
 			Transform endPts = startWayPointCalculator.GetTransformByID((currentStartWayPointID + 1) % 4);
+			segwayPathControl.OpenAllWayPoints();
 			targetTransform = surfingTrialControl.GenerateSamples (startPts, endPts);
 			break;
 		}

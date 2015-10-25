@@ -21870,4 +21870,10 @@
 12.66876_0_[T]Walking_[C]Walking
 12.69154_0_[T]Walking_[C]Walking
 12.71543_0_[T]Walking_[C]Walking
-12.73681_0_[
+12.73681_0_[1.301721_0_[T]Surfing_[C]Surfing
+1.857615_0_[T]Segway_[C]Segway
+5.590747_0_[T]Walking_[C]Walking
+1.553811_0_[T]Segway_[C]Segway
+3.503294_0_[T]Walking_[C]Walking
+1.766228_0_[T]Segway_[C]Segway
+30.79685_0_[T]Walking_[C]Walking

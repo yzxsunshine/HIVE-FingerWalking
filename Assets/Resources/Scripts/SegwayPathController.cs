@@ -97,7 +97,7 @@ public class SegwayPathController : MonoBehaviour {
 		return wayPointTriggers[id];
 	}
 
-	private void CloseWayPoints() {
+	public void CloseWayPoints() {
 		for (int i = 0; i < 25; i++) {
 			string objName = "SegwayWaypoint_" + i;
 			wayPointTriggers[i] = GameObject.Find(objName);
@@ -112,6 +112,28 @@ public class SegwayPathController : MonoBehaviour {
 					MeshRenderer[] render_1 = tape_1.GetComponentsInChildren<MeshRenderer>();
 					for(int k=0; k<render_1.Length; k++) {
 						render_1[k].enabled = true;
+					}
+				}
+			}
+			//wayPointTriggers[i].GetComponent<BoxCollider>().enabled = false;
+		}
+	}
+
+	public void OpenAllWayPoints() {
+		for (int i = 0; i < 25; i++) {
+			string objName = "SegwayWaypoint_" + i;
+			wayPointTriggers[i] = GameObject.Find(objName);
+			for(int j = 0; j < wayPointTriggers[i].transform.childCount; j++) {
+				string blockerName = wayPointTriggers[i].transform.GetChild(j).gameObject.name;
+				if(blockerName[0] == 'B') {
+					BoxCollider[] colliders = wayPointTriggers[i].transform.GetChild(j).gameObject.GetComponentsInChildren<BoxCollider>();
+					for(int k=0; k<colliders.Length; k++) {
+						colliders[k].enabled = false;
+					}
+					GameObject tape_1 = GameObject.Find(blockerName + "/barrierTape");
+					MeshRenderer[] render_1 = tape_1.GetComponentsInChildren<MeshRenderer>();
+					for(int k=0; k<render_1.Length; k++) {
+						render_1[k].enabled = false;
 					}
 				}
 			}
@@ -184,8 +206,12 @@ public class SegwayPathController : MonoBehaviour {
 	}
 
 	public bool ActiveNextWayPoint () {
+		if(currentWayPts == null) 
+			return true;
+		playerStatus.TrigerWayPoint();
+		playerStatus.SetWayPoint(wayPointTriggers [currentWayPts [currentPosition]].transform.position);
 		wayPointTriggers [currentWayPts [currentPosition]].GetComponent<BoxCollider> ().enabled = false;
-		timeStampWayPoints [currentPosition] = timeStamp;
+		//timeStampWayPoints [currentPosition] = timeStamp;
 		if (currentPosition < currentWayPts.Length - 1) {
 			OpenWayPointsAt(currentPosition, 2, currentWayPts);
 			currentPosition++;
@@ -195,22 +221,22 @@ public class SegwayPathController : MonoBehaviour {
 			return false;
 		} else {
 			arrowControl.ResetTarget();
-			string instruction = "#Segway Trial Way Points#";
-			recorder.RecordLine(instruction);
-			instruction = "#TimeStamp#\t" + "#WayPointID#\t" + "#WayPonitX#\t" + "#WayPonitY#\t" + "#WayPonitZ#\t";
-			recorder.RecordLine(instruction);
-
-			for (int i=0; i<currentWayPts.Length; i++) {	// dump all waypoints and timestamp to file
-				Vector3 wayPtPos = wayPointTriggers[currentWayPts[i]].transform.position;
-				string line = "" + timeStampWayPoints[i] 
-							+ "\t" + currentWayPts[i]
-							+ "\t" + wayPtPos.x
-							+ "\t" + wayPtPos.y
-							+ "\t" + wayPtPos.z;
-				recorder.RecordLine(line);
-			}
+			//string instruction = "#Segway Trial Way Points#";
+			//recorder.RecordLine(instruction);
+			//instruction = "#TimeStamp#\t" + "#WayPointID#\t" + "#WayPonitX#\t" + "#WayPonitY#\t" + "#WayPonitZ#\t";
+			//recorder.RecordLine(instruction);
+			//
+			//for (int i=0; i<currentWayPts.Length; i++) {	// dump all waypoints and timestamp to file
+			//Vector3 wayPtPos = wayPointTriggers[currentWayPts[i]].transform.position;
+			//	string line = "" + timeStampWayPoints[i] 
+			//				+ "\t" + currentWayPts[i]
+			//				+ "\t" + wayPtPos.x
+			//				+ "\t" + wayPtPos.y
+			//				+ "\t" + wayPtPos.z;
+			//	recorder.RecordLine(line);
+			//}
 			currentWayPts = null;
-			timeStampWayPoints = null;
+			//timeStampWayPoints = null;
 			recorder.StopTrialFileWriter();
 			trialControl.FinishTrial();
 			return true;	// trial ended
@@ -232,7 +258,7 @@ public class SegwayPathController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (currentWayPts != null) {
-			string line = "" + timeStamp + "\t" + playerStatus.GetCurrentTransformLine();
+			string line = playerStatus.GetCurrentTransformLine();
 			recorder.RecordLine(line);
 			timeStamp += Time.deltaTime;
 		}

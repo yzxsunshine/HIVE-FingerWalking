@@ -2,13 +2,15 @@
 using System.Collections;
 
 public class TriggerEvent : MonoBehaviour {
-	private GameObject Character;
+	private GameObject character;
 	public float selfRotateAngle = 0.6f;
 	private WalkingTrialControl walkingTrialControl;
+	private PlayerStatus playerStatus;
 	// Use this for initialization
 	void Start () {
-		Character = GameObject.Find ("Character");
+		character = GameObject.Find ("Character");
 		walkingTrialControl = GameObject.Find ("WalkingTrialManager").GetComponent<WalkingTrialControl> ();
+		playerStatus = character.GetComponent<PlayerStatus>();
 	}
 	// Update is called once per frame
 	void Update () {

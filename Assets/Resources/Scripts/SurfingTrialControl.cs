@@ -1,6 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public class SurfingPathBell {
+	/*
+	*  \frac{1}{1+|\frac{x-c}{a}|^{2b}}
+	*
+	**/
+	private Vector3 startPt;
+	private Vector3 endPt;
+	private Vector3 center;
+	private Vector3 direction;
+	private float distance;
+	private float factorA;
+	private float factorB;
+	private float maxHeight;
+	public SurfingPathBell(Vector3 sp, Vector3 ep, float a, float b, float height) {
+		startPt = sp;
+		endPt = ep;
+		center = (sp + ep) / 2;
+		direction = endPt - startPt;
+		distance = direction.magnitude;
+		direction.Normalize();
+		factorA = a;
+		maxHeight = height;
+		factorB = b;
+	}
+
+	public float GetYValue(float p) {
+		return maxHeight / (1.0f + Mathf.Pow((p - 0.5f) / factorA, 2 * factorB));
+	}
+
+	public Vector3 GetPoint(float p) {
+		Vector3 point = startPt + p * distance * direction; 
+		point.y = GetYValue(p);
+		return point;
+	}
+
+	public Vector3 GetPoint (Vector3 pt) {
+		float passedDistance = Vector3.Dot(pt - startPt, direction);
+		return GetPoint(passedDistance / distance);
+	}
+};
+
 public class SurfingTrialControl : MonoBehaviour {
 	private float tangentAngle = 20 * Mathf.PI / 180;
 	private int wayPointNum = 20;
@@ -17,6 +58,7 @@ public class SurfingTrialControl : MonoBehaviour {
 	private float pitchPeriod = 1.0f;
 	private float yawAmplification = 1.0f;
 	private float pitchAmplification = 1.0f;
+	private SurfingPathBell surfingPath = null;
 	// Use this for initialization
 	void Awake () {
 		character = GameObject.Find("Character");
@@ -50,7 +92,10 @@ public class SurfingTrialControl : MonoBehaviour {
 					wayPoints[i].GetComponent<Renderer>().material.color = color;
 				}
 			}
-			string line = "" + timeStamp + "\t" + playerStatus.GetCurrentTransformLine();
+			//playerStatus.TrigerWayPoint();
+			playerStatus.SetWayPoint(GetClosetPointOnPath(currentPos));
+
+			string line = playerStatus.GetCurrentTransformLine();
 			recorder.RecordLine(line);
 			if (passedSphereNum >= wayPointNum) {
 				CompleteSurfingTrial();
@@ -60,7 +105,16 @@ public class SurfingTrialControl : MonoBehaviour {
 	}
 
 	public void CompleteSurfingTrial() {
+		if(wayPoints == null)
+			return;
+		for (int i = 0; i < wayPointNum; i++) {
+			if(wayPoints[i] != null) {
+				GameObject.Destroy(wayPoints[i]);
+			}
+		}
 		wayPoints = null;
+		surfingPath = null;
+
 		recorder.StopTrialFileWriter();
 		trialControl.FinishTrial();
 	}
@@ -70,18 +124,29 @@ public class SurfingTrialControl : MonoBehaviour {
 	}
 
 	public Vector3 GetClosetPointOnPath (Vector3 pos) {
-		float totalDistance = (endPt - startPt).magnitude;
+		/*float totalDistance = (endPt - startPt).magnitude;
 		Vector3 targetDirection = (endPt - startPt);
 		targetDirection.Normalize();
 		float passedDistance = Vector3.Dot(pos - startPt, targetDirection);
 		Vector3 closestPt = startPt + targetDirection * passedDistance;
 		return closestPt;
+		*/
+		if(surfingPath != null)
+			return surfingPath.GetPoint(pos);
+		return Vector3.zero;
 	}
 
 	public StoreTransform GenerateSamples(Transform startPoint, Transform endPoint) {
 		startPt = startPoint.position;
 		endPt = endPoint.position;
 		wayPoints = new GameObject[wayPointNum];
+		surfingPath = new SurfingPathBell(startPt, endPt, 0.2f, 1.0f, 50);
+		for (int i=0; i<wayPointNum; i++) {
+
+			wayPoints[i] = Instantiate(Resources.Load("Prefabs/WayPointSphere", typeof(GameObject))) as GameObject;
+			wayPoints[i].transform.position = surfingPath.GetPoint((i + 1) * 1.0f / wayPointNum);
+		}
+		/*
 		float distance = (endPt - startPt).magnitude;
 		Vector3 direction = (endPt - startPt).normalized;
 		float halfSampleNum = wayPointNum * 0.5f;
@@ -105,7 +170,7 @@ public class SurfingTrialControl : MonoBehaviour {
 			wayPoints[i] = Instantiate(Resources.Load("Prefabs/WayPointSphere", typeof(GameObject))) as GameObject;
 			wayPoints[i].transform.position = new Vector3(x_offset, y_offset + midPoint.y + startPt.y, z_offset);
 			//wayPoints[i].GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, (wayPointNum - i - 1) * 0.8f / wayPointNum);
-		}
+		}*/
 		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), 0, (int) TRAVEL_TYPE.SURFING);
 		timeStamp = 0;
 		string instruction = "#Surfing Trial Path#";

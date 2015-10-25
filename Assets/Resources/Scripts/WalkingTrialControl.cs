@@ -123,7 +123,7 @@ public class WalkingTrialControl : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (currentWayPts != null) {
-			string line = "" + timeStamp + "\t" + playerStatus.GetCurrentTransformLine();
+			string line = playerStatus.GetCurrentTransformLine();
 			recorder.RecordLine(line);
 			timeStamp += Time.deltaTime;
 		}
@@ -167,6 +167,8 @@ public class WalkingTrialControl : MonoBehaviour {
 	}
 
 	public bool ActiveNextWayPoint () {
+		playerStatus.TrigerWayPoint();
+		playerStatus.SetWayPoint(currentWayPtPositions[currentWayPoint]);
 		timeStampWayPoints [currentWayPoint] = timeStamp;
 		if (currentWayPoint < currentWayPts.Length - 1) {
 			currentWayPoint++;

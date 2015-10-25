@@ -46,7 +46,7 @@ public class TravelModelInterface : MonoBehaviour  {
 	private TRAVEL_TYPE gestureType = TRAVEL_TYPE.NOTHING;
 	private TRAVEL_TYPE targetGestureType = TRAVEL_TYPE.RESTING;
 	private HIVEFPSController controller;
-
+	private PlayerStatus playerStatus;
 	public Vector3 velocity;
 	public Vector3 rotation;
 	
@@ -66,6 +66,7 @@ public class TravelModelInterface : MonoBehaviour  {
 		trialControl = GetComponent<TrialControl>();
 		walkingRotVelQueue = new VelocityQueue();
 		walkingRotVelQueue.SetQueueSize(20);
+		playerStatus = GetComponent<PlayerStatus>();
 		studyRecorder = GameObject.Find("StudyRecorder").GetComponent<StudyRecorder>();
 	}
 	
@@ -152,84 +153,88 @@ public class TravelModelInterface : MonoBehaviour  {
 	}
 
 	public void SetGestureType (TRAVEL_TYPE gesture) {
-		if (gesture == targetGestureType && gestureType != gesture) {
+		if (gestureType != gesture) {
+			if(gesture == targetGestureType) {
+				// start a new metaphor, the last one is segway, destroy segway drawing
+				/*else if(gestureType == TRAVEL_TYPE.SEGWAY) {	// last one is SEGWAY, remove baseline
+					if(baseTip1 != null) {
+						Destroy(baseTip1);
+						baseTip1 = null;
+					}
+					
+					if(baseTip2 != null) {
+						Destroy(baseTip2);
+						baseTip2 = null;
+					}
+					
+					if(dashline != null) {
+						Destroy(dashline);
+						dashline = null;
+					}
+				}
+				// start a new metaphor, the new one is segway, set initial position
+				else if(gesture == TRAVEL_TYPE.SEGWAY) {
+					baseTip1 = Instantiate(Resources.Load("Prefabs/base_finger_tip", typeof(GameObject))) as GameObject;
+					RectTransform rectTrans1 = baseTip1.GetComponent<RectTransform>();
+					rectTrans1.anchoredPosition = new Vector2(0, 0);
+					rectTrans1.localPosition = TransformToWidget(segwayBasePosition[0]);
+					
+					baseTip1.transform.parent = GameObject.Find("Canvas").transform;
+					
+					baseTip2 = Instantiate(Resources.Load("Prefabs/base_finger_tip", typeof(GameObject))) as GameObject;
+					RectTransform rectTrans2 = baseTip2.GetComponent<RectTransform>();
+					rectTrans2.anchoredPosition = new Vector2(0, 0);
+					rectTrans2.localPosition = TransformToWidget(segwayBasePosition[1]);
+					
+					baseTip2.transform.parent = GameObject.Find("Canvas").transform;
+					
+					dashline = Instantiate(Resources.Load("Prefabs/dashline", typeof(GameObject))) as GameObject;
+					RectTransform rectTrans3 = dashline.GetComponent<RectTransform>();
+					rectTrans3.anchoredPosition = new Vector2(0, 0);
+					Vector2 baselineCenter = (segwayBasePosition[0]+segwayBasePosition[1])/2;
+					//baselineCenter.x = Screen.width - widgetSize.x * 3/ 2;
+					rectTrans3.localPosition = TransformToWidget(baselineCenter);
+					
+					dashline.transform.parent = GameObject.Find("Canvas").transform;
+				}*/
+				if (gestureType == TRAVEL_TYPE.SURFING) {	// surfing finished, correct view
+					Vector3 forward = transform.forward;
+					Vector3 up = new Vector3(0, 1.0f, 0);
+					Vector3 xAxis = Vector3.Cross(transform.up, forward);
+					transform.up = up;
+					forward = Vector3.Cross(xAxis, up);
+					transform.forward = forward;
+				}
 
-			// start a new metaphor, the last one is segway, destroy segway drawing
-			/*else if(gestureType == TRAVEL_TYPE.SEGWAY) {	// last one is SEGWAY, remove baseline
-				if(baseTip1 != null) {
-					Destroy(baseTip1);
-					baseTip1 = null;
+				if (gesture == TRAVEL_TYPE.SURFING) {
+					surfingRotVelQueue = new VelocityQueue();
+					surfingRotVelQueue.SetQueueSize(20);
 				}
-				
-				if(baseTip2 != null) {
-					Destroy(baseTip2);
-					baseTip2 = null;
+				else if (gesture == TRAVEL_TYPE.SEGWAY) {
+					segwayRotVelQueue = new VelocityQueue();
+					segwayRotVelQueue.SetQueueSize(20);
 				}
-				
-				if(dashline != null) {
-					Destroy(dashline);
-					dashline = null;
+				else if (gesture == TRAVEL_TYPE.WALKING) {
+					walkingRotVelQueue = new VelocityQueue();
+					walkingRotVelQueue.SetQueueSize(20);
 				}
-			}
-			// start a new metaphor, the new one is segway, set initial position
-			else if(gesture == TRAVEL_TYPE.SEGWAY) {
-				baseTip1 = Instantiate(Resources.Load("Prefabs/base_finger_tip", typeof(GameObject))) as GameObject;
-				RectTransform rectTrans1 = baseTip1.GetComponent<RectTransform>();
-				rectTrans1.anchoredPosition = new Vector2(0, 0);
-				rectTrans1.localPosition = TransformToWidget(segwayBasePosition[0]);
-				
-				baseTip1.transform.parent = GameObject.Find("Canvas").transform;
-				
-				baseTip2 = Instantiate(Resources.Load("Prefabs/base_finger_tip", typeof(GameObject))) as GameObject;
-				RectTransform rectTrans2 = baseTip2.GetComponent<RectTransform>();
-				rectTrans2.anchoredPosition = new Vector2(0, 0);
-				rectTrans2.localPosition = TransformToWidget(segwayBasePosition[1]);
-				
-				baseTip2.transform.parent = GameObject.Find("Canvas").transform;
-				
-				dashline = Instantiate(Resources.Load("Prefabs/dashline", typeof(GameObject))) as GameObject;
-				RectTransform rectTrans3 = dashline.GetComponent<RectTransform>();
-				rectTrans3.anchoredPosition = new Vector2(0, 0);
-				Vector2 baselineCenter = (segwayBasePosition[0]+segwayBasePosition[1])/2;
-				//baselineCenter.x = Screen.width - widgetSize.x * 3/ 2;
-				rectTrans3.localPosition = TransformToWidget(baselineCenter);
-				
-				dashline.transform.parent = GameObject.Find("Canvas").transform;
-			}*/
-			if (gestureType == TRAVEL_TYPE.SURFING) {	// surfing finished, correct view
-				Vector3 forward = transform.forward;
-				Vector3 up = new Vector3(0, 1.0f, 0);
-				Vector3 xAxis = Vector3.Cross(transform.up, forward);
-				transform.up = up;
-				forward = Vector3.Cross(xAxis, up);
-				transform.forward = forward;
+				gestureType = gesture;
 			}
 
-			if (gesture == TRAVEL_TYPE.SURFING) {
-				surfingRotVelQueue = new VelocityQueue();
-				surfingRotVelQueue.SetQueueSize(20);
+			Debug.Log("Target: " + targetGestureType.ToString() + "; Current: " + gestureType.ToString());
+			if(targetGestureType == gestureType) {
+				Debug.Log("Correct Switch");
+				playerStatus.CorrectSwitch();
+				studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
+				trialControl.modeSwitchText.enabled = false;
+				//trialControl.StartNextTrial();
 			}
-			else if (gesture == TRAVEL_TYPE.SEGWAY) {
-				segwayRotVelQueue = new VelocityQueue();
-				segwayRotVelQueue.SetQueueSize(20);
+			else {
+				Debug.Log("Incorrect Switch");
+				playerStatus.IncorrectSwitch();
+				errorSwitchNum++;
+				studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
 			}
-			else if (gesture == TRAVEL_TYPE.WALKING) {
-				walkingRotVelQueue = new VelocityQueue();
-				walkingRotVelQueue.SetQueueSize(20);
-			}
-			gestureType = gesture;
-		}
-		Debug.Log("Target: " + targetGestureType.ToString() + "; Current: " + gestureType.ToString());
-		if(targetGestureType == gestureType) {
-			Debug.Log("Correct Switch");
-			studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
-			trialControl.modeSwitchText.enabled = false;
-			//trialControl.StartNextTrial();
-		}
-		else {
-			Debug.Log("Incorrect Switch");
-			errorSwitchNum++;
-			studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
 		}
 	}
 

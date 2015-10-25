@@ -4,9 +4,11 @@ using System.Collections;
 public class HMDCamera : MonoBehaviour {
 	private GameObject character = null;
 	private float HEAD_HEIGHT = 2.0f;
+	private PlayerStatus playerStatus;
 	// Use this for initialization
 	void Start () {
 		character = GameObject.Find ("Character");
+		playerStatus = character.GetComponent<PlayerStatus> ();
 	}
 	
 	// Update is called once per frame
@@ -20,6 +22,7 @@ public class HMDCamera : MonoBehaviour {
 		//Quaternion forwardQuat = character.transform.rotation;
 		Quaternion hmdQuat = Quaternion.Euler(hmdX, hmdY, hmdZ);
 		transform.localRotation = hmdQuat; //forwardQuat * hmdQuat;
+		playerStatus.headOrientation = new Vector3(hmdX, hmdY, hmdZ);
 		return transform.eulerAngles;
 	}
 }
