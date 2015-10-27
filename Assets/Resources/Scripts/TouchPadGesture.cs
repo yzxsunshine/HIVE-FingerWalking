@@ -117,14 +117,19 @@ public class TouchPadGesture : MonoBehaviour {
 			fingerNumQueue.Dequeue ();
 			fingerNumQueue.Enqueue (curFingerNum);
 		
-			GestureClassfier ();
-		
-			GestureExecute ();
-			//Vector3 moveVel = velQueue.GetAvgVelocity(velocity, gestureType);
-		
-			//Debug.Log(moveVel.ToString());
-			if(travel_model_interface.HasControl())
-				travel_model_interface.SetVelocity (moveVel, rotVel);
+			if (curFingerNum >= 3) {
+				travel_model_interface.GetTrialControl().ResetToLatestPoint();
+			}
+			else{
+				GestureClassfier ();
+			
+				GestureExecute ();
+				//Vector3 moveVel = velQueue.GetAvgVelocity(velocity, gestureType);
+			
+				//Debug.Log(moveVel.ToString());
+				if(travel_model_interface.HasControl())
+					travel_model_interface.SetVelocity (moveVel, rotVel);
+			}
 		
 		}
 	}
@@ -273,7 +278,18 @@ public class TouchPadGesture : MonoBehaviour {
 		// remember to save the record here in future
 		fingerTrails.Remove (t.TouchId);
 	}
-	
+
+	void SetDashLineForSegway() {
+		dashline = Instantiate(Resources.Load("Prefabs/dashline", typeof(GameObject))) as GameObject;
+		RectTransform rectTrans3 = dashline.GetComponent<RectTransform>();
+		rectTrans3.anchoredPosition = new Vector2(0, 0);
+		Vector2 baselineCenter = (segwayBasePosition[0]+segwayBasePosition[1])/2;
+		//baselineCenter.x = Screen.width - widgetSize.x * 3/ 2;
+		rectTrans3.localPosition = TransformToWidget(baselineCenter);
+		
+		dashline.transform.parent = GameObject.Find("Canvas").transform;
+	}
+
 	void GestureClassfier() {
 		int twoFingerFrames = 0;
 		foreach(int num in fingerNumQueue) {
@@ -317,6 +333,10 @@ public class TouchPadGesture : MonoBehaviour {
 								i = (i + 1) % 2;
 							}
 							curGestureType = TRAVEL_TYPE.SEGWAY;
+
+							if(dashline == null) {
+								SetDashLineForSegway();
+							}
 							Debug.Log("Segway");
 						}
 						else {
@@ -325,6 +345,9 @@ public class TouchPadGesture : MonoBehaviour {
 					}
 					else {
 						curGestureType = TRAVEL_TYPE.SEGWAY;
+						if(dashline == null) {
+							SetDashLineForSegway();
+						}
 						Debug.Log("Segway");
 					}
 				}
@@ -339,6 +362,9 @@ public class TouchPadGesture : MonoBehaviour {
 		else {
 			// do nothing
 			curGestureType = TRAVEL_TYPE.NOTHING;
+		}
+		if(curGestureType != TRAVEL_TYPE.SEGWAY && dashline != null) {
+			GameObject.Destroy(dashline);
 		}
 		if(curGestureType != TRAVEL_TYPE.NOTHING)
 			travel_model_interface.SetGestureType (curGestureType);
@@ -445,6 +471,7 @@ public class TouchPadGesture : MonoBehaviour {
 			}
 			//velocity = transform.rotation * segwayMove;
 			moveVel = segwayMove;
+
 			Debug.Log("Segway Speed = " + speedDiff +", Yaw Speed = " + yawDiff + ", " + direction);
 			this.GetComponent("HIVEFPSController").SendMessage("SetSegway");
 			break;

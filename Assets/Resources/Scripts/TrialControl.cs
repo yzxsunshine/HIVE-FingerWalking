@@ -201,6 +201,8 @@ public class TrialControl : MonoBehaviour {
 		modeSwitchText.text = "Trial COMPLETE!\n Preparing for next trial.";
 		modeSwitchText.enabled = true;
 		travelModelInterface.SetVelocity (Vector3.zero, Vector3.zero);
+		character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
+		character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
 		if(currentTrialID < trialSequence.Length) {
 			//
 			currentStartWayPointID = startWayPointCalculator.GetClosestWayPointID(character.transform);
@@ -267,6 +269,8 @@ public class TrialControl : MonoBehaviour {
 	}
 
 	public void ResetToLatestPoint() {
+		if (IsAllTrialsDone())
+			return;
 		switch (trialSequence[currentTrialID].mode) {
 		case TRAVEL_TYPE.WALKING:
 			break;
@@ -284,5 +288,10 @@ public class TrialControl : MonoBehaviour {
 			character.transform.position = closestPt;
 			break;
 		}
+		playerStatus.Reset();
+	}
+
+	public void IsAllTrialsDone() {
+		return (currentTrialID >= trialSequence.Length);
 	}
 }

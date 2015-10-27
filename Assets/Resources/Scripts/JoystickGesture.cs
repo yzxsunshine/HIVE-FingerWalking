@@ -32,9 +32,12 @@ public class JoystickGesture : MonoBehaviour {
 	public bool flipLeftRight = false;
 	public bool flipSurfPitch = false;
 
+	public const float MAX_DOUBLE_CLICK_TIME = 2.0f;
+	public float timerDoubleClick;
 	private TravelModelInterface travelModelInterface;
 	// Use this for initialization
 	void Start () {
+		timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
 		travelModelInterface = GetComponent<TravelModelInterface>();
 		joystickParams = ConfigurationHandler.joystickParams;
 	}
@@ -54,11 +57,21 @@ public class JoystickGesture : MonoBehaviour {
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.SURFING);
 			Debug.Log("Surfing");
 		}
-		else if(Input.GetKey("joystick button 6")) {
+		else if(Input.GetKey("joystick button 3")) {
+			if (timerDoubleClick > MAX_DOUBLE_CLICK_TIME) {	// too long between two click
+				timerDoubleClick = 0;
+			}
+			else
+			{
+				travelModelInterface.GetTrialControl().ResetToLatestPoint();
+				timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
+			}
+		}
+		else if(Input.GetKey("joystick button 4")) {
 			flipLeftRight = ! flipLeftRight;
 			Debug.Log("Flip left and right");
 		}
-		else if(Input.GetKey("joystick button 7")) {
+		else if(Input.GetKey("joystick button 5")) {
 			flipSurfPitch = ! flipSurfPitch;
 			Debug.Log("Flip surfing pitch");
 		}
@@ -106,5 +119,6 @@ public class JoystickGesture : MonoBehaviour {
 		}
 
 		travelModelInterface.SetVelocity (moveVel, rotVel);
+		timerDoubleClick += Time.deltaTime;
 	}
 }

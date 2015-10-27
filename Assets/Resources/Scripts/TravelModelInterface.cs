@@ -155,48 +155,6 @@ public class TravelModelInterface : MonoBehaviour  {
 	public void SetGestureType (TRAVEL_TYPE gesture) {
 		if (gestureType != gesture) {
 			if(gesture == targetGestureType) {
-				// start a new metaphor, the last one is segway, destroy segway drawing
-				/*else if(gestureType == TRAVEL_TYPE.SEGWAY) {	// last one is SEGWAY, remove baseline
-					if(baseTip1 != null) {
-						Destroy(baseTip1);
-						baseTip1 = null;
-					}
-					
-					if(baseTip2 != null) {
-						Destroy(baseTip2);
-						baseTip2 = null;
-					}
-					
-					if(dashline != null) {
-						Destroy(dashline);
-						dashline = null;
-					}
-				}
-				// start a new metaphor, the new one is segway, set initial position
-				else if(gesture == TRAVEL_TYPE.SEGWAY) {
-					baseTip1 = Instantiate(Resources.Load("Prefabs/base_finger_tip", typeof(GameObject))) as GameObject;
-					RectTransform rectTrans1 = baseTip1.GetComponent<RectTransform>();
-					rectTrans1.anchoredPosition = new Vector2(0, 0);
-					rectTrans1.localPosition = TransformToWidget(segwayBasePosition[0]);
-					
-					baseTip1.transform.parent = GameObject.Find("Canvas").transform;
-					
-					baseTip2 = Instantiate(Resources.Load("Prefabs/base_finger_tip", typeof(GameObject))) as GameObject;
-					RectTransform rectTrans2 = baseTip2.GetComponent<RectTransform>();
-					rectTrans2.anchoredPosition = new Vector2(0, 0);
-					rectTrans2.localPosition = TransformToWidget(segwayBasePosition[1]);
-					
-					baseTip2.transform.parent = GameObject.Find("Canvas").transform;
-					
-					dashline = Instantiate(Resources.Load("Prefabs/dashline", typeof(GameObject))) as GameObject;
-					RectTransform rectTrans3 = dashline.GetComponent<RectTransform>();
-					rectTrans3.anchoredPosition = new Vector2(0, 0);
-					Vector2 baselineCenter = (segwayBasePosition[0]+segwayBasePosition[1])/2;
-					//baselineCenter.x = Screen.width - widgetSize.x * 3/ 2;
-					rectTrans3.localPosition = TransformToWidget(baselineCenter);
-					
-					dashline.transform.parent = GameObject.Find("Canvas").transform;
-				}*/
 				if (gestureType == TRAVEL_TYPE.SURFING) {	// surfing finished, correct view
 					Vector3 forward = transform.forward;
 					Vector3 up = new Vector3(0, 1.0f, 0);
@@ -226,7 +184,8 @@ public class TravelModelInterface : MonoBehaviour  {
 				Debug.Log("Correct Switch");
 				playerStatus.CorrectSwitch();
 				studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
-				trialControl.modeSwitchText.enabled = false;
+				if (!trialControl.IsAllTrialsDone())
+					trialControl.modeSwitchText.enabled = false;
 				//trialControl.StartNextTrial();
 			}
 			else {
@@ -271,5 +230,9 @@ public class TravelModelInterface : MonoBehaviour  {
 
 	public bool HasControl() {
 		return hasControl;
+	}
+
+	public TrialControl GetTrialControl() {
+		return trialControl;
 	}
 }
