@@ -20,7 +20,8 @@ public enum TRIAL_STATUS {
 public enum TRAVEL_MODE_STATUS {
 	CORRECT_SWITCH,
 	INCORRECT_SWITCH,
-	NOT_SWITCH
+	NOT_SWITCH,
+	IDLE_SWITCH
 };
 
 public class PlayerStatus : MonoBehaviour {
@@ -124,6 +125,10 @@ public class PlayerStatus : MonoBehaviour {
 		case TRAVEL_MODE_STATUS.NOT_SWITCH:
 			line += "NOT_SWITCH";
 			break;
+		case TRAVEL_MODE_STATUS.IDLE_SWITCH:
+			line += "IDLE_SWITCH";
+			modeStatus = TRAVEL_MODE_STATUS.NOT_SWITCH;
+			break;
 		}
 		line += "\t";
 
@@ -201,6 +206,10 @@ public class PlayerStatus : MonoBehaviour {
 
 	public void IncorrectSwitch() {
 		modeStatus = TRAVEL_MODE_STATUS.INCORRECT_SWITCH;
+	}
+
+	public void IdleSwitch() {
+		modeStatus = TRAVEL_MODE_STATUS.IDLE_SWITCH;
 	}
 
 	public void Reset() {

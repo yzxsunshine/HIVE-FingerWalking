@@ -62,12 +62,28 @@ public class SurfingTrialControl : MonoBehaviour {
 	private float averageDistance = -1;
 	private float sumDistance = 0;
 	private int frameNum = 0;
+	private float[,] bellFactors = new float[4, 3];
 	// Use this for initialization
 	void Awake () {
 		character = GameObject.Find("Character");
 		playerStatus = character.GetComponent<PlayerStatus> ();
 		recorder = GameObject.Find ("StudyRecorder").GetComponent<StudyRecorder> ();
 		arrowControl = GameObject.Find ("arrow").GetComponent<ArrowControl> ();
+		bellFactors[0, 0] = 0.2f;
+		bellFactors[0, 1] = 1.0f;
+		bellFactors[0, 3] = 30.0f;
+
+		bellFactors[1, 0] = 0.2f;
+		bellFactors[1, 1] = 1.0f;
+		bellFactors[1, 3] = 40.0f;
+
+		bellFactors[2, 0] = 0.3f;
+		bellFactors[2, 1] = 1.0f;
+		bellFactors[2, 3] = 50.0f;
+
+		bellFactors[3, 0] = 0.4f;
+		bellFactors[3, 1] = 1.0f;
+		bellFactors[3, 3] = 75.0f;
 	}
 
 	void Start() {

@@ -213,6 +213,8 @@ public class TouchPadGesture : MonoBehaviour {
 		//	}
 			removeTrail (t);
 			curFingerNum--;
+			if(curFingerNum < 0)
+				curFingerNum = 0;
 			Debug.Log("Remove Touch id=" + t.FingerId + ", remain figers: " + curFingerNum);
 		}
 		Destroy(fingerTips[t.TouchId]);
@@ -375,7 +377,7 @@ public class TouchPadGesture : MonoBehaviour {
 		if(curGestureType != TRAVEL_TYPE.SEGWAY && dashline != null) {
 			GameObject.Destroy(dashline);
 		}
-		if(curGestureType != TRAVEL_TYPE.NOTHING)
+		//if(curGestureType != TRAVEL_TYPE.NOTHING)
 			travel_model_interface.SetGestureType (curGestureType);
 
 	}

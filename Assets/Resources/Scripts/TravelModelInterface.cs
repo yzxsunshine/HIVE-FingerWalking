@@ -154,7 +154,7 @@ public class TravelModelInterface : MonoBehaviour  {
 
 	public void SetGestureType (TRAVEL_TYPE gesture) {
 		if (gestureType != gesture) {
-			if(gesture == targetGestureType) {
+			if(gesture == targetGestureType || gesture == TRAVEL_TYPE.NOTHING) {
 				if (gestureType == TRAVEL_TYPE.SURFING) {	// surfing finished, correct view
 					Vector3 forward = transform.forward;
 					Vector3 up = new Vector3(0, 1.0f, 0);
@@ -179,19 +179,26 @@ public class TravelModelInterface : MonoBehaviour  {
 				gestureType = gesture;
 			}
 
-			Debug.Log("Target: " + targetGestureType.ToString() + "; Current: " + gestureType.ToString());
-			if(targetGestureType == gestureType) {
-				Debug.Log("Correct Switch");
-				playerStatus.CorrectSwitch();
-				studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
-				if (!trialControl.IsAllTrialsDone())
-					trialControl.modeSwitchText.enabled = false;
-				//trialControl.StartNextTrial();
+			if(gesture != TRAVEL_TYPE.NOTHING) {
+				Debug.Log("Target: " + targetGestureType.ToString() + "; Current: " + gestureType.ToString());
+				if(targetGestureType == gestureType) {
+					Debug.Log("Correct Switch");
+					playerStatus.CorrectSwitch();
+					studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
+					if (!trialControl.IsAllTrialsDone())
+						trialControl.modeSwitchText.enabled = false;
+					//trialControl.StartNextTrial();
+				}
+				else {
+					Debug.Log("Incorrect Switch");
+					playerStatus.IncorrectSwitch();
+					errorSwitchNum++;
+					studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
+				}
 			}
 			else {
-				Debug.Log("Incorrect Switch");
-				playerStatus.IncorrectSwitch();
-				errorSwitchNum++;
+				Debug.Log("Idle Switch");
+				playerStatus.IdleSwitch();
 				studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
 			}
 		}

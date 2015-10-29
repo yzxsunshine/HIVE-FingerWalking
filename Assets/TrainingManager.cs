@@ -57,13 +57,16 @@ public class TrainingManager : MonoBehaviour {
 		walkingTrialControl.SetWalkingPath(0, 0, targetTransform);
 		modeSwitchText.text = "Switch to Walking mode.";
 		modeSwitchText.enabled = true;
-		character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.WALKING);
 		currentStep = 0;
 		travelType = TRAVEL_TYPE.WALKING;
+		character.GetComponent<TravelModelInterface>().SetTargetGestureType (travelType);
 		StartTimer();
 	}
 
 	public StoreTransform FinishTrainingTrial (int startPtID, Transform curWayPt, Transform nextWayPt) {
+		character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
+		character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
+
 		if(currentStep % 2 == 0) {
 			currentStep++;
 		}
