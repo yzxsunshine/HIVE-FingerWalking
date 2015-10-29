@@ -132,8 +132,8 @@ public class TrialControl : MonoBehaviour {
 		}
 		currentStartWayPointID = startWayPointCalculator.GetClosestWayPointID(character.transform);
 		//GenerateTrial();
-		//FirstTrial();
-		CalibrateHMD();
+		FirstTrial();
+		//CalibrateHMD();
 	}
 	
 	// Update is called once per frame

@@ -5,7 +5,7 @@
     uiva_ip_address = "localhost">
   </devices>
   <subject
-    subject_id = "4" 
+    subject_id = "7" 
 	controller_type = "forcepad">
   </subject>
   <travel_interfaces>

@@ -27,7 +27,7 @@ public class SurfingPathBell {
 	}
 
 	public float GetYValue(float p) {
-		return maxHeight / (1.0f + Mathf.Pow((p - 0.5f) / factorA, 2 * factorB));
+		return maxHeight / (1.0f + Mathf.Pow(Mathf.Abs((p - 0.5f) / factorA), 2 * factorB));
 	}
 
 	public Vector3 GetPoint(float p) {
@@ -70,20 +70,20 @@ public class SurfingTrialControl : MonoBehaviour {
 		recorder = GameObject.Find ("StudyRecorder").GetComponent<StudyRecorder> ();
 		arrowControl = GameObject.Find ("arrow").GetComponent<ArrowControl> ();
 		bellFactors[0, 0] = 0.2f;
-		bellFactors[0, 1] = 1.0f;
-		bellFactors[0, 3] = 30.0f;
+		bellFactors[0, 1] = 2.0f;
+		bellFactors[0, 2] = 30.0f;
 
 		bellFactors[1, 0] = 0.2f;
-		bellFactors[1, 1] = 1.0f;
-		bellFactors[1, 3] = 40.0f;
+		bellFactors[1, 1] = 2.0f;
+		bellFactors[1, 2] = 40.0f;
 
-		bellFactors[2, 0] = 0.3f;
-		bellFactors[2, 1] = 1.0f;
-		bellFactors[2, 3] = 50.0f;
+		bellFactors[2, 0] = 0.15f;
+		bellFactors[2, 1] = 1.5f;
+		bellFactors[2, 2] = 50.0f;
 
-		bellFactors[3, 0] = 0.4f;
+		bellFactors[3, 0] = 0.1f;
 		bellFactors[3, 1] = 1.0f;
-		bellFactors[3, 3] = 75.0f;
+		bellFactors[3, 2] = 60.0f;
 	}
 
 	void Start() {
@@ -166,7 +166,7 @@ public class SurfingTrialControl : MonoBehaviour {
 		startPt = startPoint.position;
 		endPt = endPoint.position;
 		wayPoints = new GameObject[wayPointNum];
-		surfingPath = new SurfingPathBell(startPt, endPt, 0.2f, 1.0f, 50);
+		surfingPath = new SurfingPathBell(startPt, endPt, bellFactors[difficultyLevel, 0], bellFactors[difficultyLevel, 1], bellFactors[difficultyLevel, 2]);
 		for (int i=0; i<wayPointNum; i++) {
 
 			wayPoints[i] = Instantiate(Resources.Load("Prefabs/WayPointSphere", typeof(GameObject))) as GameObject;
