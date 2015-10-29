@@ -35,15 +35,27 @@ public class JoystickGesture : MonoBehaviour {
 	public const float MAX_DOUBLE_CLICK_TIME = 2.0f;
 	public float timerDoubleClick;
 	private TravelModelInterface travelModelInterface;
+
+	private TrainingManager trainingManager;
+	private bool trainingResponse = false;
 	// Use this for initialization
 	void Start () {
 		timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
 		travelModelInterface = GetComponent<TravelModelInterface>();
+		trainingManager = GameObject.Find("TrainingManager").GetComponent<TrainingManager>();
 		joystickParams = ConfigurationHandler.joystickParams;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (trainingResponse) {
+			if(Input.GetKey("joystick button 0") || Input.GetKey("joystick button 1") || Input.GetKey("joystick button 2") || Input.GetKey("joystick button 3")) {
+				SetTrainingResponse(false);
+				trainingManager.ShowTrainingImage();
+				return;
+			}
+		}
 		//GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 		if(Input.GetKey("joystick button 0")) {
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.WALKING);
@@ -57,7 +69,7 @@ public class JoystickGesture : MonoBehaviour {
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.SURFING);
 			Debug.Log("Surfing");
 		}
-		else if(Input.GetKey("joystick button 3")) {
+		else if(Input.GetKeyDown("joystick button 3")) {
 			if (timerDoubleClick > MAX_DOUBLE_CLICK_TIME) {	// too long between two click
 				timerDoubleClick = 0;
 			}
@@ -120,5 +132,9 @@ public class JoystickGesture : MonoBehaviour {
 
 		travelModelInterface.SetVelocity (moveVel, rotVel);
 		timerDoubleClick += Time.deltaTime;
+	}
+
+	public void SetTrainingResponse(bool response) {
+		trainingResponse = response;
 	}
 }

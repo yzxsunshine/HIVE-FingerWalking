@@ -214,4 +214,13 @@ public class PlayerStatus : MonoBehaviour {
 	public void SetWayPoint(Vector3 wp) {
 		wayPointOnPath = wp;
 	}
+
+	public void CleanCollision() {
+		segwayCollisionNum = 0;
+		segwayCollisionTime = 0;
+	}
+
+	public int GetCollisionNum() {
+		return segwayCollisionNum;
+	}
 }

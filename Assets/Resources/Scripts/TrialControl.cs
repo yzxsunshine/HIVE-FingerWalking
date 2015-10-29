@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -95,8 +95,12 @@ public class TrialControl : MonoBehaviour {
 	public int currentStartWayPointID = 0;
 	private PlayerStatus playerStatus;
 	public TravelModelInterface travelModelInterface;
-
+	private bool HMDCalibrated = false;
+	private bool inTraining = false;
 	private TRAVEL_TYPE typeBeforeReset;
+	private TrainingManager trainingManager;
+	private DevicesManager deviceManager;
+
 	void Awake () {
 		character = GameObject.Find ("Character");
 		segwayPathControl = GameObject.Find ("SegwayWayPointsManager").GetComponent<SegwayPathController> ();
@@ -110,6 +114,8 @@ public class TrialControl : MonoBehaviour {
 		studyRecorder = GameObject.Find ("StudyRecorder").GetComponent<StudyRecorder> ();
 		travelModelInterface = GetComponent<TravelModelInterface>();
 		fpsController = GetComponent<HIVEFPSController>();
+		trainingManager = GameObject.Find("TrainingManager").GetComponent<TrainingManager>();
+		deviceManager = GameObject.Find("DevicesManager").GetComponent<DevicesManager> ();
 	}
 
 	// Use this for initialization
@@ -126,7 +132,8 @@ public class TrialControl : MonoBehaviour {
 		}
 		currentStartWayPointID = startWayPointCalculator.GetClosestWayPointID(character.transform);
 		//GenerateTrial();
-		FirstTrial();
+		//FirstTrial();
+		CalibrateHMD();
 	}
 	
 	// Update is called once per frame
@@ -168,8 +175,15 @@ public class TrialControl : MonoBehaviour {
 			}
 		}
 
-		if(Input.GetKeyDown(KeyCode.Space)) {
+		if(Input.GetKeyDown(KeyCode.R)) {
 			ResetToLatestPoint();
+		}
+
+		if(Input.GetKeyDown(KeyCode.Space)) {
+			deviceManager.CalibrateCamera();
+			if (!HMDCalibrated) {
+				FinishCalibration();
+			}
 		}
 	}
 
@@ -189,7 +203,7 @@ public class TrialControl : MonoBehaviour {
 			Transform startPts = startWayPointCalculator.GetTransformByID(currentStartWayPointID);
 			Transform endPts = startWayPointCalculator.GetTransformByID((currentStartWayPointID + 1) % 4);
 			segwayPathControl.OpenAllWayPoints();
-			targetTransform = surfingTrialControl.GenerateSamples (startPts, endPts);
+			targetTransform = surfingTrialControl.GenerateSamples (startPts, endPts, (int)trialSequence[currentTrialID].level);
 			break;
 		}
 		return targetTransform;
@@ -197,25 +211,47 @@ public class TrialControl : MonoBehaviour {
 
 	public void FinishTrial() {
 		Debug.Log("FinishTrial");
-		currentTrialID++;
-		modeSwitchText.text = "Trial COMPLETE!\n Preparing for next trial.";
-		modeSwitchText.enabled = true;
-		travelModelInterface.SetVelocity (Vector3.zero, Vector3.zero);
-		character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
-		character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
-		if(currentTrialID < trialSequence.Length) {
-			//
-			currentStartWayPointID = startWayPointCalculator.GetClosestWayPointID(character.transform);
-			GenerateTrial();
+		if(inTraining) {
+			int closestPtID = startWayPointCalculator.GetClosestWayPointID(character.transform);
+			Transform curWayPt = startWayPointCalculator.GetTransformByID(closestPtID);
+			Transform nextWayPt = startWayPointCalculator.GetTransformByID((closestPtID + 1) % 4);
+			targetTransform = trainingManager.FinishTrainingTrial(closestPtID, curWayPt, nextWayPt);
 			character.transform.up = Vector3.up;
 			playerStatus.DisableControl();
+			//typeBeforeReset = fpsController.SetReset();
+
+			if(targetTransform == null) {
+				inTraining = false;
+				modeSwitchText.text = "Training COMPLETE!\n Preparing for trials.";
+				modeSwitchText.enabled = true;
+				travelModelInterface.SetVelocity (Vector3.zero, Vector3.zero);
+				character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
+				character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
+				FirstTrial();
+			}
 			cutSceneManager.cutSceneOn = true;
-			typeBeforeReset = fpsController.SetReset();
 		}
 		else {
-			modeSwitchText.text = "All the trials are finished! Thank you!";
+			currentTrialID++;
+			modeSwitchText.text = "Trial COMPLETE!\n Preparing for next trial.";
 			modeSwitchText.enabled = true;
-			studyRecorder.StopContextSwitchRecorder();
+			travelModelInterface.SetVelocity (Vector3.zero, Vector3.zero);
+			character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
+			character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
+			if(currentTrialID < trialSequence.Length) {
+				//
+				currentStartWayPointID = startWayPointCalculator.GetClosestWayPointID(character.transform);
+				GenerateTrial();
+				character.transform.up = Vector3.up;
+				playerStatus.DisableControl();
+				cutSceneManager.cutSceneOn = true;
+				typeBeforeReset = fpsController.SetReset();
+			}
+			else {
+				modeSwitchText.text = "All the trials are finished! Thank you!";
+				modeSwitchText.enabled = true;
+				studyRecorder.StopContextSwitchRecorder();
+			}
 		}
 	}
 
@@ -227,40 +263,30 @@ public class TrialControl : MonoBehaviour {
 		cutSceneManager.cutSceneOn = true;
 		currentStartWayPointID = startWayPointCalculator.GetClosestWayPointID(character.transform);
 		GenerateTrial();
-		/*string modeStr = "";
-		switch (trialSequence[currentTrialID].mode) {
-		case TRAVEL_TYPE.WALKING:
-			modeStr = "Walking";
-			break;
-		case TRAVEL_TYPE.SEGWAY:
-			modeStr = "Segway";
-			break;
-		case TRAVEL_TYPE.SURFING:
-			modeStr = "Surfing";
-			break;
-		}
-		modeSwitchText.text = "Please switch to " + modeStr + " mode to start trial";
-		modeSwitchText.enabled = true;*/
-		//character.GetComponent<TravelModelInterface>().SetTargetGestureType (trialSequence[currentTrialID].mode);
 	}
 
 	public void StartNextTrial() {
 		Debug.Log("StartNextTrial");
-		string modeStr = "";
-		switch (trialSequence[currentTrialID].mode) {
-		case TRAVEL_TYPE.WALKING:
-			modeStr = "Walking";
-			break;
-		case TRAVEL_TYPE.SEGWAY:
-			modeStr = "Segway";
-			break;
-		case TRAVEL_TYPE.SURFING:
-			modeStr = "Surfing";
-			break;
+		if(inTraining) {
+			trainingManager.StartNextTraining();
 		}
-		modeSwitchText.text = "Switch to " + modeStr + " mode.";
-		modeSwitchText.enabled = true;
-		character.GetComponent<TravelModelInterface>().SetTargetGestureType (trialSequence[currentTrialID].mode);
+		else {
+			string modeStr = "";
+			switch (trialSequence[currentTrialID].mode) {
+			case TRAVEL_TYPE.WALKING:
+				modeStr = "Walking";
+				break;
+			case TRAVEL_TYPE.SEGWAY:
+				modeStr = "Segway";
+				break;
+			case TRAVEL_TYPE.SURFING:
+				modeStr = "Surfing";
+				break;
+			}
+			modeSwitchText.text = "Switch to " + modeStr + " mode.";
+			modeSwitchText.enabled = true;
+			character.GetComponent<TravelModelInterface>().SetTargetGestureType (trialSequence[currentTrialID].mode);
+		}
 		playerStatus.EnableControl(controlType);
 		//character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
 
@@ -291,7 +317,25 @@ public class TrialControl : MonoBehaviour {
 		playerStatus.Reset();
 	}
 
-	public void IsAllTrialsDone() {
+	public bool IsAllTrialsDone() {
 		return (currentTrialID >= trialSequence.Length);
 	}
+
+	public void CalibrateHMD () {
+		playerStatus.DisableControl();
+		modeSwitchText.text = "WELCOME!\nLook Straight to Calibrate HMD";
+		modeSwitchText.enabled = true;
+		HMDCalibrated = false;
+	}
+
+	public void FinishCalibration () {
+		HMDCalibrated = true; 
+		int closestPtID = startWayPointCalculator.GetClosestWayPointID(character.transform);
+		trainingManager.StartTraining(startWayPointCalculator.GetTransformByID(closestPtID));
+		playerStatus.EnableControl(controlType);
+
+		inTraining = true;
+	}
+
+
 }

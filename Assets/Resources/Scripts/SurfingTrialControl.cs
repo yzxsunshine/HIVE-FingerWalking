@@ -59,6 +59,9 @@ public class SurfingTrialControl : MonoBehaviour {
 	private float yawAmplification = 1.0f;
 	private float pitchAmplification = 1.0f;
 	private SurfingPathBell surfingPath = null;
+	private float averageDistance = -1;
+	private float sumDistance = 0;
+	private int frameNum = 0;
 	// Use this for initialization
 	void Awake () {
 		character = GameObject.Find("Character");
@@ -80,6 +83,11 @@ public class SurfingTrialControl : MonoBehaviour {
 			targetDirection.Normalize();
 			float passedDistance = Vector3.Dot(currentPos - startPt, targetDirection);
 			int passedSphereNum = Mathf.Max(Mathf.FloorToInt(passedDistance / totalDistance * wayPointNum), 0);
+
+			Vector3 closestPt = GetClosetPointOnPath(currentPos);
+			sumDistance += (currentPos - closestPt).magnitude;
+			frameNum++;
+
 			for (int i = 0; i < passedSphereNum; i++) {
 				//wayPoints[i].GetComponent<Renderer>().enabled = false;
 				GameObject.Destroy(wayPoints[i]);
@@ -114,9 +122,11 @@ public class SurfingTrialControl : MonoBehaviour {
 		}
 		wayPoints = null;
 		surfingPath = null;
-
+		averageDistance = sumDistance / frameNum;
 		recorder.StopTrialFileWriter();
 		trialControl.FinishTrial();
+
+		return;	// average distance
 	}
 
 	public Vector3 GetEndPoint() {
@@ -136,7 +146,7 @@ public class SurfingTrialControl : MonoBehaviour {
 		return Vector3.zero;
 	}
 
-	public StoreTransform GenerateSamples(Transform startPoint, Transform endPoint) {
+	public StoreTransform GenerateSamples(Transform startPoint, Transform endPoint, int difficultyLevel) {
 		startPt = startPoint.position;
 		endPt = endPoint.position;
 		wayPoints = new GameObject[wayPointNum];
@@ -171,7 +181,7 @@ public class SurfingTrialControl : MonoBehaviour {
 			wayPoints[i].transform.position = new Vector3(x_offset, y_offset + midPoint.y + startPt.y, z_offset);
 			//wayPoints[i].GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, (wayPointNum - i - 1) * 0.8f / wayPointNum);
 		}*/
-		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), 0, (int) TRAVEL_TYPE.SURFING);
+		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), difficultyLevel, (int) TRAVEL_TYPE.SURFING);
 		timeStamp = 0;
 		string instruction = "#Surfing Trial Path#";
 		recorder.RecordLine(instruction);
@@ -183,6 +193,16 @@ public class SurfingTrialControl : MonoBehaviour {
 		startTransform.forward = endPt - startPt;
 		startTransform.forward.Normalize();
 		arrowControl.SetTarget (GoalScript.CreateGoal(endPt).transform);
+		averageDistance = -1;
+		sumDistance = 0;
+		frameNum = 0;
 		return startTransform;
+	}
+
+	public float GetAverageDistance() {
+		if (averageDistance < 0) {
+			Debug.Log("Data not avaliable yet!");
+		}
+		return averageDistance;
 	}
 }

@@ -56,6 +56,7 @@ public class TouchPadGesture : MonoBehaviour {
 	// for 2d widgets
 	private Vector2 widgetRatio;
 	private Vector2 widgetSize;
+	private Vector2 widgetOffset;
 	
 	private Dictionary<int, GameObject> fingerTips = new Dictionary<int, GameObject>();
 	private GameObject baseTip1 = null;
@@ -83,6 +84,8 @@ public class TouchPadGesture : MonoBehaviour {
 	public ForcePadParams forcePadParams;
 	public bool hasControl;
 
+	private TrainingManager trainingManager;
+	private bool trainingResponse = false;
 
 	// Use this for initialization
 	void Start () {
@@ -100,12 +103,14 @@ public class TouchPadGesture : MonoBehaviour {
 
 		// 2d touch pad UI gadget
 		RectTransform rectTrans = GameObject.Find("Widget").GetComponent<RectTransform>();
-		widgetSize = new Vector2(rectTrans.sizeDelta.x, rectTrans.sizeDelta.y);
+		widgetSize = new Vector2(rectTrans.sizeDelta.x, rectTrans.sizeDelta.y) * 0.9f;
+		widgetOffset = new Vector2(rectTrans.sizeDelta.x, rectTrans.sizeDelta.y) * 0.05f;
 		widgetRatio = new Vector2(widgetSize.x / Screen.width, widgetSize.y / Screen.height);
 		travel_model_interface = GetComponent<TravelModelInterface>();
 		forcePadParams = ConfigurationHandler.forcePadParams;
 		leftTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
 		rightTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
+		trainingManager = GameObject.Find("TrainingManager").GetComponent<TrainingManager>();
 	}
 
 	void InitTouches() {	// called every update in TrackingComponentBase, before HandleTouches and FinishTouches
@@ -117,10 +122,10 @@ public class TouchPadGesture : MonoBehaviour {
 			fingerNumQueue.Dequeue ();
 			fingerNumQueue.Enqueue (curFingerNum);
 		
-			if (curFingerNum >= 3) {
+			if (curFingerNum >= 4) {
 				travel_model_interface.GetTrialControl().ResetToLatestPoint();
 			}
-			else{
+			else if (!trainingResponse) {
 				GestureClassfier ();
 			
 				GestureExecute ();
@@ -161,7 +166,6 @@ public class TouchPadGesture : MonoBehaviour {
 	void addTouch(Tuio.Touch t)
 	{
 		//Debug.Log("Add Touch");
-		
 		if (leftRect.Contains (t.TouchPoint)) {
 			leftTurnForce = new KeyValuePair<int, float> (t.TouchId, Mathf.Abs ((float)t.Properties.Force));
 			Debug.Log ("add id=" + t.TouchId + ", turn left=" + ", value=" + leftTurnForce.Value);
@@ -189,6 +193,11 @@ public class TouchPadGesture : MonoBehaviour {
 		List<Tuio.Touch> trail = new List<Tuio.Touch> ();
 		trail.Add(t);
 		fingerTrails.Add(t.TouchId, trail);
+
+		if(trainingResponse) {
+			SetTrainingResponse(false);
+			trainingManager.ShowTrainingImage();
+		}
 	}
 	
 	// step end
@@ -197,7 +206,6 @@ public class TouchPadGesture : MonoBehaviour {
 		//Debug.Log("Remove Touch");
 		if (t.TouchId == leftTurnForce.Key) {
 			leftTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
-			Debug.Log ("remove id=" + t.FingerId + ", turn left");
 		} else if (t.TouchId == rightTurnForce.Key) {
 			rightTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
 		} else {
@@ -205,6 +213,7 @@ public class TouchPadGesture : MonoBehaviour {
 		//	}
 			removeTrail (t);
 			curFingerNum--;
+			Debug.Log("Remove Touch id=" + t.FingerId + ", remain figers: " + curFingerNum);
 		}
 		Destroy(fingerTips[t.TouchId]);
 		fingerTips.Remove(t.TouchId);
@@ -255,7 +264,7 @@ public class TouchPadGesture : MonoBehaviour {
 	}
 
 	Vector3 TransformToWidget(Vector2 pt) {
-		Vector3 pos = new Vector3(pt.x * widgetRatio.x, (Screen.height - pt.y) * widgetRatio.y, 0);
+		Vector3 pos = new Vector3(-widgetOffset.x + pt.x * widgetRatio.x, -widgetOffset.y + (Screen.height - pt.y) * widgetRatio.y, 0);
 		pos.x = Screen.width - widgetSize.x + pos.x;
 		pos.y = Screen.height - widgetSize.y + pos.y;
 		return pos;
@@ -381,7 +390,9 @@ public class TouchPadGesture : MonoBehaviour {
 		float avgDisplacement = 0.0f;
 		moveVel = new Vector3 (0, 0, 0);
 		rotVel = new Vector3 (0, 0, 0);
-		if (leftTurnForce.Key <= 0 && rightTurnForce.Key <= 0 && curFingerNum <= 0)
+		if (leftTurnForce.Key < 0 && rightTurnForce.Key < 0 && curFingerNum <= 0)
+			return;
+		if (curFingerNum > 2) 
 			return;
 		foreach (var pos in fingerPositions) {
 			fingers[i] = pos.Value;
@@ -508,5 +519,9 @@ public class TouchPadGesture : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void SetTrainingResponse(bool response) {
+		trainingResponse = response;
 	}
 }

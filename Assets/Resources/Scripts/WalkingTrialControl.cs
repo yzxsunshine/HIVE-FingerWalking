@@ -177,7 +177,7 @@ public class WalkingTrialControl : MonoBehaviour {
 			return false;
 		} else {
 			arrowControl.ResetTarget();
-			string instruction = "#Walking Trial Way Points#";
+			/*string instruction = "#Walking Trial Way Points#";
 			recorder.RecordLine(instruction);
 			instruction = "#TimeStamp#\t" + "#WayPonitX#\t" + "#WayPonitY#\t" + "#WayPonitZ#\t";
 			instruction += "#OrientationX#\t" + "#OrientationY#\t" + "#OrientationZ#\t" + "#OrientationW#\t";
@@ -194,7 +194,7 @@ public class WalkingTrialControl : MonoBehaviour {
 							+ "\t" + 0//currentWayPts[i].rotation.z
 							+ "\t" + 0;//currentWayPts[i].rotation.w;
 				recorder.RecordLine(line);
-			}
+			}*/
 			currentWayPts = null;
 			timeStampWayPoints = null;
 			recorder.StopTrialFileWriter();
