@@ -25,3 +25,10 @@ Computing shadow mesh
 compute_shadow_mesh: 3.183 ms
 Computing shadow mesh
 compute_shadow_mesh: 0.0486688 ms
+columns::did_disconnect
+columns::did_disconnect
+Computing shadow mesh
+compute_shadow_mesh: 0.111597 ms
+Computing shadow mesh
+compute_shadow_mesh: 0.0731582 ms
+application.cpp:401: 88760868 = application::device->Present(nullptr, nullptr, nullptr, nullptr)
