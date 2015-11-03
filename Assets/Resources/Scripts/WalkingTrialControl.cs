@@ -12,7 +12,7 @@ public class WalkingPathGenerator {
 
 public class WalkingPath {
 	public Vector3[] wayPoints;
-	static public float segmentDistance = 50.0f / 20.0f;
+	static public float segmentDistance = 36.0f / 20.0f;
 	static public float[] angleList = new float[3]{72, 108, 144};
 	public static WalkingPathGenerator[] pathGenerators = new WalkingPathGenerator[4];
 
@@ -25,20 +25,6 @@ public class WalkingPath {
 		for (int i=2; i<pathLength; i++) {
 			Vector3 nextDirection = new Vector3();
 			nextDirection = Quaternion.AngleAxis (Mathf.Pow (-1, pathGenerators[difficulty].paths[1, i - 1] + LorR) * angleList [pathGenerators[difficulty].paths[0, i - 1]], Vector3.up) * forward;
-			/*switch (difficulty) {
-			case 0:
-				nextDirection = Quaternion.AngleAxis (Mathf.Pow (-1, LorR) * angleList [0], Vector3.up) * forward;
-				break;
-			case 1:
-				nextDirection = Quaternion.AngleAxis (Mathf.Pow (-1, LorR + Mathf.FloorToInt(i * 2 / pathLength)) * angleList [difficulty - 1], Vector3.up) * forward;
-				break;
-			case 2:
-				nextDirection = Quaternion.AngleAxis (Mathf.Pow (-1, LorR + Mathf.FloorToInt(i * 2 / pathLength)) * angleList [difficulty - 1], Vector3.up) * forward;
-				break;
-			case 3:
-				nextDirection = Quaternion.AngleAxis (Mathf.Pow (-1, i + LorR) * angleList [difficulty - 1], Vector3.up) * forward;
-				break;
-			}*/
 			forward = nextDirection;
 			wayPoints [i] = wayPoints [i - 1] + nextDirection * segmentDistance;
 		}
@@ -135,7 +121,7 @@ public class WalkingTrialControl : MonoBehaviour {
 		return obj.transform;
 	}
 
-	public StoreTransform SetWalkingPath(int difficulty, int LorR, Transform characterTransform) {
+	public StoreTransform SetWalkingPath(int difficulty, int LorR, Transform characterTransform, int numPasses) {
 		if(pathes [difficulty, LorR] == null)
 			pathes [difficulty, LorR] = new WalkingPath(difficulty, LorR);
 		Vector3[] wayPointsPositions = pathes [difficulty, LorR].wayPoints;
@@ -153,7 +139,7 @@ public class WalkingTrialControl : MonoBehaviour {
 		currentWayPts[currentWayPoint] = CreateWayPointGameObject(currentWayPtPositions[currentWayPoint]);
 		arrowControl.SetTarget (currentWayPts[currentWayPoint]);
 		timeStampWayPoints = new float[currentWayPts.Length];
-		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), difficulty, (int) TRAVEL_TYPE.WALKING);
+		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), difficulty, (int) TRAVEL_TYPE.WALKING, numPasses);
 		timeStamp = 0;
 		string instruction = "#Walking Trial Path#";
 		recorder.RecordLine(instruction);

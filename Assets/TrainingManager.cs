@@ -22,6 +22,9 @@ public class TrainingManager : MonoBehaviour {
 	private int validSegwayCollision = 10;
 	private float validSurfingTime = 100.0f;
 	private float validSurfingDistance = 20.0f;
+	private int walkingTrainingNum = 0;
+	private int segwayTrainingNum = 0;
+	private int surfingTrainingNum = 0;
 
 	void Awake() {
 		segwayPathControl = GameObject.Find ("SegwayWayPointsManager").GetComponent<SegwayPathController> ();
@@ -54,13 +57,14 @@ public class TrainingManager : MonoBehaviour {
 	}
 
 	public void StartTraining(Transform targetTransform) {
-		walkingTrialControl.SetWalkingPath(0, 0, targetTransform);
+		walkingTrialControl.SetWalkingPath(0, 0, targetTransform, walkingTrainingNum);
 		modeSwitchText.text = "Switch to Walking mode.";
 		modeSwitchText.enabled = true;
 		currentStep = 0;
 		travelType = TRAVEL_TYPE.WALKING;
 		character.GetComponent<TravelModelInterface>().SetTargetGestureType (travelType);
 		StartTimer();
+		walkingTrainingNum++;
 	}
 
 	public StoreTransform FinishTrainingTrial (int startPtID, Transform curWayPt, Transform nextWayPt) {
@@ -101,15 +105,18 @@ public class TrainingManager : MonoBehaviour {
 		StoreTransform targetTransform = null;
 		switch(travelType) {
 		case TRAVEL_TYPE.WALKING:
-			targetTransform = walkingTrialControl.SetWalkingPath(0, 0, curWayPt);
+			targetTransform = walkingTrialControl.SetWalkingPath(0, 0, curWayPt, walkingTrainingNum);
+			walkingTrainingNum++;
 			break;
 		case TRAVEL_TYPE.SEGWAY:
-			targetTransform = segwayPathControl.SetSegwayPath(0, startPtID, 0);
+			targetTransform = segwayPathControl.SetSegwayPath(0, startPtID, 0, segwayTrainingNum);
+			segwayTrainingNum++;
 			playerStatus.CleanCollision();
 			break;
 		case TRAVEL_TYPE.SURFING:
 			segwayPathControl.OpenAllWayPoints();
-			targetTransform = surfingTrialControl.GenerateSamples(curWayPt, nextWayPt, 0);
+			targetTransform = surfingTrialControl.GenerateSamples(curWayPt, nextWayPt, 0, surfingTrainingNum);
+			surfingTrainingNum++;
 			break;
 		}
 

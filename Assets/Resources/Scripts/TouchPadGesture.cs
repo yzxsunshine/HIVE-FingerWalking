@@ -165,12 +165,13 @@ public class TouchPadGesture : MonoBehaviour {
 	// step start
 	void addTouch(Tuio.Touch t)
 	{
+		float force = Mathf.Clamp(Mathf.Abs ((float)t.Properties.Force), 0, 1);
 		//Debug.Log("Add Touch");
 		if (leftRect.Contains (t.TouchPoint)) {
-			leftTurnForce = new KeyValuePair<int, float> (t.TouchId, Mathf.Abs ((float)t.Properties.Force));
+			leftTurnForce = new KeyValuePair<int, float> (t.TouchId, force);
 			Debug.Log ("add id=" + t.TouchId + ", turn left=" + ", value=" + leftTurnForce.Value);
 		} else if (rightRect.Contains (t.TouchPoint)) {
-			rightTurnForce = new KeyValuePair<int, float> (t.TouchId, Mathf.Abs ((float)t.Properties.Force));
+			rightTurnForce = new KeyValuePair<int, float> (t.TouchId, force);
 			Debug.Log ("add id=" + t.TouchId + ", turn right" + ", value=" + rightTurnForce.Value);
 		} else {
 			addTrail (t);
@@ -235,17 +236,18 @@ public class TouchPadGesture : MonoBehaviour {
 		 *		  0, 500 -------  900, 500
 		 *		Student Innovation Contest
 		 */		
+		float force = Mathf.Clamp(Mathf.Abs ((float)t.Properties.Force), 0, 1);
 		if(t.TouchId == leftTurnForce.Key) {
-			leftTurnForce = new KeyValuePair<int, float>(t.TouchId, Mathf.Abs((float) t.Properties.Force));
+			leftTurnForce = new KeyValuePair<int, float>(t.TouchId, force);
 		}
 		else if(t.TouchId == rightTurnForce.Key) {
-			rightTurnForce = new KeyValuePair<int, float>(t.TouchId, Mathf.Abs((float) t.Properties.Force));
+			rightTurnForce = new KeyValuePair<int, float>(t.TouchId, force);
 		}
 		else if(fingerPositions.ContainsKey(t.TouchId)) {
 			Vector2 diff = t.TouchPoint - fingerPositions[t.TouchId];
 			fingerVel[t.TouchId] = diff;
 			fingerPositions[t.TouchId] = t.TouchPoint;
-			fingerForce[t.TouchId] = (float) t.Properties.Force;
+			fingerForce[t.TouchId] = force;
 			fingerTrails[t.TouchId].Add(t);
 //			Debug.Log("id = " + t.TouchId + ", force = " + t.Properties.Force);
 		}
@@ -259,7 +261,6 @@ public class TouchPadGesture : MonoBehaviour {
 		//rectTrans.localPosition = pos;
 		
 		RawImage img = fingerTips[t.TouchId].GetComponent<RawImage>();
-		float force = Mathf.Clamp(((float)t.Properties.Force), 0, 1);
 		img.color = new Color(1.0f, 0.9f * (1-force), 0.9f * (1-force));
 		
 		
@@ -274,8 +275,9 @@ public class TouchPadGesture : MonoBehaviour {
 
 	void addTrail (Tuio.Touch t) 
 	{
+		float force = Mathf.Clamp(Mathf.Abs ((float)t.Properties.Force), 0, 1);
 		fingerPositions.Add(t.TouchId, new Vector2(t.TouchPoint.x, t.TouchPoint.y));
-		fingerForce.Add(t.TouchId, (float)t.Properties.Force);
+		fingerForce.Add(t.TouchId, force);
 		fingerVel.Add (t.TouchId, Vector2.zero);
 		fingerStart.Add(t.TouchId, new Vector2(t.TouchPoint.x, t.TouchPoint.y));
 	}

@@ -120,7 +120,7 @@ public class JoystickGesture : MonoBehaviour {
 			this.GetComponent ("HIVEFPSController").SendMessage ("SetSegway");
 			break;
 		case TRAVEL_TYPE.SURFING:
-			moveVel = -Vector3.forward * rightVertical * joystickParams.surfingSpeed;
+			moveVel = -Vector3.forward * Mathf.Min(rightVertical, 0) * joystickParams.surfingSpeed;
 
 			if (flipSurfPitch) {
 				leftVertical = - leftVertical;

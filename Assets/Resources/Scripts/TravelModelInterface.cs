@@ -211,6 +211,7 @@ public class TravelModelInterface : MonoBehaviour  {
 	public void SetTargetGestureType (TRAVEL_TYPE gesture) {
 		Debug.Log("SetTarget: " + targetGestureType.ToString());
 		targetGestureType = gesture;
+		playerStatus.WaitSwitch();
 		modeSwitchTimer = 0;
 		errorSwitchNum = 0;
 	}

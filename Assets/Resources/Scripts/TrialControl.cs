@@ -100,6 +100,10 @@ public class TrialControl : MonoBehaviour {
 	private TRAVEL_TYPE typeBeforeReset;
 	private TrainingManager trainingManager;
 	private DevicesManager deviceManager;
+	private int currentPass = 0;
+	private int maxPasses = 2;
+	private int trialSequenceStep = 4;
+	private bool inBreak = false;
 
 	void Awake () {
 		character = GameObject.Find ("Character");
@@ -126,14 +130,15 @@ public class TrialControl : MonoBehaviour {
 		if(controlType != CONTROL_TYPE.FORCEPAD_GESTURE) {
 			GameObject.Find("Widget").GetComponent<RawImage>().enabled = false;
 		}
-		trialSequence = trialGenerator.GenerateByLattinSquare(ConfigurationHandler.subjectID);
+		trialSequence = trialGenerator.GenerateByLattinSquare(Mathf.FloorToInt(ConfigurationHandler.subjectID / 2));
 		for (int i=0; i<4; i++) {
 			startWayPointCalculator.SetWayPointTransform(i, segwayPathControl.GetWayPointTrigger(i).transform);
 		}
 		currentStartWayPointID = startWayPointCalculator.GetClosestWayPointID(character.transform);
-		//GenerateTrial();
-		FirstTrial();
-		//CalibrateHMD();
+		currentPass = 0;
+		//FirstTrial();
+		Screen.lockCursor = true;
+		CalibrateHMD();
 	}
 	
 	// Update is called once per frame
@@ -181,8 +186,11 @@ public class TrialControl : MonoBehaviour {
 
 		if(Input.GetKeyDown(KeyCode.Space)) {
 			deviceManager.CalibrateCamera();
-			if (!HMDCalibrated) {
+			if (!HMDCalibrated && !inBreak) {
 				FinishCalibration();
+			}
+			else if (!HMDCalibrated && inBreak) {
+				FinishBreak();
 			}
 		}
 	}
@@ -194,16 +202,16 @@ public class TrialControl : MonoBehaviour {
 		switch (trialSequence[currentTrialID].mode) {
 		case TRAVEL_TYPE.WALKING: 
 			Transform nearestWayPt = startWayPointCalculator.GetTransformByID(currentStartWayPointID);
-			targetTransform = walkingTrialControl.SetWalkingPath ((int)trialSequence[currentTrialID].level, 0, nearestWayPt);
+			targetTransform = walkingTrialControl.SetWalkingPath ((int)trialSequence[currentTrialID].level, 0, nearestWayPt, currentPass);
 			break;
 		case TRAVEL_TYPE.SEGWAY: 
-			targetTransform = segwayPathControl.SetSegwayPath ((int)trialSequence[currentTrialID].level, currentStartWayPointID, 0);
+			targetTransform = segwayPathControl.SetSegwayPath ((int)trialSequence[currentTrialID].level, currentStartWayPointID, 0, currentPass);
 			break;
 		case TRAVEL_TYPE.SURFING: 
 			Transform startPts = startWayPointCalculator.GetTransformByID(currentStartWayPointID);
 			Transform endPts = startWayPointCalculator.GetTransformByID((currentStartWayPointID + 1) % 4);
 			segwayPathControl.OpenAllWayPoints();
-			targetTransform = surfingTrialControl.GenerateSamples (startPts, endPts, (int)trialSequence[currentTrialID].level);
+			targetTransform = surfingTrialControl.GenerateSamples (startPts, endPts, (int)trialSequence[currentTrialID].level, currentPass);
 			break;
 		}
 		return targetTransform;
@@ -248,9 +256,19 @@ public class TrialControl : MonoBehaviour {
 				typeBeforeReset = fpsController.SetReset();
 			}
 			else {
-				modeSwitchText.text = "All the trials are finished! Thank you!";
-				modeSwitchText.enabled = true;
-				studyRecorder.StopContextSwitchRecorder();
+				currentPass++;
+				if (currentPass < maxPasses ) {
+					modeSwitchText.text = "Current session finished! Have a break!";
+					modeSwitchText.enabled = true;
+					inBreak = true;
+					HMDCalibrated = false;
+				}
+				else {
+					modeSwitchText.text = "All the trials are finished! Thank you!";
+					modeSwitchText.enabled = true;
+					studyRecorder.StopContextSwitchRecorder();
+				}
+				playerStatus.DisableControl();
 			}
 		}
 	}
@@ -333,9 +351,14 @@ public class TrialControl : MonoBehaviour {
 		int closestPtID = startWayPointCalculator.GetClosestWayPointID(character.transform);
 		trainingManager.StartTraining(startWayPointCalculator.GetTransformByID(closestPtID));
 		playerStatus.EnableControl(controlType);
-
 		inTraining = true;
 	}
 
+	public void FinishBreak () {
+		inBreak = false;
+		HMDCalibrated = true; 
+		trialSequence = trialGenerator.GenerateByLattinSquare(Mathf.FloorToInt(ConfigurationHandler.subjectID / 2) + trialSequenceStep);
+		FirstTrial();
+	}
 
 }

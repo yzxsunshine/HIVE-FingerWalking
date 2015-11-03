@@ -162,7 +162,7 @@ public class SurfingTrialControl : MonoBehaviour {
 		return Vector3.zero;
 	}
 
-	public StoreTransform GenerateSamples(Transform startPoint, Transform endPoint, int difficultyLevel) {
+	public StoreTransform GenerateSamples(Transform startPoint, Transform endPoint, int difficultyLevel, int numPasses) {
 		startPt = startPoint.position;
 		endPt = endPoint.position;
 		wayPoints = new GameObject[wayPointNum];
@@ -197,7 +197,7 @@ public class SurfingTrialControl : MonoBehaviour {
 			wayPoints[i].transform.position = new Vector3(x_offset, y_offset + midPoint.y + startPt.y, z_offset);
 			//wayPoints[i].GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, (wayPointNum - i - 1) * 0.8f / wayPointNum);
 		}*/
-		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), difficultyLevel, (int) TRAVEL_TYPE.SURFING);
+		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), difficultyLevel, (int) TRAVEL_TYPE.SURFING, numPasses);
 		timeStamp = 0;
 		string instruction = "#Surfing Trial Path#";
 		recorder.RecordLine(instruction);

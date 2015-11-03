@@ -1,0 +1,2409 @@
+#Time To Switch#	#Num of Incorrect Switch#	#Target Mode#	#Current Mode#
+1.592584	0	Walking	Walking
+1.691887	0	Walking	Walking
+1.708659	0	Walking	Walking
+1.724755	0	Walking	Walking
+1.74124	0	Walking	Walking
+2.056661	0	Walking	Walking
+2.819497	0	Walking	
+2.853007	0	Walking	Walking
+3.001778	0	Walking	Walking
+3.167536	0	Walking	
+3.217209	0	Walking	Walking
+3.399539	0	Walking	
+3.465858	0	Walking	Walking
+3.565446	0	Walking	
+3.615046	0	Walking	Walking
+3.748373	0	Walking	
+3.764225	0	Walking	Walking
+3.847631	0	Walking	
+3.930169	0	Walking	Walking
+4.245131	0	Walking	
+4.261913	0	Walking	Walking
+4.543407	0	Walking	
+4.576809	0	Walking	Walking
+4.842333	0	Walking	
+4.908211	0	Walking	Walking
+5.140287	0	Walking	
+5.223136	0	Walking	Walking
+5.53881	0	Walking	
+5.588599	0	Walking	Walking
+5.703998	0	Walking	
+5.770393	0	Walking	Walking
+5.952608	0	Walking	
+5.986624	0	Walking	Walking
+6.151577	0	Walking	
+6.168261	0	Walking	Walking
+6.251353	0	Walking	
+6.300822	0	Walking	Walking
+6.450514	0	Walking	Walking
+6.466967	0	Walking	Walking
+6.615701	0	Walking	
+7.180245	0	Walking	Walking
+7.627863	0	Walking	
+8.373631	0	Walking	Walking
+8.953726	0	Walking	
+9.03641	0	Walking	Walking
+9.169196	0	Walking	Walking
+9.186221	0	Walking	Walking
+9.203184	0	Walking	Walking
+9.335241	0	Walking	
+9.368124	0	Walking	Walking
+9.484265	0	Walking	
+9.534211	0	Walking	Walking
+9.616868	0	Walking	
+9.699816	0	Walking	Walking
+9.782527	0	Walking	
+9.832432	0	Walking	Walking
+9.932284	0	Walking	
+9.998672	0	Walking	Walking
+10.11429	0	Walking	
+10.14731	0	Walking	Walking
+10.24695	0	Walking	
+10.3304	0	Walking	Walking
+10.42917	0	Walking	
+10.49555	0	Walking	Walking
+10.56193	0	Walking	
+10.64465	0	Walking	Walking
+10.76097	0	Walking	
+10.79492	0	Walking	Walking
+10.91002	0	Walking	
+10.97628	0	Walking	Walking
+11.10919	0	Walking	
+11.15881	0	Walking	Walking
+11.72281	0	Walking	
+11.73913	0	Walking	Walking
+12.10419	0	Walking	
+12.12089	0	Walking	Walking
+12.26963	0	Walking	
+12.30394	0	Walking	Walking
+13.46334	0	Walking	Walking
+13.47959	0	Walking	Walking
+13.59587	0	Walking	
+13.64575	0	Walking	Walking
+13.81133	0	Walking	Walking
+13.82879	0	Walking	Walking
+14.17647	0	Walking	Walking
+14.1927	0	Walking	Walking
+14.30898	0	Walking	
+14.35844	0	Walking	Walking
+14.50781	0	Walking	Walking
+14.67337	0	Walking	
+14.80607	0	Walking	Walking
+15.03864	0	Walking	
+15.75087	0	Walking	Walking
+16.34728	0	Walking	
+16.3637	0	Walking	Walking
+16.5463	0	Walking	Walking
+16.56264	0	Walking	Walking
+16.57988	0	Walking	Walking
+17.30886	0	Walking	Walking
+17.42507	0	Walking	
+17.50789	0	Walking	Walking
+17.6577	0	Walking	Walking
+17.67405	0	Walking	Walking
+18.68534	0	Walking	Walking
+18.7014	0	Walking	Walking
+19.86251	0	Walking	Walking
+20.02773	0	Walking	
+20.07796	0	Walking	Walking
+22.0832	0	Walking	
+22.18295	0	Walking	Walking
+22.92871	0	Walking	
+23.39302	0	Walking	Walking
+32.17999	0	Walking	
+32.32879	0	Walking	Walking
+32.47797	0	Walking	Walking
+32.64418	0	Walking	
+32.72815	0	Walking	Walking
+32.87666	0	Walking	
+32.92548	0	Walking	Walking
+33.45611	0	Walking	
+33.50631	0	Walking	Walking
+33.65501	0	Walking	Walking
+33.67166	0	Walking	Walking
+33.77128	0	Walking	
+33.87101	0	Walking	Walking
+34.21878	0	Walking	
+34.23548	0	Walking	Walking
+34.59996	0	Walking	
+34.61666	0	Walking	Walking
+35.14719	0	Walking	
+35.19764	0	Walking	Walking
+35.66102	0	Walking	
+35.67765	0	Walking	Walking
+35.82714	0	Walking	Walking
+36.37374	0	Walking	
+36.39042	0	Walking	Walking
+36.55672	0	Walking	
+36.57282	0	Walking	Walking
+36.65561	0	Walking	
+36.73936	0	Walking	Walking
+36.98716	0	Walking	
+37.05356	0	Walking	Walking
+37.31886	0	Walking	
+37.36866	0	Walking	Walking
+37.51789	0	Walking	Walking
+37.65074	0	Walking	
+37.70007	0	Walking	Walking
+37.84934	0	Walking	Walking
+37.86591	0	Walking	Walking
+37.98193	0	Walking	
+38.01572	0	Walking	Walking
+38.1482	0	Walking	
+38.16417	0	Walking	Walking
+38.26374	0	Walking	
+39.1756	0	Walking	Walking
+44.8456	0	Walking	
+44.92895	0	Walking	Walking
+45.07828	0	Walking	Walking
+45.09428	0	Walking	Walking
+45.24352	0	Walking	
+45.29323	0	Walking	Walking
+45.62527	0	Walking	
+45.65844	0	Walking	Walking
+46.37095	0	Walking	
+46.40424	0	Walking	Walking
+46.52074	0	Walking	
+46.56961	0	Walking	Walking
+46.76884	0	Walking	
+46.78633	0	Walking	Walking
+47.48218	0	Walking	
+47.51498	0	Walking	Walking
+47.82979	0	Walking	
+47.86307	0	Walking	Walking
+48.44353	0	Walking	Walking
+48.57617	0	Walking	
+48.62559	0	Walking	Walking
+48.79131	0	Walking	Walking
+48.80847	0	Walking	Walking
+0	0		
+0.0156794	0		
+0.03358021	0		
+0.04996361	0		
+0.09992009	1		
+0.1165533	2		
+0.1328726	3		
+0.1490684	4		
+0.1661747	5		
+0.1825259	6		
+0.2822253	7		
+0.2984397	8		
+0.3149617	9		
+0.3318274	10		
+0.3481125	11		
+0.3647455	12		
+0.3818018	13		
+1.127497	0	Walking	Walking
+1.459683	0	Walking	
+1.49245	0	Walking	Walking
+1.674307	0	Walking	
+1.7076	0	Walking	Walking
+1.824052	0	Walking	
+1.89001	0	Walking	Walking
+2.039177	0	Walking	
+2.089015	0	Walking	Walking
+2.188246	0	Walking	
+2.271126	0	Walking	Walking
+2.403909	0	Walking	Walking
+2.553372	0	Walking	
+2.636549	0	Walking	Walking
+3.183054	0	Walking	
+3.216678	0	Walking	Walking
+3.349344	0	Walking	
+3.415492	0	Walking	Walking
+3.564432	0	Walking	
+3.59772	0	Walking	Walking
+3.697232	0	Walking	
+3.779829	0	Walking	Walking
+3.962308	0	Walking	
+3.979165	0	Walking	Walking
+4.111401	0	Walking	
+4.177868	0	Walking	Walking
+4.344074	0	Walking	
+4.393337	0	Walking	Walking
+4.509463	0	Walking	
+4.609043	0	Walking	Walking
+4.890576	0	Walking	
+4.956975	0	Walking	Walking
+5.106137	0	Walking	
+5.123142	0	Walking	Walking
+5.255342	0	Walking	
+5.35481	0	Walking	Walking
+5.487366	0	Walking	
+5.570347	0	Walking	Walking
+7.493638	0	Walking	Walking
+7.510222	0	Walking	Walking
+7.659822	0	Walking	
+7.693164	0	Walking	Walking
+7.974399	0	Walking	
+8.008335	0	Walking	Walking
+8.223065	0	Walking	
+8.239674	0	Walking	Walking
+8.355851	0	Walking	
+8.422171	0	Walking	Walking
+8.555242	0	Walking	
+8.604483	0	Walking	Walking
+8.720737	0	Walking	
+8.819909	0	Walking	Walking
+9.068753	0	Walking	
+9.185158	0	Walking	Walking
+9.300844	0	Walking	
+9.350601	0	Walking	Walking
+9.417647	0	Walking	
+9.549463	0	Walking	Walking
+9.64923	0	Walking	
+9.69878	0	Walking	Walking
+9.814794	0	Walking	
+9.897586	0	Walking	Walking
+10.16287	0	Walking	
+10.24616	0	Walking	Walking
+10.37894	0	Walking	
+10.41179	0	Walking	Walking
+10.51175	0	Walking	
+10.62721	0	Walking	Walking
+10.72657	0	Walking	
+10.77655	0	Walking	Walking
+10.8594	0	Walking	
+10.97553	0	Walking	Walking
+11.09134	0	Walking	
+11.10805	0	Walking	Walking
+11.19095	0	Walking	
+11.30716	0	Walking	Walking
+11.43994	0	Walking	
+11.45602	0	Walking	Walking
+11.65523	0	Walking	
+11.68831	0	Walking	Walking
+12.06957	0	Walking	
+12.10316	0	Walking	Walking
+12.28522	0	Walking	Walking
+12.30199	0	Walking	Walking
+12.31806	0	Walking	Walking
+12.53361	0	Walking	
+12.56709	0	Walking	Walking
+12.74919	0	Walking	
+12.78245	0	Walking	Walking
+16.94392	0	Walking	
+17.34194	0	Walking	Walking
+19.54587	0	Walking	
+19.72804	0	Walking	Walking
+19.82772	0	Walking	Walking
+19.8448	0	Walking	Walking
+19.86163	0	Walking	Walking
+20.04312	0	Walking	
+20.09361	0	Walking	Walking
+20.24223	0	Walking	Walking
+20.25867	0	Walking	Walking
+20.60736	0	Walking	
+20.65657	0	Walking	Walking
+20.83961	0	Walking	
+20.85565	0	Walking	Walking
+21.0388	0	Walking	Walking
+21.2202	0	Walking	
+21.25338	0	Walking	Walking
+21.43603	0	Walking	Walking
+21.58485	0	Walking	
+21.6517	0	Walking	Walking
+21.96611	0	Walking	
+22.06589	0	Walking	Walking
+22.26512	0	Walking	Walking
+22.44705	0	Walking	
+22.46387	0	Walking	Walking
+22.61351	0	Walking	
+22.66305	0	Walking	Walking
+22.82825	0	Walking	
+22.87808	0	Walking	Walking
+23.21023	0	Walking	
+23.25925	0	Walking	Walking
+23.44182	0	Walking	
+23.45914	0	Walking	Walking
+23.60813	0	Walking	
+23.67453	0	Walking	Walking
+23.82304	0	Walking	
+23.9062	0	Walking	Walking
+23.9556	0	Walking	
+24.07206	0	Walking	Walking
+25.84547	0	Walking	
+25.99458	0	Walking	Walking
+26.11093	0	Walking	Walking
+26.12722	0	Walking	Walking
+26.34262	0	Walking	
+26.37618	0	Walking	Walking
+26.54174	0	Walking	Walking
+27.00594	0	Walking	
+27.05571	0	Walking	Walking
+27.35395	0	Walking	
+27.38747	0	Walking	Walking
+27.57014	0	Walking	Walking
+28.16669	0	Walking	
+28.29927	0	Walking	Walking
+28.77981	0	Walking	
+28.91246	0	Walking	Walking
+29.67504	0	Walking	
+29.82423	0	Walking	Walking
+30.3054	0	Walking	
+30.5205	0	Walking	Walking
+30.73598	0	Walking	
+30.81899	0	Walking	Walking
+30.98549	0	Walking	Walking
+31.38327	0	Walking	Walking
+31.78094	0	Walking	Walking
+31.79722	0	Walking	Walking
+32.17899	0	Walking	Walking
+32.54301	0	Walking	
+32.55972	0	Walking	Walking
+32.95756	0	Walking	Walking
+33.12365	0	Walking	
+33.17308	0	Walking	Walking
+33.35526	0	Walking	Walking
+33.52161	0	Walking	
+33.5545	0	Walking	Walking
+33.72112	0	Walking	Walking
+34.1677	0	Walking	
+34.21749	0	Walking	Walking
+37.35091	0	Walking	
+37.59956	0	Walking	Walking
+38.03058	0	Walking	
+38.08018	0	Walking	Walking
+38.976	0	Walking	
+38.99214	0	Walking	Walking
+39.1085	0	Walking	Walking
+39.12492	0	Walking	Walking
+39.30742	0	Walking	
+39.34035	0	Walking	Walking
+39.5065	0	Walking	Walking
+39.65529	0	Walking	
+39.68853	0	Walking	Walking
+40.03702	0	Walking	
+40.08624	0	Walking	Walking
+40.25209	0	Walking	Walking
+40.38474	0	Walking	
+40.4676	0	Walking	Walking
+40.73285	0	Walking	
+40.83238	0	Walking	Walking
+41.16386	0	Walking	
+41.23022	0	Walking	Walking
+41.36283	0	Walking	
+41.39666	0	Walking	Walking
+41.56178	0	Walking	
+41.64558	0	Walking	Walking
+41.82707	0	Walking	
+41.84408	0	Walking	Walking
+41.99276	0	Walking	
+42.05911	0	Walking	Walking
+42.44059	0	Walking	
+42.49025	0	Walking	Walking
+0	0		
+0.01671385	0		
+0.03496495	0		
+0.05066791	0		
+0.0706001	0		
+0.08381569	0		
+0.1006765	0		
+0.1169839	0		
+0.1336122	0		
+0.1501506	0		
+0.1669221	0		
+0.1833635	0		
+0.1998662	0		
+0.216342	0		
+0.2331836	0		
+0.2495118	0		
+0.2661717	0		
+0.2827851	0		
+0.2996028	0		
+0.3489303	1		
+0.3660065	2		
+0.3823217	3		
+0.3987299	4		
+0.415494	5		
+0.432764	6		
+0.4484936	7		
+0.4651439	8		
+0.4817651	9		
+1.458495	1	Segway	
+1.475326	1	Segway	Segway
+0	0		
+0.01682513	0		
+0.03316482	0		
+0.05015208	0		
+0.06697784	0		
+0.08287857	0		
+0.09933699	0		
+0.1165533	0		
+0.1325942	0		
+0.1492076	0		
+0.1665814	0		
+0.1828551	0		
+0.1989266	0		
+0.2154111	0		
+0.2319507	0		
+0.2490381	0		
+0.2657172	0		
+0.2817798	0		
+0.2983318	0		
+0.3152986	0		
+0.3315568	0		
+0.3480465	0		
+0.3652169	0		
+0.3815138	0		
+0.3978145	0		
+0.4144899	0		
+1.276996	1	Segway	
+1.293851	1	Segway	Segway
+0	0		
+0.01560408	0		
+0.03621297	0		
+0.04928503	0		
+0.06588139	0		
+0.08261012	0		
+0.09847955	0		
+0.1151829	0		
+0.1318859	0		
+0.1482711	0		
+0.164922	0		
+0.1821474	0		
+0.1982713	0		
+0.2145496	0		
+0.2312086	0		
+0.2477253	0		
+0.264587	0		
+0.2810101	0		
+0.2974455	0		
+0.3139188	0		
+0.3310103	0		
+0.3475793	0		
+0.3638068	0		
+0.3810027	0		
+0.3971995	0		
+0.4136278	0		
+0.4300301	0		
+0.4466739	0		
+0.4634888	0		
+0.4802374	0		
+0.4965411	0		
+0.5130398	0		
+0.5304264	0		
+0.5462419	0		
+0.5628051	0		
+0.5792567	0		
+0.8951061	1	Surfing	
+0.9117443	2	Surfing	
+0.9290651	3	Surfing	
+0.9451277	3	Surfing	Surfing
+0	0		
+0.01618314	0		
+0.03326929	0		
+0.0504348	0		
+0.06650479	0		
+0.08277876	0		
+0.09925112	0		
+0.1161262	0		
+0.1328608	0		
+0.1495529	0		
+0.165516	0		
+0.1822277	0		
+0.1991008	0		
+0.2152871	0		
+0.2318555	0		
+0.2490635	0		
+0.2667597	0		
+0.2815665	0		
+0.2981796	0		
+0.3148221	0		
+0.3318165	0		
+0.3484398	0		
+0.3645883	0		
+0.3810845	0		
+0.3981434	0		
+0.4148644	0		
+0.4308231	0		
+0.4474489	0		
+0.4647204	0		
+0.4805039	0		
+0.497104	0		
+0.5138237	0		
+0.530594	0		
+0.5468705	0		
+0.5641931	0		
+0.5800514	0		
+0.5977467	0		
+0.6130771	0		
+0.6297324	0		
+0.6463365	0		
+0.8955132	1	Surfing	
+0.9129044	2	Surfing	
+0.9290389	2	Surfing	Surfing
+15.00409	2	Surfing	Surfing
+15.02009	2	Surfing	Surfing
+15.03654	2	Surfing	Surfing
+15.05338	2	Surfing	Surfing
+15.06978	2	Surfing	Surfing
+15.08624	2	Surfing	Surfing
+15.10297	2	Surfing	Surfing
+15.12039	2	Surfing	Surfing
+15.13607	2	Surfing	Surfing
+15.15273	2	Surfing	Surfing
+15.16934	2	Surfing	Surfing
+15.18619	2	Surfing	Surfing
+15.20241	2	Surfing	Surfing
+15.21889	2	Surfing	Surfing
+15.23621	2	Surfing	Surfing
+15.25243	2	Surfing	Surfing
+15.26889	2	Surfing	Surfing
+15.28526	2	Surfing	Surfing
+15.30185	2	Surfing	Surfing
+15.31892	2	Surfing	Surfing
+15.33506	2	Surfing	Surfing
+15.3521	2	Surfing	Surfing
+15.36799	2	Surfing	Surfing
+0	0		
+0.01626808	0		
+0.03300053	0		
+0.04928503	0		
+0.06590619	0		
+0.08267987	0		
+0.09960606	0		
+0.115655	0		
+0.132021	0		
+0.1491183	0		
+0.1653269	0		
+0.181829	0		
+0.1991855	0		
+0.2154396	0		
+0.231655	0		
+0.2480932	0		
+0.2647367	0		
+0.2821139	0		
+0.2978854	0		
+0.3145611	0		
+0.3310636	0		
+0.3479092	0		
+0.3641577	0		
+0.3811502	0		
+0.3973994	0		
+0.4143851	0		
+0.4304821	0		
+0.4499164	0		
+0.4637374	0		
+0.4810195	0		
+0.4968176	0		
+0.5135321	0		
+0.5299998	0		
+0.5470181	0		
+0.5632396	0		
+0.5799194	0		
+0.5968227	0		
+0.6134327	0		
+0.6297957	0		
+0.6462132	0		
+0.6626313	0		
+0.6799465	0		
+0.6958699	0		
+0.7123775	0		
+0.7289507	0		
+2.901808	0	Walking	Walking
+3.29965	0	Walking	
+3.332378	0	Walking	Walking
+3.481649	0	Walking	
+3.498615	0	Walking	Walking
+3.680604	0	Walking	
+3.697235	0	Walking	Walking
+3.846313	0	Walking	
+3.879885	0	Walking	Walking
+4.211951	0	Walking	
+4.227691	0	Walking	Walking
+4.559702	0	Walking	
+4.575783	0	Walking	Walking
+4.891752	0	Walking	
+4.940535	0	Walking	Walking
+5.106406	0	Walking	
+5.156996	0	Walking	Walking
+5.985052	0	Walking	
+6.051422	0	Walking	Walking
+6.203229	0	Walking	
+6.25068	0	Walking	Walking
+6.366354	0	Walking	
+6.416225	0	Walking	Walking
+6.582765	0	Walking	
+6.615001	0	Walking	Walking
+6.731369	0	Walking	
+6.782787	0	Walking	Walking
+7.062615	0	Walking	
+7.112792	0	Walking	Walking
+8.654878	0	Walking	Walking
+8.671162	0	Walking	Walking
+9.666001	0	Walking	
+9.682568	0	Walking	Walking
+9.782106	0	Walking	Walking
+9.798488	0	Walking	Walking
+9.81482	0	Walking	Walking
+9.831379	0	Walking	Walking
+9.847948	0	Walking	Walking
+10.03032	0	Walking	
+10.047	0	Walking	Walking
+10.36201	0	Walking	
+10.4118	0	Walking	Walking
+10.52851	0	Walking	
+10.56136	0	Walking	Walking
+10.69349	0	Walking	
+10.74325	0	Walking	Walking
+11.00842	0	Walking	
+11.07476	0	Walking	Walking
+11.1911	0	Walking	
+11.24108	0	Walking	Walking
+11.35754	0	Walking	
+11.43956	0	Walking	Walking
+11.57223	0	Walking	
+11.58912	0	Walking	Walking
+11.75498	0	Walking	
+11.77117	0	Walking	Walking
+11.88727	0	Walking	
+11.92076	0	Walking	Walking
+12.13584	0	Walking	
+12.20229	0	Walking	Walking
+12.43431	0	Walking	
+12.48462	0	Walking	Walking
+12.60099	0	Walking	Walking
+12.61744	0	Walking	Walking
+12.7826	0	Walking	
+12.83292	0	Walking	Walking
+13.26355	0	Walking	
+13.31317	0	Walking	Walking
+13.47902	0	Walking	
+13.5121	0	Walking	Walking
+13.84356	0	Walking	
+13.87736	0	Walking	Walking
+14.22531	0	Walking	
+14.25794	0	Walking	Walking
+14.39154	0	Walking	
+14.4404	0	Walking	Walking
+15.60094	0	Walking	
+15.63374	0	Walking	Walking
+15.78285	0	Walking	Walking
+15.79958	0	Walking	Walking
+15.81644	0	Walking	Walking
+15.83252	0	Walking	Walking
+16.19744	0	Walking	
+16.21449	0	Walking	Walking
+16.36319	0	Walking	
+16.41319	0	Walking	Walking
+16.72787	0	Walking	
+16.77758	0	Walking	Walking
+16.92751	0	Walking	
+16.94344	0	Walking	Walking
+17.10912	0	Walking	
+17.14278	0	Walking	Walking
+17.4739	0	Walking	
+17.52368	0	Walking	Walking
+17.67284	0	Walking	
+17.68975	0	Walking	Walking
+17.85531	0	Walking	
+17.88887	0	Walking	Walking
+18.02147	0	Walking	
+18.03765	0	Walking	Walking
+18.35325	0	Walking	
+18.36908	0	Walking	Walking
+18.5686	0	Walking	
+18.61925	0	Walking	Walking
+18.91637	0	Walking	
+18.99917	0	Walking	Walking
+19.11526	0	Walking	
+19.14883	0	Walking	Walking
+19.29752	0	Walking	
+19.36431	0	Walking	Walking
+19.84457	0	Walking	
+19.87855	0	Walking	Walking
+21.80089	0	Walking	Walking
+21.81781	0	Walking	Walking
+21.83391	0	Walking	Walking
+21.85118	0	Walking	Walking
+21.8671	0	Walking	Walking
+22.01671	0	Walking	
+22.0328	0	Walking	Walking
+22.2156	0	Walking	Walking
+22.76241	0	Walking	
+22.77885	0	Walking	Walking
+23.16041	0	Walking	
+23.17759	0	Walking	Walking
+23.49181	0	Walking	
+23.55839	0	Walking	Walking
+23.8072	0	Walking	
+23.92269	0	Walking	Walking
+24.61907	0	Walking	
+24.66972	0	Walking	Walking
+24.98381	0	Walking	
+25.06722	0	Walking	Walking
+25.19928	0	Walking	
+25.249	0	Walking	Walking
+25.39825	0	Walking	
+25.49815	0	Walking	Walking
+28.13455	0	Walking	
+28.16724	0	Walking	Walking
+28.30125	0	Walking	Walking
+28.31643	0	Walking	Walking
+28.33296	0	Walking	Walking
+29.11247	0	Walking	
+29.12915	0	Walking	Walking
+29.36093	0	Walking	Walking
+29.51004	0	Walking	
+29.54326	0	Walking	Walking
+29.72584	0	Walking	
+29.77541	0	Walking	Walking
+30.12378	0	Walking	
+30.17377	0	Walking	Walking
+30.52151	0	Walking	
+30.53872	0	Walking	Walking
+30.90328	0	Walking	
+30.93656	0	Walking	Walking
+31.2343	0	Walking	
+31.28425	0	Walking	Walking
+31.44985	0	Walking	
+31.46638	0	Walking	Walking
+33.3895	0	Walking	Walking
+33.58848	0	Walking	
+33.62198	0	Walking	Walking
+33.78788	0	Walking	Walking
+33.98666	0	Walking	
+34.01991	0	Walking	Walking
+34.18534	0	Walking	Walking
+34.40086	0	Walking	
+34.41785	0	Walking	Walking
+34.56668	0	Walking	Walking
+34.93235	0	Walking	Walking
+35.16348	0	Walking	Walking
+35.18018	0	Walking	Walking
+35.76054	0	Walking	Walking
+35.777	0	Walking	Walking
+35.79391	0	Walking	Walking
+35.94314	0	Walking	
+35.95953	0	Walking	Walking
+36.15923	0	Walking	Walking
+36.27507	0	Walking	
+36.35762	0	Walking	Walking
+36.52381	0	Walking	Walking
+36.53978	0	Walking	Walking
+36.55705	0	Walking	Walking
+36.70597	0	Walking	
+36.73866	0	Walking	Walking
+36.92104	0	Walking	Walking
+37.15358	0	Walking	
+37.17016	0	Walking	Walking
+38.47988	0	Walking	
+38.61228	0	Walking	Walking
+39.78854	0	Walking	Walking
+40.6511	0	Walking	Walking
+40.66722	0	Walking	Walking
+40.91584	0	Walking	
+40.9324	0	Walking	Walking
+41.0985	0	Walking	Walking
+41.1149	0	Walking	Walking
+41.31453	0	Walking	Walking
+41.33037	0	Walking	Walking
+41.34687	0	Walking	Walking
+41.94378	0	Walking	Walking
+41.9608	0	Walking	Walking
+41.97701	0	Walking	Walking
+42.17608	0	Walking	
+42.20923	0	Walking	Walking
+42.37495	0	Walking	Walking
+42.77272	0	Walking	Walking
+42.7893	0	Walking	Walking
+43.03852	0	Walking	
+43.05462	0	Walking	Walking
+43.65141	0	Walking	Walking
+43.66795	0	Walking	Walking
+43.68549	0	Walking	Walking
+43.70115	0	Walking	Walking
+43.71775	0	Walking	Walking
+43.90052	0	Walking	
+43.95021	0	Walking	Walking
+44.33162	0	Walking	
+44.34827	0	Walking	Walking
+44.71242	0	Walking	
+44.76211	0	Walking	Walking
+0	0		
+0.01665805	0		
+0.03419089	0		
+0.05079965	0		
+0.07167421	0		
+0.08347406	0		
+0.100134	0		
+0.1170375	0		
+0.1332715	0		
+0.1497603	0		
+0.1664494	0		
+0.1833932	0		
+0.1996483	0		
+0.2164632	0		
+0.2329392	0		
+0.2519644	0		
+0.2658062	0		
+0.2824252	0		
+0.2990603	0		
+0.3162661	0		
+0.3322043	0		
+0.3486789	0		
+0.3653902	0		
+0.3823124	0		
+0.398755	0		
+0.4150423	0		
+0.4320376	0		
+0.4484083	0		
+0.4647415	0		
+0.4812762	0		
+0.4979832	0		
+0.5147603	0		
+0.5318232	0		
+0.5474685	0		
+0.5641315	0		
+0.5817211	0		
+1.044034	1	Surfing	
+1.06171	1	Surfing	Surfing
+15.5509	1	Surfing	Surfing
+15.56741	1	Surfing	Surfing
+15.5836	1	Surfing	Surfing
+15.60013	1	Surfing	Surfing
+15.61682	1	Surfing	Surfing
+15.63356	1	Surfing	Surfing
+15.65006	1	Surfing	Surfing
+15.66655	1	Surfing	Surfing
+15.68299	1	Surfing	Surfing
+15.70058	1	Surfing	Surfing
+15.71618	1	Surfing	Surfing
+15.73276	1	Surfing	Surfing
+15.74939	1	Surfing	Surfing
+15.76667	1	Surfing	Surfing
+15.78282	1	Surfing	Surfing
+15.79926	1	Surfing	Surfing
+15.81574	1	Surfing	Surfing
+15.83222	1	Surfing	Surfing
+15.84921	1	Surfing	Surfing
+15.86601	1	Surfing	Surfing
+15.88198	1	Surfing	Surfing
+15.89854	1	Surfing	Surfing
+15.91543	1	Surfing	Surfing
+15.93168	1	Surfing	Surfing
+15.94824	1	Surfing	Surfing
+15.96469	1	Surfing	Surfing
+15.9818	1	Surfing	Surfing
+15.99809	1	Surfing	Surfing
+16.01477	1	Surfing	Surfing
+16.03123	1	Surfing	Surfing
+16.04818	1	Surfing	Surfing
+16.06419	1	Surfing	Surfing
+16.08094	1	Surfing	Surfing
+16.09742	1	Surfing	Surfing
+16.11455	1	Surfing	Surfing
+16.13056	1	Surfing	Surfing
+16.1474	1	Surfing	Surfing
+16.16376	1	Surfing	Surfing
+16.18062	1	Surfing	Surfing
+16.19702	1	Surfing	Surfing
+16.214	1	Surfing	Surfing
+16.23007	1	Surfing	Surfing
+16.24719	1	Surfing	Surfing
+16.26316	1	Surfing	Surfing
+16.27993	1	Surfing	Surfing
+16.29644	1	Surfing	Surfing
+16.31361	1	Surfing	Surfing
+16.32971	1	Surfing	Surfing
+16.3461	1	Surfing	Surfing
+16.36274	1	Surfing	Surfing
+16.37989	1	Surfing	Surfing
+16.39591	1	Surfing	Surfing
+16.4125	1	Surfing	Surfing
+16.42898	1	Surfing	Surfing
+16.44594	1	Surfing	Surfing
+16.46222	1	Surfing	Surfing
+16.47872	1	Surfing	Surfing
+16.49541	1	Surfing	Surfing
+16.51223	1	Surfing	Surfing
+16.52881	1	Surfing	Surfing
+16.54526	1	Surfing	Surfing
+16.56173	1	Surfing	Surfing
+16.5787	1	Surfing	Surfing
+16.59483	1	Surfing	Surfing
+17.3581	1	Surfing	Surfing
+17.37433	1	Surfing	Surfing
+17.39058	1	Surfing	Surfing
+17.40721	1	Surfing	Surfing
+17.42381	1	Surfing	Surfing
+17.44073	1	Surfing	Surfing
+17.45696	1	Surfing	Surfing
+17.47406	1	Surfing	Surfing
+17.4901	1	Surfing	Surfing
+17.50701	1	Surfing	Surfing
+17.52314	1	Surfing	Surfing
+17.53978	1	Surfing	Surfing
+17.55642	1	Surfing	Surfing
+17.57318	1	Surfing	Surfing
+17.5901	1	Surfing	Surfing
+17.60617	1	Surfing	Surfing
+17.62269	1	Surfing	Surfing
+17.63956	1	Surfing	Surfing
+17.65587	1	Surfing	Surfing
+17.67274	1	Surfing	Surfing
+17.68904	1	Surfing	Surfing
+17.70602	1	Surfing	Surfing
+0	0		
+0.1152015	0		
+0.1321187	0		
+0.1482875	0		
+0.164922	0		
+0.1815655	0		
+0.1988491	0		
+0.2146677	0		
+0.2311857	0		
+0.2477231	0		
+0.2646512	0		
+0.2809676	0		
+0.2981217	0		
+0.3141783	0		
+0.3312418	0		
+0.3473246	0		
+0.3638282	0		
+0.3804742	0		
+0.3979137	0		
+0.4135922	0		
+0.4301681	0		
+0.4466997	0		
+0.4635958	0		
+0.4798667	0		
+0.4962541	0		
+1.657784	0	Walking	Walking
+1.773885	0	Walking	
+1.790359	0	Walking	Walking
+2.03922	0	Walking	
+2.072621	0	Walking	Walking
+2.221538	0	Walking	
+2.238562	0	Walking	Walking
+2.387164	0	Walking	
+2.453495	0	Walking	Walking
+2.785044	0	Walking	
+2.818352	0	Walking	Walking
+2.951056	0	Walking	
+2.967536	0	Walking	Walking
+3.547647	0	Walking	
+3.581053	0	Walking	Walking
+3.895954	0	Walking	
+3.945648	0	Walking	Walking
+4.078414	0	Walking	
+4.111397	0	Walking	Walking
+4.493335	0	Walking	
+4.509465	0	Walking	Walking
+4.840919	0	Walking	
+4.857648	0	Walking	Walking
+5.056781	0	Walking	
+5.106132	0	Walking	Walking
+5.255538	0	Walking	Walking
+5.271928	0	Walking	Walking
+7.095681	0	Walking	Walking
+7.112443	0	Walking	Walking
+7.129307	0	Walking	Walking
+7.311359	0	Walking	
+7.344886	0	Walking	Walking
+7.89159	0	Walking	
+7.941844	0	Walking	Walking
+8.140303	0	Walking	
+8.173455	0	Walking	Walking
+8.289577	0	Walking	
+8.323399	0	Walking	Walking
+8.488457	0	Walking	
+8.538691	0	Walking	Walking
+8.671434	0	Walking	
+8.738572	0	Walking	Walking
+8.819922	0	Walking	
+8.919374	0	Walking	Walking
+9.052147	0	Walking	
+9.069103	0	Walking	Walking
+9.201865	0	Walking	
+9.284139	0	Walking	Walking
+9.582515	0	Walking	
+9.64888	0	Walking	Walking
+9.815364	0	Walking	
+9.831279	0	Walking	Walking
+9.930945	0	Walking	
+10.03023	0	Walking	Walking
+10.17946	0	Walking	
+10.21355	0	Walking	Walking
+10.29566	0	Walking	
+10.39505	0	Walking	Walking
+10.52755	0	Walking	
+10.56072	0	Walking	Walking
+10.67716	0	Walking	
+10.77619	0	Walking	Walking
+11.48948	0	Walking	
+11.50574	0	Walking	Walking
+11.67169	0	Walking	Walking
+12.00338	0	Walking	Walking
+12.02056	0	Walking	Walking
+13.42991	0	Walking	Walking
+13.8103	0	Walking	Walking
+14.0265	0	Walking	Walking
+14.19167	0	Walking	Walking
+14.39132	0	Walking	Walking
+14.97083	0	Walking	Walking
+15.35276	0	Walking	Walking
+16.165	0	Walking	Walking
+16.54614	0	Walking	
+16.56235	0	Walking	Walking
+16.79444	0	Walking	
+16.92752	0	Walking	Walking
+17.04366	0	Walking	
+17.09322	0	Walking	Walking
+18.55216	0	Walking	
+18.73389	0	Walking	Walking
+19.66221	0	Walking	
+19.71237	0	Walking	Walking
+19.84472	0	Walking	Walking
+19.86118	0	Walking	Walking
+19.87772	0	Walking	Walking
+20.06026	0	Walking	
+20.07672	0	Walking	Walking
+20.24262	0	Walking	Walking
+20.62423	0	Walking	
+20.67348	0	Walking	Walking
+20.78963	0	Walking	
+20.87248	0	Walking	Walking
+21.22079	0	Walking	
+21.28736	0	Walking	Walking
+21.61864	0	Walking	
+21.66816	0	Walking	Walking
+21.81781	0	Walking	Walking
+22.03294	0	Walking	Walking
+22.21569	0	Walking	
+22.29831	0	Walking	Walking
+22.71272	0	Walking	
+22.72921	0	Walking	Walking
+23.65776	0	Walking	
+23.67457	0	Walking	Walking
+23.82352	0	Walking	
+23.88986	0	Walking	Walking
+24.05558	0	Walking	
+24.08877	0	Walking	Walking
+24.22135	0	Walking	
+24.25464	0	Walking	Walking
+24.37063	0	Walking	
+24.48658	0	Walking	Walking
+24.61927	0	Walking	Walking
+24.63581	0	Walking	Walking
+24.85139	0	Walking	
+24.96735	0	Walking	Walking
+25.23269	0	Walking	
+25.39888	0	Walking	Walking
+25.63045	0	Walking	
+25.77968	0	Walking	Walking
+25.9787	0	Walking	
+26.12822	0	Walking	Walking
+26.32725	0	Walking	
+26.46034	0	Walking	Walking
+26.64192	0	Walking	Walking
+26.65912	0	Walking	Walking
+26.8576	0	Walking	
+26.90726	0	Walking	Walking
+27.33801	0	Walking	
+27.3547	0	Walking	Walking
+27.53701	0	Walking	Walking
+27.55364	0	Walking	Walking
+27.57068	0	Walking	Walking
+27.73596	0	Walking	
+27.88544	0	Walking	Walking
+30.86956	0	Walking	
+31.01861	0	Walking	Walking
+31.13466	0	Walking	Walking
+31.15136	0	Walking	Walking
+31.33365	0	Walking	
+31.38334	0	Walking	Walking
+31.51606	0	Walking	
+31.56597	0	Walking	Walking
+31.73145	0	Walking	
+31.78133	0	Walking	Walking
+31.94762	0	Walking	Walking
+31.96387	0	Walking	Walking
+32.37807	0	Walking	Walking
+32.39472	0	Walking	Walking
+32.61023	0	Walking	
+32.64342	0	Walking	Walking
+32.82613	0	Walking	Walking
+33.27337	0	Walking	Walking
+33.47226	0	Walking	
+33.53866	0	Walking	Walking
+33.92014	0	Walking	
+34.30122	0	Walking	Walking
+34.91472	0	Walking	
+35.0638	0	Walking	Walking
+36.92106	0	Walking	Walking
+37.33594	0	Walking	Walking
+37.35257	0	Walking	Walking
+37.98202	0	Walking	Walking
+37.99894	0	Walking	Walking
+38.01536	0	Walking	Walking
+38.03213	0	Walking	Walking
+38.04832	0	Walking	Walking
+38.06506	0	Walking	Walking
+38.08168	0	Walking	Walking
+38.09799	0	Walking	Walking
+38.61205	0	Walking	Walking
+38.62843	0	Walking	Walking
+39.01024	0	Walking	Walking
+39.2087	0	Walking	Walking
+39.37459	0	Walking	Walking
+39.39156	0	Walking	Walking
+39.40753	0	Walking	Walking
+39.57412	0	Walking	
+39.60669	0	Walking	Walking
+39.75583	0	Walking	Walking
+39.7725	0	Walking	Walking
+40.17038	0	Walking	Walking
+40.18684	0	Walking	Walking
+43.70133	0	Walking	Walking
+43.71869	0	Walking	Walking
+43.73449	0	Walking	Walking
+43.75098	0	Walking	Walking
+43.76764	0	Walking	Walking
+43.78451	0	Walking	Walking
+43.95004	0	Walking	Walking
+44.08267	0	Walking	Walking
+44.09915	0	Walking	Walking
+44.11609	0	Walking	Walking
+44.13218	0	Walking	Walking
+44.31511	0	Walking	Walking
+44.94461	0	Walking	Walking
+44.96126	0	Walking	Walking
+44.97808	0	Walking	Walking
+45.16088	0	Walking	Walking
+45.50858	0	Walking	Walking
+45.52495	0	Walking	Walking
+0	0		
+0.0171032	0		
+0.03403435	0		
+0.1003562	0		
+0.1160762	0		
+0.1326723	0		
+0.1493303	0		
+0.1661607	0		
+0.1824102	0		
+0.1989449	0		
+0.2156814	0		
+0.2324113	0		
+0.2487194	0		
+0.2652423	0		
+0.2818461	0		
+0.3149427	0		
+0.3318553	0		
+0.3481788	0		
+0.3652699	0		
+0.3812888	0		
+0.3979248	0		
+0.4144499	0		
+0.4313677	0		
+0.4476215	0		
+0.4640731	0		
+0.4806921	0		
+0.4976338	0		
+0.5138802	0		
+0.5303008	0		
+0.5470109	0		
+0.5640013	0		
+0.5801624	0		
+0.5967293	0		
+0.7793506	1	Surfing	
+0.796017	2	Surfing	
+0.8123468	3	Surfing	
+0.8293601	4	Surfing	
+0.8462214	5	Surfing	
+1.30994	6	Surfing	
+1.326827	7	Surfing	
+1.343027	8	Surfing	
+1.359659	9	Surfing	
+1.376363	10	Surfing	
+1.392747	10	Surfing	Surfing
+9.168083	10	Surfing	Surfing
+9.184275	10	Surfing	Surfing
+9.200819	10	Surfing	Surfing
+9.217516	10	Surfing	Surfing
+9.234431	10	Surfing	Surfing
+9.250588	10	Surfing	Surfing
+9.267136	10	Surfing	Surfing
+9.284076	10	Surfing	Surfing
+9.301121	10	Surfing	Surfing
+9.31691	10	Surfing	Surfing
+9.333423	10	Surfing	Surfing
+9.350045	10	Surfing	Surfing
+9.367018	10	Surfing	Surfing
+9.383214	10	Surfing	Surfing
+0	0		
+0.1991008	0		
+0.2148363	0		
+0.2314386	0		
+0.2483561	0		
+0.2645535	0		
+0.2812472	0		
+0.2985258	0		
+0.3147691	0		
+0.3310651	0		
+0.3474751	0		
+0.3640135	0		
+0.3808281	0		
+0.3979164	0		
+0.4137099	0		
+0.4304467	0		
+0.447517	0		
+0.4635718	0		
+0.4800882	0		
+0.4967289	0		
+1.110783	0	Walking	Walking
+1.409913	0	Walking	
+1.442353	0	Walking	Walking
+1.790547	0	Walking	
+1.840197	0	Walking	Walking
+1.989413	0	Walking	Walking
+2.951007	0	Walking	
+2.968071	0	Walking	Walking
+3.945757	0	Walking	Walking
+3.962509	0	Walking	Walking
+3.978855	0	Walking	Walking
+3.995373	0	Walking	Walking
+4.012135	0	Walking	Walking
+4.028931	0	Walking	Walking
+4.045211	0	Walking	Walking
+4.061752	0	Walking	Walking
+4.078201	0	Walking	Walking
+4.09535	0	Walking	Walking
+4.608915	0	Walking	Walking
+4.625778	0	Walking	Walking
+4.642121	0	Walking	Walking
+4.658632	0	Walking	Walking
+4.675226	0	Walking	Walking
+4.89111	0	Walking	
+4.92399	0	Walking	Walking
+5.106339	0	Walking	Walking
+5.122981	0	Walking	Walking
+5.719656	0	Walking	Walking
+5.736242	0	Walking	Walking
+5.753023	0	Walking	Walking
+5.969033	0	Walking	
+6.018384	0	Walking	Walking
+6.167235	0	Walking	Walking
+6.764023	0	Walking	
+6.780618	0	Walking	Walking
+7.045999	0	Walking	
+7.244928	0	Walking	Walking
+9.267899	0	Walking	Walking
+9.284125	0	Walking	Walking
+9.300536	0	Walking	Walking
+9.499557	0	Walking	
+9.516287	0	Walking	Walking
+9.864625	0	Walking	
+9.897414	0	Walking	Walking
+10.26292	0	Walking	
+10.29548	0	Walking	Walking
+10.42798	0	Walking	
+10.44459	0	Walking	Walking
+10.66034	0	Walking	
+10.69336	0	Walking	Walking
+10.80932	0	Walking	
+10.85936	0	Walking	Walking
+11.04125	0	Walking	
+11.07446	0	Walking	Walking
+11.43925	0	Walking	
+11.5227	0	Walking	Walking
+11.88679	0	Walking	
+11.92041	0	Walking	Walking
+12.76555	0	Walking	Walking
+12.89823	0	Walking	
+12.98154	0	Walking	Walking
+14.98748	0	Walking	Walking
+15.00453	0	Walking	Walking
+15.0206	0	Walking	Walking
+15.41841	0	Walking	Walking
+16.03196	0	Walking	
+16.06567	0	Walking	Walking
+16.21428	0	Walking	
+16.23093	0	Walking	Walking
+16.43045	0	Walking	
+16.46346	0	Walking	Walking
+16.64547	0	Walking	Walking
+16.81108	0	Walking	
+16.87739	0	Walking	Walking
+17.27541	0	Walking	
+17.29189	0	Walking	Walking
+17.44106	0	Walking	Walking
+17.45812	0	Walking	Walking
+18.33628	0	Walking	
+18.45276	0	Walking	Walking
+20.62376	0	Walking	Walking
+20.6404	0	Walking	Walking
+20.65771	0	Walking	Walking
+20.6735	0	Walking	Walking
+20.69019	0	Walking	Walking
+20.97201	0	Walking	
+20.98889	0	Walking	Walking
+21.51924	0	Walking	Walking
+22.09945	0	Walking	Walking
+22.26546	0	Walking	
+22.29869	0	Walking	Walking
+22.94494	0	Walking	Walking
+22.96136	0	Walking	Walking
+22.97823	0	Walking	Walking
+23.12747	0	Walking	
+23.20994	0	Walking	Walking
+23.55815	0	Walking	
+23.59212	0	Walking	Walking
+23.75751	0	Walking	Walking
+23.77372	0	Walking	Walking
+23.97275	0	Walking	
+23.98975	0	Walking	Walking
+26.72504	0	Walking	Walking
+26.74145	0	Walking	Walking
+26.75826	0	Walking	Walking
+27.53734	0	Walking	Walking
+27.96855	0	Walking	Walking
+27.98494	0	Walking	Walking
+28.16723	0	Walking	Walking
+28.35013	0	Walking	Walking
+28.3665	0	Walking	Walking
+28.58182	0	Walking	Walking
+28.74755	0	Walking	
+28.76497	0	Walking	Walking
+29.19517	0	Walking	Walking
+29.57654	0	Walking	
+29.67603	0	Walking	Walking
+31.76468	0	Walking	Walking
+31.947	0	Walking	
+31.96361	0	Walking	Walking
+32.12989	0	Walking	Walking
+32.29512	0	Walking	
+32.32877	0	Walking	Walking
+32.52813	0	Walking	Walking
+32.69303	0	Walking	
+32.72676	0	Walking	Walking
+33.02473	0	Walking	
+33.12444	0	Walking	Walking
+33.30643	0	Walking	Walking
+33.47232	0	Walking	
+33.52246	0	Walking	Walking
+33.70451	0	Walking	Walking
+33.72129	0	Walking	Walking
+34.119	0	Walking	Walking
+34.13583	0	Walking	Walking
+34.38409	0	Walking	
+34.43412	0	Walking	Walking
+35.04736	0	Walking	
+35.16334	0	Walking	Walking
+37.65044	0	Walking	Walking
+37.66679	0	Walking	Walking
+37.68315	0	Walking	Walking
+37.84946	0	Walking	Walking
+38.06465	0	Walking	Walking
+38.08113	0	Walking	Walking
+39.29139	0	Walking	Walking
+39.30841	0	Walking	Walking
+39.32457	0	Walking	Walking
+39.34116	0	Walking	Walking
+39.85516	0	Walking	Walking
+39.87148	0	Walking	Walking
+39.88875	0	Walking	Walking
+39.90492	0	Walking	Walking
+40.0872	0	Walking	
+40.12032	0	Walking	Walking
+43.00545	0	Walking	Walking
+43.02185	0	Walking	Walking
+43.03888	0	Walking	Walking
+43.20443	0	Walking	Walking
+43.221	0	Walking	Walking
+43.80165	0	Walking	Walking
+43.95049	0	Walking	
+43.96727	0	Walking	Walking
+44.66308	0	Walking	Walking
+44.68046	0	Walking	Walking
+44.69696	0	Walking	Walking
+44.71291	0	Walking	Walking
+44.72961	0	Walking	Walking
+44.74619	0	Walking	Walking
+44.76329	0	Walking	Walking
+44.92847	0	Walking	Walking
+44.94494	0	Walking	Walking
+44.96192	0	Walking	Walking
+45.30988	0	Walking	Walking
+45.32636	0	Walking	Walking
+45.34295	0	Walking	Walking
+45.67463	0	Walking	Walking
+45.69149	0	Walking	Walking
+45.70755	0	Walking	Walking
+45.89043	0	Walking	Walking
+46.07267	0	Walking	Walking
+46.08949	0	Walking	Walking
+46.23816	0	Walking	
+46.33758	0	Walking	Walking
+48.1277	0	Walking	Walking
+48.14444	0	Walking	Walking
+48.3434	0	Walking	Walking
+48.54245	0	Walking	Walking
+48.55886	0	Walking	Walking
+48.89053	0	Walking	
+48.9073	0	Walking	Walking
+49.12251	0	Walking	Walking
+49.50423	0	Walking	
+49.52043	0	Walking	Walking
+50.53201	0	Walking	
+50.56525	0	Walking	Walking
+0	0		
+0.01684001	0		
+0.03296984	0		
+0.04970073	0		
+0.09938101	0		
+0.1163915	0		
+0.1327489	0		
+0.1490095	0		
+0.1656273	0		
+0.1821148	0		
+0.1990813	0		
+0.2153469	0		
+0.2319566	0		
+0.2483921	0		
+0.2652113	0		
+0.2815969	0		
+0.3148463	1		
+0.3316306	2		
+0.3479371	3		
+0.365004	4		
+0.3810362	5		
+0.3983619	6		
+0.4143088	7		
+0.4308795	8		
+0.4806456	9		
+0.4977851	10		
+0.5136607	11		
+0.5302657	12		
+0.5472052	13		
+0.5635269	14		
+0.5800653	15		
+0.596538	16		
+1.508826	1	Surfing	
+1.525459	2	Surfing	
+1.542832	2	Surfing	Surfing
+0	0		
+0.01716799	0		
+0.03387316	0		
+0.0502209	0		
+0.0674853	0		
+0.08370718	0		
+0.10004	0		
+0.116629	0		
+0.1331044	0		
+0.1500015	0		
+0.1661524	0		
+0.1827246	0		
+0.1997822	0		
+0.2163922	0		
+0.2325282	0		
+0.2489882	0		
+0.2656344	0		
+0.282582	0		
+0.2988631	0		
+0.3160073	0		
+0.3321039	0		
+0.3489938	0		
+0.365198	0		
+0.3817529	0		
+2.139558	1	Segway	
+2.155504	1	Segway	Segway
+18.56846	1	Segway	Segway
+18.58541	1	Segway	Segway
+18.60156	1	Segway	Segway
+0	0		
+0.01687628	0		
+0.03404551	0		
+0.0503511	0		
+0.06703395	0		
+0.08416411	0		
+0.1002729	0		
+0.1170797	0		
+0.1334829	0		
+0.1501807	0		
+0.1664584	0		
+0.1833597	0		
+0.199665	0		
+0.2165928	0		
+0.2330028	0		
+0.24953	0		
+0.2662548	0		
+0.2835942	0		
+0.2991995	0		
+0.3157397	0		
+0.3327552	0		
+0.3493233	0		
+0.3654764	0		
+0.3825188	0		
+0.3989903	0		
+0.4155535	0		
+1.275883	1	Segway	
+1.292594	1	Segway	Segway
+0	0		
+0.0159181	0		
+0.03253709	0		
+0.04908726	0		
+0.06659004	0		
+0.08207942	0		
+0.09884565	0		
+0.1154464	0		
+0.1328989	0		
+0.1485166	0		
+0.1650575	0		
+0.1816393	0		
+0.1986464	0		
+0.2147247	0		
+0.2313208	0		
+0.2478831	0		
+0.2653672	0		
+0.2810845	0		
+0.2977208	0		
+0.314723	0		
+0.3312276	0		
+0.3474513	0		
+0.364079	0		
+0.3806357	0		
+1.177521	1	Segway	
+1.19419	2	Segway	
+1.210899	2	Segway	Segway
+0	0		
+0.01596398	0		
+0.0323731	0		
+0.0488994	0		
+0.0657636	0		
+0.08215754	0		
+0.09869717	0		
+0.1152167	0		
+0.1328031	0		
+0.1485383	0		
+0.1650795	0		
+0.1817034	0		
+0.1983739	0		
+0.2148298	0		
+0.2312721	0		
+0.2480725	0		
+0.2653477	0		
+0.2810411	0		
+0.2975971	0		
+0.3143122	0		
+0.3310375	0		
+1.227326	1	Segway	
+1.243702	1	Segway	Segway
+39.67359	1	Segway	Segway
+39.69031	1	Segway	Segway
+39.70663	1	Segway	Segway
+39.72335	1	Segway	Segway
+0	0		
+0.01732887	0		
+0.0337752	0		
+0.05007862	0		
+0.06661019	0		
+0.08372206	0		
+0.09989715	0		
+0.11674	0		
+0.1330536	0		
+0.1497616	0		
+0.1660585	0		
+0.1830172	0		
+0.1992065	0		
+0.2160878	0		
+0.232947	0		
+0.2489804	0		
+0.2655303	0		
+0.2823784	0		
+0.2986102	0		
+0.3155974	0		
+0.3321107	0		
+0.3486758	0		
+0.3651131	0		
+0.3815892	0		
+0.3982094	0		
+0.4151654	0		
+0.4317214	0		
+0.4480044	0		
+0.4645657	0		
+0.4812231	0		
+0.4977023	0		
+0.5143036	0		
+0.5308076	0		
+0.5478265	0		
+0.5637935	0		
+0.5805009	0		
+0.5976652	0		
+1.110586	1	Segway	
+1.127388	2	Segway	
+1.143821	2	Segway	Segway
+0	0		
+0.01729136	0		
+0.03386075	0		
+0.05093575	0		
+0.0672001	0		
+0.08345609	0		
+0.09988753	0		
+0.1170357	0		
+0.1332622	0		
+0.1498939	0		
+0.1663771	0		
+0.1832838	0		
+0.1994434	0		
+0.2160909	0		
+0.2328912	0		
+0.2500297	0		
+0.2658006	0		
+0.2824407	0		
+0.2995854	0		
+0.3159583	0		
+0.3322694	0		
+0.3490769	0		
+0.3661978	0		
+0.3822984	0		
+0.3984838	0		
+0.4153157	0		
+0.4317468	0		
+0.4485745	0		
+0.4653633	0		
+1.392332	1	Segway	
+1.409031	1	Segway	Segway
+0	0		
+0.01714412	0		
+0.03385951	0		
+0.04971654	0		
+0.06623076	0		
+0.08330078	0		
+0.09939961	0		
+0.1159771	0		
+0.1326103	0		
+0.150363	0		
+0.1658173	0		
+0.1822931	0		
+0.1988513	0		
+0.2155667	0		
+0.2325543	0		
+0.2485806	0		
+0.2656422	0		
+0.2818474	0		
+0.2987001	0		
+0.3150104	0		
+0.09947307	0	Walking	Walking
+0.3155475	0	Walking	
+0.4144689	0	Walking	Walking
+0.5806352	0	Walking	
+0.6134764	0	Walking	Walking
+0.812377	0	Walking	Walking
+0.9784218	0	Walking	
+1.011375	0	Walking	Walking
+1.194321	0	Walking	Walking
+1.740579	0	Walking	
+1.774178	0	Walking	Walking
+2.453592	0	Walking	
+2.503726	0	Walking	Walking
+2.835295	0	Walking	
+2.868079	0	Walking	Walking
+3.19976	0	Walking	
+3.233229	0	Walking	Walking
+3.398637	0	Walking	Walking
+3.547723	0	Walking	
+3.581642	0	Walking	Walking
+3.96257	0	Walking	
+3.995948	0	Walking	Walking
+4.244782	0	Walking	
+4.310501	0	Walking	Walking
+5.720466	0	Walking	Walking
+6.267458	0	Walking	Walking
+6.284506	0	Walking	Walking
+6.466402	0	Walking	
+6.483199	0	Walking	Walking
+6.781571	0	Walking	
+6.847701	0	Walking	Walking
+7.262177	0	Walking	Walking
+7.82593	0	Walking	Walking
+7.84308	0	Walking	Walking
+8.00882	0	Walking	
+8.041448	0	Walking	Walking
+8.372857	0	Walking	
+8.40663	0	Walking	Walking
+8.571795	0	Walking	
+8.588416	0	Walking	Walking
+8.770626	0	Walking	
+8.804333	0	Walking	Walking
+9.019751	0	Walking	
+9.036139	0	Walking	Walking
+9.201734	0	Walking	
+9.268068	0	Walking	Walking
+9.400684	0	Walking	
+9.450502	0	Walking	Walking
+9.599686	0	Walking	
+9.649436	0	Walking	Walking
+9.798579	0	Walking	
+9.898083	0	Walking	Walking
+11.52252	0	Walking	Walking
+11.53903	0	Walking	Walking
+11.55539	0	Walking	Walking
+11.70438	0	Walking	
+11.75418	0	Walking	Walking
+11.93694	0	Walking	Walking
+11.95319	0	Walking	Walking
+11.96974	0	Walking	Walking
+12.08584	0	Walking	
+12.15243	0	Walking	Walking
+12.3351	0	Walking	Walking
+12.51678	0	Walking	Walking
+12.7159	0	Walking	Walking
+12.7332	0	Walking	Walking
+12.84848	0	Walking	
+12.89846	0	Walking	Walking
+13.11368	0	Walking	Walking
+13.19703	0	Walking	
+13.27943	0	Walking	Walking
+13.5116	0	Walking	Walking
+13.52865	0	Walking	Walking
+13.89284	0	Walking	Walking
+13.90939	0	Walking	Walking
+14.07515	0	Walking	Walking
+14.09188	0	Walking	Walking
+14.10841	0	Walking	Walking
+14.12541	0	Walking	Walking
+16.06464	0	Walking	Walking
+16.08114	0	Walking	Walking
+17.37493	0	Walking	Walking
+17.77258	0	Walking	Walking
+17.78935	0	Walking	Walking
+18.36913	0	Walking	Walking
+18.53492	0	Walking	Walking
+19.13162	0	Walking	
+19.2312	0	Walking	Walking
+19.77935	0	Walking	
+19.86157	0	Walking	Walking
+22.00052	0	Walking	Walking
+22.01736	0	Walking	Walking
+22.41545	0	Walking	Walking
+22.77982	0	Walking	Walking
+23.17771	0	Walking	Walking
+23.57595	0	Walking	Walking
+23.59271	0	Walking	Walking
+23.95678	0	Walking	Walking
+24.25547	0	Walking	
+24.27228	0	Walking	Walking
+24.76949	0	Walking	
+24.83545	0	Walking	Walking
+26.2112	0	Walking	Walking
+26.22746	0	Walking	Walking
+26.32697	0	Walking	Walking
+26.34397	0	Walking	Walking
+26.36008	0	Walking	Walking
+26.37649	0	Walking	Walking
+26.3932	0	Walking	Walking
+26.44291	0	Walking	Walking
+26.74161	0	Walking	Walking
+26.75794	0	Walking	Walking
+26.77439	0	Walking	Walking
+26.7911	0	Walking	Walking
+26.80799	0	Walking	Walking
+26.82428	0	Walking	Walking
+27.45424	0	Walking	Walking
+27.47124	0	Walking	Walking
+27.67023	0	Walking	Walking
+27.83562	0	Walking	Walking
+27.85215	0	Walking	Walking
+28.01829	0	Walking	Walking
+28.91302	0	Walking	
+28.94674	0	Walking	Walking
+29.59287	0	Walking	
+29.70884	0	Walking	Walking
+31.81579	0	Walking	
+31.89823	0	Walking	Walking
+32.52789	0	Walking	Walking
+32.69388	0	Walking	Walking
+32.71006	0	Walking	Walking
+32.97552	0	Walking	Walking
+33.17439	0	Walking	Walking
+33.58901	0	Walking	Walking
+33.60556	0	Walking	Walking
+33.75508	0	Walking	Walking
+34.33608	0	Walking	Walking
+34.35211	0	Walking	Walking
+34.51761	0	Walking	Walking
+34.53467	0	Walking	Walking
+34.73312	0	Walking	Walking
+34.74999	0	Walking	Walking
+34.76612	0	Walking	Walking
+34.91631	0	Walking	Walking
+34.93181	0	Walking	Walking
+35.26365	0	Walking	
+35.29716	0	Walking	Walking
+36.67242	0	Walking	Walking
+36.68864	0	Walking	Walking
+36.7057	0	Walking	Walking
+36.87137	0	Walking	Walking
+37.23553	0	Walking	Walking
+37.25214	0	Walking	Walking
+37.26912	0	Walking	Walking
+37.43453	0	Walking	
+37.46825	0	Walking	Walking
+37.61698	0	Walking	
+37.65008	0	Walking	Walking
+37.76614	0	Walking	
+37.83248	0	Walking	Walking
+37.9987	0	Walking	Walking
+38.18072	0	Walking	
+38.19783	0	Walking	Walking
+38.54586	0	Walking	
+38.5953	0	Walking	Walking
+38.87683	0	Walking	
+38.97635	0	Walking	Walking
+39.09231	0	Walking	
+39.14214	0	Walking	Walking
+39.27485	0	Walking	
+39.325	0	Walking	Walking
+39.47388	0	Walking	
+39.59008	0	Walking	Walking
+40.10371	0	Walking	
+40.20316	0	Walking	Walking
+42.11016	0	Walking	Walking
+42.12688	0	Walking	Walking
+42.1429	0	Walking	Walking
+42.32518	0	Walking	
+42.34171	0	Walking	Walking
+43.28694	0	Walking	
+43.32041	0	Walking	Walking
+43.63503	0	Walking	
+43.70195	0	Walking	Walking
+43.90042	0	Walking	Walking
+43.91719	0	Walking	Walking
+44.03292	0	Walking	
+44.06605	0	Walking	Walking
+44.44787	0	Walking	Walking
+0	0		
+0.01610285	0		
+0.03269704	0		
+0.04927418	0		
+0.06619759	0		
+0.08240646	0		
+0.09901429	0		
+0.1156909	0		
+0.1325616	0		
+0.1488279	0		
+0.1653563	0		
+0.1819762	0		
+0.1988721	0		
+0.2150784	0		
+0.2315899	0		
+0.248371	0		
+0.2650126	0		
+0.281414	0		
+0.2980445	0		
+0.3146793	0		
+0.3317682	0		
+0.3476444	0		
+0.4305249	1		
+0.4476383	2		
+0.4645573	3		
+0.4803077	4		
+0.4969162	5		
+0.513595	6		
+0.5303842	7		
+0.5467313	8		
+0.5633478	9		
+0.5805099	10		
+0.5966871	11		
+0.6128098	12		
+0.8792175	1	Surfing	
+0.8955857	2	Surfing	
+0.9120804	2	Surfing	Surfing
+9.018801	2	Surfing	Surfing
+9.035893	2	Surfing	
+9.516489	3	Surfing	
+9.533418	4	Surfing	
+9.549626	5	Surfing	
+9.565725	6	Surfing	
+9.582856	7	Surfing	
+9.599015	8	Surfing	
+9.615554	9	Surfing	
+9.632156	10	Surfing	
+9.649018	11	Surfing	
+9.665338	12	Surfing	
+9.681804	13	Surfing	
+9.698561	14	Surfing	
+9.715403	15	Surfing	
+9.732742	16	Surfing	
+10.79264	17	Surfing	
+10.95835	18	Surfing	
+11.63895	19	Surfing	
+11.65479	20	Surfing	
+11.67131	21	Surfing	
+11.68792	22	Surfing	
+11.70503	22	Surfing	Surfing
+0	0		
+0.01653002	0		
+0.03374916	0		
+0.04984426	0		
+0.06636901	0		
+0.08299947	0		
+0.09984351	0		
+0.1159423	0		
+0.1326934	0		
+0.1493936	0		
+0.1660947	0		
+0.1823092	0		
+0.1990587	0		
+0.2154228	0		
+0.2324957	0		
+0.2487365	0		
+0.2667476	0		
+0.2819065	0		
+0.2989648	0		
+0.3151721	0		
+0.3316693	0		
+0.3483456	0		
+0.3648297	0		
+0.3812841	0		
+0.3980693	0		
+0.4144564	0		
+0.4312093	0		
+0.4476364	0		
+0.4642774	0		
+0.5304829	0	Walking	Walking
+0.6632429	0	Walking	Walking
+1.243004	0	Walking	
+1.276295	0	Walking	Walking
+1.541387	0	Walking	
+1.673899	0	Walking	Walking
+1.806713	0	Walking	
+1.823393	0	Walking	Walking
+1.97255	0	Walking	
+2.038837	0	Walking	Walking
+2.403468	0	Walking	
+2.436564	0	Walking	Walking
+3.083739	0	Walking	
+3.166207	0	Walking	Walking
+3.464926	0	Walking	
+3.514196	0	Walking	Walking
+3.696644	0	Walking	Walking
+3.713249	0	Walking	Walking
+3.829323	0	Walking	
+3.862881	0	Walking	Walking
+4.16082	0	Walking	
+4.24468	0	Walking	Walking
+4.642083	0	Walking	
+4.873805	0	Walking	Walking
+5.636308	0	Walking	Walking
+5.653348	0	Walking	Walking
+5.984956	0	Walking	Walking
+6.001308	0	Walking	Walking
+6.81416	0	Walking	Walking
+6.830269	0	Walking	Walking
+7.592636	0	Walking	Walking
+7.80817	0	Walking	Walking
+7.957453	0	Walking	Walking
+7.974887	0	Walking	Walking
+8.107485	0	Walking	
+8.156353	0	Walking	Walking
+8.505413	0	Walking	Walking
+8.653677	0	Walking	Walking
+8.753055	0	Walking	
+8.869505	0	Walking	Walking
+8.969255	0	Walking	
+9.001999	0	Walking	Walking
+9.300675	0	Walking	
+9.383251	0	Walking	Walking
+9.549012	0	Walking	
+9.566001	0	Walking	Walking
+9.930286	0	Walking	Walking
+10.04635	0	Walking	
+10.09631	0	Walking	Walking
+10.26187	0	Walking	
+10.29558	0	Walking	Walking
+10.42801	0	Walking	
+10.44416	0	Walking	Walking
+10.66005	0	Walking	
+10.6764	0	Walking	Walking
+10.9585	0	Walking	
+10.99148	0	Walking	Walking
+11.92049	0	Walking	Walking
+12.1024	0	Walking	Walking
+12.30163	0	Walking	Walking
+12.50035	0	Walking	Walking
+12.81534	0	Walking	
+12.84835	0	Walking	Walking
+13.1474	0	Walking	
+13.22986	0	Walking	Walking
+13.5447	0	Walking	
+13.57866	0	Walking	Walking
+13.90926	0	Walking	
+13.94246	0	Walking	Walking
+14.29114	0	Walking	
+14.30731	0	Walking	Walking
+14.50668	0	Walking	Walking
+14.63964	0	Walking	
+14.65538	0	Walking	Walking
+15.20247	0	Walking	
+15.26879	0	Walking	Walking
+16.95968	0	Walking	Walking
+16.97728	0	Walking	Walking
+17.82197	0	Walking	
+17.85501	0	Walking	Walking
+18.41909	0	Walking	
+18.46843	0	Walking	Walking
+18.58447	0	Walking	Walking
+18.60117	0	Walking	Walking
+18.6185	0	Walking	Walking
+18.6346	0	Walking	Walking
+18.8165	0	Walking	
+18.83344	0	Walking	Walking
+19.13163	0	Walking	
+19.14872	0	Walking	Walking
+19.47977	0	Walking	
+19.51292	0	Walking	Walking
+19.67871	0	Walking	Walking
+19.82785	0	Walking	
+19.87755	0	Walking	Walking
+20.21026	0	Walking	
+20.2756	0	Walking	Walking
+20.42473	0	Walking	Walking
+20.59044	0	Walking	
+20.62382	0	Walking	Walking
+20.95534	0	Walking	
+21.02155	0	Walking	Walking
+22.92799	0	Walking	Walking
+22.94442	0	Walking	Walking
+23.11064	0	Walking	Walking
+23.12689	0	Walking	Walking
+23.75695	0	Walking	Walking
+24.46967	0	Walking	Walking
+24.68519	0	Walking	Walking
+25.39819	0	Walking	
+25.44783	0	Walking	Walking
+25.58071	0	Walking	
+25.61395	0	Walking	Walking
+25.7298	0	Walking	
+25.82954	0	Walking	Walking
+25.99513	0	Walking	
+26.01164	0	Walking	Walking
+26.34323	0	Walking	
+26.42645	0	Walking	Walking
+29.11215	0	Walking	Walking
+29.89179	0	Walking	Walking
+29.90776	0	Walking	Walking
+29.92442	0	Walking	Walking
+30.32212	0	Walking	Walking
+30.33945	0	Walking	Walking
+30.48797	0	Walking	
+30.53867	0	Walking	Walking
+30.68739	0	Walking	Walking
+30.70351	0	Walking	Walking
+30.72012	0	Walking	Walking
+31.06823	0	Walking	Walking
+31.41676	0	Walking	Walking
+31.43349	0	Walking	Walking
+31.83122	0	Walking	Walking
+31.89757	0	Walking	Walking
+32.22885	0	Walking	Walking
+34.50106	0	Walking	
+34.89766	0	Walking	Walking
+35.01373	0	Walking	Walking
+35.0303	0	Walking	Walking
+35.04725	0	Walking	Walking
+35.06342	0	Walking	Walking
+35.94223	0	Walking	Walking
+36.32404	0	Walking	Walking
+36.34004	0	Walking	Walking
+36.72171	0	Walking	Walking
+36.73787	0	Walking	Walking
+36.75467	0	Walking	Walking
+36.77119	0	Walking	Walking
+36.78783	0	Walking	Walking
+36.80422	0	Walking	Walking
+37.55059	0	Walking	Walking
+37.73341	0	Walking	Walking
+37.74929	0	Walking	Walking
+37.76596	0	Walking	Walking
+37.7829	0	Walking	Walking
+37.7992	0	Walking	Walking
+37.81575	0	Walking	Walking
+37.83226	0	Walking	Walking
+38.2966	0	Walking	Walking
+38.31381	0	Walking	Walking
+38.33028	0	Walking	Walking
+38.66118	0	Walking	Walking
+38.67783	0	Walking	Walking
+0	0		
+0.01653436	0		
+0.03327239	0		
+0.05004203	0		
+0.0662137	0		
+0.08348802	0		
+0.09957444	0		
+0.1162998	0		
+0.1325877	0		
+0.1491521	0		
+0.1825643	0		
+0.1998122	0		
+0.2155223	0		
+0.2320986	0		
+0.2488859	0		
+0.265211	0		
+0.281932	0		
+0.2985377	0		
+0.315117	0		
+0.3315078	0		
+0.3480707	0		
+0.4310869	1		
+0.447807	2		
+0.4641587	3		
+0.4806835	4		
+0.8298796	1	Surfing	
+0.8458655	2	Surfing	
+0.8625388	3	Surfing	
+0.8794182	3	Surfing	Surfing
+12.53349	3	Surfing	Surfing
+12.55021	3	Surfing	Surfing
+12.567	3	Surfing	Surfing
+12.58313	3	Surfing	Surfing
+12.59976	3	Surfing	Surfing
+12.6165	3	Surfing	Surfing
+12.6333	3	Surfing	Surfing
+12.64954	3	Surfing	Surfing
+12.6661	3	Surfing	Surfing
+12.68267	3	Surfing	Surfing
+12.69972	3	Surfing	Surfing
+12.71576	3	Surfing	Surfing
+12.73236	3	Surfing	Surfing
+12.74905	3	Surfing	Surfing
+12.76591	3	Surfing	Surfing
+12.78214	3	Surfing	Surfing
+12.79875	3	Surfing	Surfing
+12.81528	3	Surfing	Surfing
+12.83222	3	Surfing	Surfing
+12.84851	3	Surfing	Surfing
+12.86505	3	Surfing	Surfing
+12.88167	3	Surfing	Surfing
+0	0		
+0.01655079	0		
+0.03323922	0		
+0.05008141	0		
+0.06616876	0		
+0.08297313	0		
+0.09928337	0		
+0.1163029	0		
+0.1324928	0		
+0.1491193	0		
+0.1655647	0		
+0.1823483	0		
+0.1987778	0		
+0.2153863	0		
+0.2321209	0		
+0.2494848	0		
+0.2650911	0		
+0.2817017	0		
+0.2983817	0		
+0.3147041	0		
+0.3316631	0		
+0.3481169	0		
+0.3647377	0		
+0.3811382	0		
+0.3981592	0		
+0.4143678	0		
+0.4308361	0		
+0.4475311	0		
+0.465102	0		
+0.4813165	0		
+0.4972966	0		
+0.5137711	0		
+0.5310395	0		
+1.475557	0	Walking	Walking
+1.791158	0	Walking	
+1.823728	0	Walking	Walking
+2.967596	0	Walking	Walking
+3.116757	0	Walking	Walking
+3.498307	0	Walking	Walking
+3.514797	0	Walking	Walking
+4.277673	0	Walking	Walking
+4.426921	0	Walking	
+4.476244	0	Walking	Walking
+4.642039	0	Walking	Walking
+5.255575	0	Walking	Walking
+5.272198	0	Walking	Walking
+5.288539	0	Walking	Walking
+5.620192	0	Walking	
+5.686718	0	Walking	Walking
+6.250933	0	Walking	
+6.349679	0	Walking	Walking
+7.21156	0	Walking	Walking
+7.228041	0	Walking	Walking
+7.245104	0	Walking	Walking
+7.59284	0	Walking	Walking
+8.372647	0	Walking	
+8.405252	0	Walking	Walking
+8.587707	0	Walking	Walking
+9.350317	0	Walking	Walking
+9.515928	0	Walking	Walking
+9.532586	0	Walking	Walking
+10.07965	0	Walking	
+10.09664	0	Walking	Walking
+10.59354	0	Walking	
+10.61032	0	Walking	Walking
+10.79252	0	Walking	
+10.8261	0	Walking	Walking
+11.008	0	Walking	Walking
+11.77115	0	Walking	Walking
+11.98614	0	Walking	Walking
+12.06913	0	Walking	
+12.11888	0	Walking	Walking
+12.99757	0	Walking	Walking
+13.21363	0	Walking	Walking
+13.37897	0	Walking	Walking
+13.39533	0	Walking	Walking
+13.62751	0	Walking	Walking
+13.64413	0	Walking	Walking
+13.66068	0	Walking	Walking
+13.97601	0	Walking	
+14.04202	0	Walking	Walking
+14.39051	0	Walking	
+14.43978	0	Walking	Walking
+14.60609	0	Walking	Walking
+15.18602	0	Walking	Walking
+15.20247	0	Walking	Walking
+15.60038	0	Walking	Walking
+15.78279	0	Walking	
+15.81619	0	Walking	Walking
+15.99824	0	Walking	Walking
+16.3962	0	Walking	Walking
+17.15873	0	Walking	Walking
+17.17545	0	Walking	Walking
+17.92146	0	Walking	
+17.98803	0	Walking	Walking
+19.82804	0	Walking	Walking
+19.84468	0	Walking	Walking
+20.01067	0	Walking	Walking
+20.65762	0	Walking	
+20.67439	0	Walking	Walking
+20.87291	0	Walking	Walking
+21.03838	0	Walking	Walking
+21.18771	0	Walking	
+21.22087	0	Walking	Walking
+21.45352	0	Walking	Walking
+21.65225	0	Walking	
+21.70153	0	Walking	Walking
+21.86804	0	Walking	Walking
+22.05009	0	Walking	
+22.08295	0	Walking	Walking
+22.23229	0	Walking	Walking
+22.24857	0	Walking	Walking
+22.26593	0	Walking	Walking
+22.82887	0	Walking	
+22.86274	0	Walking	Walking
+23.17706	0	Walking	
+23.26041	0	Walking	Walking
+23.5914	0	Walking	
+23.64167	0	Walking	Walking
+25.51478	0	Walking	Walking
+26.06238	0	Walking	Walking
+26.07845	0	Walking	Walking
+26.42657	0	Walking	Walking
+27.32202	0	Walking	
+27.35537	0	Walking	Walking
+27.66994	0	Walking	
+27.7035	0	Walking	Walking
+27.78627	0	Walking	
+27.88548	0	Walking	Walking
+28.0514	0	Walking	
+28.08458	0	Walking	Walking
+28.23431	0	Walking	Walking
+28.39952	0	Walking	
+28.44913	0	Walking	Walking
+28.5489	0	Walking	
+28.58193	0	Walking	Walking
+28.69785	0	Walking	
+28.73125	0	Walking	Walking
+30.30559	0	Walking	Walking
+30.68694	0	Walking	Walking
+30.70364	0	Walking	Walking
+30.72112	0	Walking	Walking
+31.05166	0	Walking	Walking
+31.06876	0	Walking	Walking
+31.0848	0	Walking	Walking
+31.41708	0	Walking	Walking
+31.43296	0	Walking	Walking
+31.58224	0	Walking	
+31.61537	0	Walking	Walking
+31.93072	0	Walking	
+31.96357	0	Walking	Walking
+32.2951	0	Walking	
+32.31161	0	Walking	Walking
+32.67642	0	Walking	
+32.69343	0	Walking	Walking
+32.84223	0	Walking	Walking
+33.04112	0	Walking	
+33.05851	0	Walking	Walking
+33.19078	0	Walking	Walking
+33.20693	0	Walking	Walking
+33.40589	0	Walking	
+33.42255	0	Walking	Walking
+33.52214	0	Walking	
+33.55521	0	Walking	Walking
+33.6878	0	Walking	
+33.83684	0	Walking	Walking
+35.29683	0	Walking	Walking
+35.31265	0	Walking	Walking
+35.32896	0	Walking	Walking
+35.51184	0	Walking	Walking
+35.52848	0	Walking	Walking
+35.5446	0	Walking	Walking
+35.85944	0	Walking	Walking
+36.0752	0	Walking	Walking
+36.39008	0	Walking	
+36.42323	0	Walking	Walking
+36.5728	0	Walking	Walking
+36.68839	0	Walking	
+36.77174	0	Walking	Walking
+37.05318	0	Walking	
+37.1195	0	Walking	Walking
+37.41788	0	Walking	
+37.45165	0	Walking	Walking
+37.7499	0	Walking	
+37.83273	0	Walking	Walking
+38.34632	0	Walking	Walking
+38.9266	0	Walking	
+38.9441	0	Walking	Walking
+39.12572	0	Walking	Walking
+39.14202	0	Walking	Walking
+0	0		
+0.01674299	0		
+0.03401792	0		
+0.08338045	1		
+0.1002933	2		
+0.1166789	3		
+0.133031	4		
+0.1497287	5		
+0.1669708	6		
+0.1826858	7		
+0.2004992	8		
+0.2158801	9		
+0.2330431	9		
+0.265772	9		
+0.2827754	9		
+0.2989654	9		
+0.3154068	9		
+0.3321033	9		
+0.349173	9		
+0.3653093	9		
+0.3983077	10		
+0.415719	11		
+0.4319251	12		
+0.4486938	13		
+0.4644402	14		
+0.4811766	15		
+0.4982643	16		
+0.5143536	17		
+0.5308185	18		
+0.5486911	19		
+0.5643603	20		
+0.5805539	21		
+0.5976283	22		
+1.292976	1	Surfing	
+1.309554	2	Surfing	
+1.325858	3	Surfing	
+1.343237	3	Surfing	Surfing
+0	0		

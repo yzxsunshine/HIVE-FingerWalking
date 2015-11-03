@@ -18,6 +18,7 @@ public enum TRIAL_STATUS {
 };
 
 public enum TRAVEL_MODE_STATUS {
+	WAIT_SWITCH,
 	CORRECT_SWITCH,
 	INCORRECT_SWITCH,
 	NOT_SWITCH,
@@ -114,6 +115,10 @@ public class PlayerStatus : MonoBehaviour {
 		line += "\t";
 
 		switch (modeStatus) {
+		case TRAVEL_MODE_STATUS.WAIT_SWITCH:
+			line += "WAIT_SWITCH";
+			modeStatus = TRAVEL_MODE_STATUS.NOT_SWITCH;
+			break;
 		case TRAVEL_MODE_STATUS.CORRECT_SWITCH:
 			line += "CORRECT_SWITCH";
 			modeStatus = TRAVEL_MODE_STATUS.NOT_SWITCH;
@@ -137,7 +142,7 @@ public class PlayerStatus : MonoBehaviour {
 			triggerReset = false;
 		}
 		else
-			line += " ";
+			line += "NOT_RESET";
 		line += "\t";
 
 		if (triggerWaypoint) {
@@ -145,7 +150,7 @@ public class PlayerStatus : MonoBehaviour {
 			triggerWaypoint = false;
 		}
 		else
-			line += " ";
+			line += "NOT_WAYPOINT";
 		line += "\t";
 
 		line += transform.position.x + "\t" + transform.position.y + "\t" + transform.position.z + "\t";
@@ -198,6 +203,10 @@ public class PlayerStatus : MonoBehaviour {
 
 	public void CollisionExit() {
 		collisionStatus = COLLISION_STATUS.COLLISION_EXIT;
+	}
+
+	public void WaitSwitch() {
+		modeStatus = TRAVEL_MODE_STATUS.WAIT_SWITCH;
 	}
 
 	public void CorrectSwitch() {

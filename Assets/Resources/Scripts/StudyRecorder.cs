@@ -34,11 +34,12 @@ public class StudyRecorder : MonoBehaviour {
 
 		string fileName = trialDirectory + "/subject_" + ConfigurationHandler.subjectID;
 		fileName += "_context_switch.txt";
-		if (!File.Exists (fileName)) {
-			contextSwitchWriter = File.CreateText (fileName);
-		} else {
-			contextSwitchWriter = File.AppendText(fileName);
-		}
+		if (File.Exists (fileName)) {
+			File.Delete(fileName);
+		} 
+		contextSwitchWriter = File.CreateText (fileName);
+		string line = "#Time To Switch#\t#Num of Incorrect Switch#\t#Target Mode#\t#Current Mode#";
+		contextSwitchWriter.WriteLine(line);
 	}
 	
 	// Update is called once per frame
@@ -46,9 +47,9 @@ public class StudyRecorder : MonoBehaviour {
 	
 	}
 
-	public StreamWriter GenerateFileWriter(int controller, int level, int travelType) {
+	public StreamWriter GenerateFileWriter(int controller, int level, int travelType, int numPasses) {
 		string fileName = trialDirectory + "/subject_" + ConfigurationHandler.subjectID;
-		fileName += "_trial_" + controller + "_" + level + "_" + travelType;
+		fileName += "_trial_" + controller + "_" + level + "_" + travelType + "_" + numPasses;
 		fileName += ".txt";
 		if (File.Exists (fileName)) {
 			File.Delete(fileName);
@@ -79,7 +80,7 @@ public class StudyRecorder : MonoBehaviour {
 	}
 
 	public bool RecordContextSwitch(float timeStamp, int errorSwitchNum, TRAVEL_TYPE targetMode, TRAVEL_TYPE currentMode) {
-		string line = "" + timeStamp + "_" + errorSwitchNum + "_[T]";
+		string line = "" + timeStamp + "\t" + errorSwitchNum + "\t";
 		switch (targetMode) {
 		case TRAVEL_TYPE.WALKING:
 			line += "Walking";
@@ -91,7 +92,7 @@ public class StudyRecorder : MonoBehaviour {
 			line += "Surfing";
 			break;
 		}
-		line += "_[C]";
+		line += "\t";
 		switch (currentMode) {
 		case TRAVEL_TYPE.WALKING:
 			line += "Walking";

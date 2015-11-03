@@ -174,7 +174,7 @@ public class SegwayPathController : MonoBehaviour {
 		}
 	}
 	
-	public StoreTransform SetSegwayPath (int difficulty, int startPointID, int LorR) {
+	public StoreTransform SetSegwayPath (int difficulty, int startPointID, int LorR, int numPasses) {
 		if (difficulty > 3) {
 			difficulty = 3;
 		}
@@ -190,7 +190,7 @@ public class SegwayPathController : MonoBehaviour {
 		arrowControl.SetTarget (wayPointTriggers [wayPoints [1]].transform);
 		currentWayPts = wayPoints;
 		timeStampWayPoints = new float[wayPoints.Length];
-		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), difficulty, (int) TRAVEL_TYPE.SEGWAY);
+		recorder.GenerateFileWriter ((int) playerStatus.GetControlType(), difficulty, (int) TRAVEL_TYPE.SEGWAY, numPasses);
 		timeStamp = 0;
 		string instruction = "#Segway Trial Path#";
 		recorder.RecordLine(instruction);
