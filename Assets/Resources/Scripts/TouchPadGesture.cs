@@ -10,6 +10,7 @@ public class ForcePadParams {
 	public float minFingerSpeed;
 	public float maxFingerSpeed;	// clamp
 	public float walkingAngularSpeed;
+	public float walkingSpeedScale;
 	
 	public float surfingSpeed;	// pay attention to the x or y axis related parameters, they will be influenced by screen resolution
 	public float surfingPitchSpeed;
@@ -24,6 +25,7 @@ public class ForcePadParams {
 		minFingerMove = 5.0f;
 		minFingerSpeed = 2.0f;
 		maxFingerSpeed = 10.0f;
+		walkingSpeedScale = 1.5f;
 		walkingAngularSpeed = 10f;
 		
 		surfingSpeed = 100.0f;	
@@ -434,7 +436,7 @@ public class TouchPadGesture : MonoBehaviour {
 				else {
 					move = move * diff.magnitude;//((diff.magnitude - minFingerSpeed) * speedScale + minCharSpeed);
 				}
-				moveVel = move;
+				moveVel = move * forcePadParams.walkingSpeedScale;
 				//Vector3 walkingRot = walkingRotVelQueue.GetAvgVelocity(new Vector3(walkingAngleSpeed * move.x, 0, 0), gestureType);
 				//this.transform.Rotate(0.0f, walkingRot.x, 0.0f);
 				//velocity = transform.TransformDirection(move.z * new Vector3(0, 0, 1));

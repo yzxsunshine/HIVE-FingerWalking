@@ -63,6 +63,7 @@ public class ConfigurationHandler {
 		forcePadParams.minFingerMove = float.Parse(forcepadNode.Attributes.GetNamedItem ("min_finger_move").Value);
 		forcePadParams.minFingerSpeed = float.Parse(forcepadNode.Attributes.GetNamedItem ("min_finger_speed").Value);
 		forcePadParams.maxFingerSpeed = float.Parse(forcepadNode.Attributes.GetNamedItem ("max_finger_speed").Value);
+		forcePadParams.walkingSpeedScale = float.Parse(forcepadNode.Attributes.GetNamedItem ("walking_speed_scale").Value);
 		forcePadParams.walkingAngularSpeed = float.Parse(forcepadNode.Attributes.GetNamedItem ("walking_angular_speed").Value);
 
 		forcePadParams.segwaySpeed = float.Parse(forcepadNode.Attributes.GetNamedItem ("segway_speed").Value);

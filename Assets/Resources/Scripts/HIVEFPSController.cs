@@ -7,7 +7,7 @@ public class HIVEFPSController : MonoBehaviour {
 	public float speed = 10.0f;
 	public float gravity = 10.0f;
 	public float maxWalkingVelocityIncrease = 1.0f;
-	public float maxWalkingVelocityDecrease = -1.0f;
+	public float maxWalkingVelocityDecrease = -0.3f;
 	public float maxSegwayVelocityIncrease = 5.0f;
 	public float maxSegwayVelocityDecrease = -2.0f;
 	public float maxSurfVelocityIncrease = 10.0f;

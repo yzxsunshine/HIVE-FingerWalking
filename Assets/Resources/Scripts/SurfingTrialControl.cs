@@ -63,12 +63,14 @@ public class SurfingTrialControl : MonoBehaviour {
 	private float sumDistance = 0;
 	private int frameNum = 0;
 	private float[,] bellFactors = new float[4, 3];
+	private GameObject virtualGoal;
 	// Use this for initialization
 	void Awake () {
 		character = GameObject.Find("Character");
 		playerStatus = character.GetComponent<PlayerStatus> ();
 		recorder = GameObject.Find ("StudyRecorder").GetComponent<StudyRecorder> ();
 		arrowControl = GameObject.Find ("arrow").GetComponent<ArrowControl> ();
+		virtualGoal = new GameObject();
 		bellFactors[0, 0] = 0.2f;
 		bellFactors[0, 1] = 2.0f;
 		bellFactors[0, 2] = 30.0f;
@@ -108,13 +110,24 @@ public class SurfingTrialControl : MonoBehaviour {
 				//wayPoints[i].GetComponent<Renderer>().enabled = false;
 				GameObject.Destroy(wayPoints[i]);
 			}
+
+			bool nextGoalSet = false;
 			for (int i = passedSphereNum; i < wayPointNum; i++) {
 				if(wayPoints[i] != null) {
 					float alpha = 1.0f * (wayPointNum - i + passedSphereNum - 1) / wayPointNum;
 					Color color = wayPoints[i].GetComponent<Renderer>().material.color;
 					color.a = 0.8f * alpha * alpha * alpha;
 					wayPoints[i].GetComponent<Renderer>().material.color = color;
+					if (!nextGoalSet && i < wayPointNum - 3) {
+						Vector3 virtualGoalPosition = virtualGoal.transform.position;
+						virtualGoalPosition.y = wayPoints[i + 3].transform.position.y;
+						virtualGoal.transform.position = virtualGoalPosition;
+						nextGoalSet = true;
+					}
 				}
+			}
+			if (!nextGoalSet) {
+				virtualGoal.transform.position = GameObject.Find("Goal(Clone)").transform.position;
 			}
 			//playerStatus.TrigerWayPoint();
 			playerStatus.SetWayPoint(GetClosetPointOnPath(currentPos));
@@ -208,7 +221,8 @@ public class SurfingTrialControl : MonoBehaviour {
 		startTransform.position = startPt;
 		startTransform.forward = endPt - startPt;
 		startTransform.forward.Normalize();
-		arrowControl.SetTarget (GoalScript.CreateGoal(endPt).transform);
+		virtualGoal.transform.position = GoalScript.CreateGoal(endPt).transform.position;
+		arrowControl.SetTarget (virtualGoal.transform);
 		averageDistance = -1;
 		sumDistance = 0;
 		frameNum = 0;
