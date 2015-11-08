@@ -5,12 +5,12 @@
     uiva_ip_address = "localhost">
   </devices>
   <subject
-    subject_id = "3" 
-	controller_type = "forcepad">
+    subject_id = "7" 
+	controller_type = "joystick">
   </subject>
   <travel_interfaces>
 	  <joystick
-		walking_speed = "10.0"
+		walking_speed = "15.0"
 		walking_angular_speed = "1.0"
 		segway_speed = "50.0"
 		segway_angular_speed = "1.0"
@@ -21,8 +21,9 @@
 	  <forcepad
 		min_finger_move = "5.0"
 		min_finger_speed = "5.0"
-		max_finger_speed = "12.0"
+		max_finger_speed = "15.0"
 		walking_angular_speed = "3.0"
+		walking_speed_scale = "1.5"
 		segway_speed = "60.0"
 		segway_pressure_angular_speed = "10.0"
 		segway_angular_speed = "0.01"

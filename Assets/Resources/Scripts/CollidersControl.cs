@@ -22,10 +22,17 @@ public class CollidersControl : MonoBehaviour {
 			//trigger.transform.localScale = new Vector3(walls[i].transform.localScale.x * transform.localScale.x
 			//                                           , walls[i].transform.localScale.y * transform.localScale.y
 			//                                           , walls[i].transform.localScale.z * transform.localScale.z);
+			BoxCollider boxCollider = trigger.GetComponent<BoxCollider>();
+			if (boxCollider != null) {
+				boxCollider.size = new Vector3(1.2f, 1.0f, 1.0f);
+				boxCollider.isTrigger = true;
+			}
 
-			trigger.GetComponent<BoxCollider>().size = new Vector3(1.2f, 1.0f, 1.0f);
-
-			trigger.GetComponent<BoxCollider>().isTrigger = true;
+			CapsuleCollider cylinderCollider = trigger.GetComponent<CapsuleCollider>();
+			if (cylinderCollider != null) {
+				cylinderCollider.radius = 0.6f;
+				cylinderCollider.isTrigger = true;
+			}
 			trigger.AddComponent<CollisionEvent>();
 			trigger.GetComponent<MeshRenderer>().enabled = false;
 			walls[i].GetComponent<MeshRenderer>().enabled = false;
@@ -38,4 +45,33 @@ public class CollidersControl : MonoBehaviour {
 	
 	}
 
+	public void DisableAllBlocker() {
+		GameObject[] walls = GameObject.FindGameObjectsWithTag("TriggerWall");
+		for (int i=0; i<walls.Length; i++) {
+			BoxCollider boxCollider = walls[i].GetComponent<BoxCollider>();
+			if (boxCollider != null && boxCollider.isTrigger == false) {
+				boxCollider.enabled = false;
+			}
+			
+			CapsuleCollider cylinderCollider = walls[i].GetComponent<CapsuleCollider>();
+			if (cylinderCollider != null && cylinderCollider.isTrigger == false) {
+				cylinderCollider.enabled = false;
+			}
+		}
+	}
+
+	public void EnableAllBlocker() {
+		GameObject[] walls = GameObject.FindGameObjectsWithTag("TriggerWall");
+		for (int i=0; i<walls.Length; i++) {
+			BoxCollider boxCollider = walls[i].GetComponent<BoxCollider>();
+			if (boxCollider != null && boxCollider.isTrigger == false) {
+				boxCollider.enabled = true;
+			}
+			
+			CapsuleCollider cylinderCollider = walls[i].GetComponent<CapsuleCollider>();
+			if (cylinderCollider != null && cylinderCollider.isTrigger == false) {
+				cylinderCollider.enabled = true;
+			}
+		}
+	}
 }

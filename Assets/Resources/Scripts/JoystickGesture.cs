@@ -38,6 +38,10 @@ public class JoystickGesture : MonoBehaviour {
 
 	private TrainingManager trainingManager;
 	private bool trainingResponse = false;
+	private float calibratedLH = 0.0f;
+	private float calibratedLV = 0.0f;
+	private float calibratedRH = 0.0f;
+	private float calibratedRV = 0.0f;
 	// Use this for initialization
 	void Start () {
 		timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
@@ -57,15 +61,15 @@ public class JoystickGesture : MonoBehaviour {
 			}
 		}
 		//GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
-		if(Input.GetKey("joystick button 0")) {
+		if(Input.GetKeyDown("joystick button 0")) {
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.WALKING);
 			Debug.Log("Walking");
 		}
-		else if(Input.GetKey("joystick button 1")) {
+		else if(Input.GetKeyDown("joystick button 1")) {
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.SEGWAY);
 			Debug.Log("Segway");
 		}
-		else if(Input.GetKey("joystick button 2")) {
+		else if(Input.GetKeyDown("joystick button 2")) {
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.SURFING);
 			Debug.Log("Surfing");
 		}
@@ -79,25 +83,25 @@ public class JoystickGesture : MonoBehaviour {
 				timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
 			}
 		}
-		else if(Input.GetKey("joystick button 4")) {
+		else if(Input.GetKeyDown("joystick button 4")) {
 			flipLeftRight = ! flipLeftRight;
 			Debug.Log("Flip left and right");
 		}
-		else if(Input.GetKey("joystick button 5")) {
+		else if(Input.GetKeyDown("joystick button 5")) {
 			flipSurfPitch = ! flipSurfPitch;
 			Debug.Log("Flip surfing pitch");
 		}
 
 		if (flipLeftRight) {
-			rightHorizontal = Input.GetAxis ("Horizontal") * 1.0f;
-			rightVertical = Input.GetAxis ("Vertical") * 1.0f;
-			leftHorizontal = Input.GetAxis ("ZHorizontal") * 1.0f;
-			leftVertical = Input.GetAxis ("ZVertical") * 1.0f;
+			rightHorizontal = Input.GetAxis ("Horizontal") * 1.0f - calibratedLH;
+			rightVertical = Input.GetAxis ("Vertical") * 1.0f - calibratedLV;
+			leftHorizontal = Input.GetAxis ("ZHorizontal") * 1.0f - calibratedRH;
+			leftVertical = Input.GetAxis ("ZVertical") * 1.0f - calibratedRV;
 		} else {
-			rightHorizontal = Input.GetAxis ("ZHorizontal") * 1.0f;
-			rightVertical = -Input.GetAxis ("ZVertical") * 1.0f;
-			leftHorizontal = Input.GetAxis ("Horizontal") * 1.0f;
-			leftVertical = -Input.GetAxis ("Vertical") * 1.0f;
+			rightHorizontal = Input.GetAxis ("ZHorizontal") * 1.0f - calibratedRH;
+			rightVertical = -Input.GetAxis ("ZVertical") * 1.0f - calibratedRV;
+			leftHorizontal = Input.GetAxis ("Horizontal") * 1.0f - calibratedLH;
+			leftVertical = -Input.GetAxis ("Vertical") * 1.0f - calibratedLV;
 		}
 		//Vector3 moveVel = velQueue.GetAvgVelocity(velocity, gestureType);
 		//controller.SendMessage("SetVelocity", moveVel);
@@ -132,6 +136,13 @@ public class JoystickGesture : MonoBehaviour {
 
 		travelModelInterface.SetVelocity (moveVel, rotVel);
 		timerDoubleClick += Time.deltaTime;
+	}
+
+	public void Calibrate() {
+		calibratedLH = Input.GetAxis ("Horizontal") * 1.0f;
+		calibratedLV = Input.GetAxis ("Vertical") * 1.0f;
+		calibratedRH = Input.GetAxis ("ZHorizontal") * 1.0f;
+		calibratedRV = Input.GetAxis ("ZVertical") * 1.0f;
 	}
 
 	public void SetTrainingResponse(bool response) {

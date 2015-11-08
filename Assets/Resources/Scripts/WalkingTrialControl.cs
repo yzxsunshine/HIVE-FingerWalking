@@ -12,7 +12,7 @@ public class WalkingPathGenerator {
 
 public class WalkingPath {
 	public Vector3[] wayPoints;
-	static public float segmentDistance = 36.0f / 20.0f;
+	static public float segmentDistance = 30.0f / 20.0f;
 	static public float[] angleList = new float[3]{72, 108, 144};
 	public static WalkingPathGenerator[] pathGenerators = new WalkingPathGenerator[4];
 
@@ -35,36 +35,36 @@ public class WalkingPath {
 		pathGenerators[0].paths[0, 0] = 0;	pathGenerators[0].paths[1, 0] = 0;
 		pathGenerators[0].paths[0, 1] = 0;	pathGenerators[0].paths[1, 1] = 0;
 		pathGenerators[0].paths[0, 2] = 0;	pathGenerators[0].paths[1, 2] = 0;
-		pathGenerators[0].paths[0, 3] = 0;	pathGenerators[0].paths[1, 3] = 0;
-		pathGenerators[0].paths[0, 4] = 0;	pathGenerators[0].paths[1, 4] = 0;
+		pathGenerators[0].paths[0, 3] = 0;	pathGenerators[0].paths[1, 3] = 1;
+		pathGenerators[0].paths[0, 4] = 0;	pathGenerators[0].paths[1, 4] = 1;
 		
 		pathGenerators[1] = new WalkingPathGenerator(7);
 		pathGenerators[1].paths[0, 0] = 0;	pathGenerators[1].paths[1, 0] = 0;
 		pathGenerators[1].paths[0, 1] = 0;	pathGenerators[1].paths[1, 1] = 0;
 		pathGenerators[1].paths[0, 2] = 0;	pathGenerators[1].paths[1, 2] = 0;
-		pathGenerators[1].paths[0, 3] = 1;	pathGenerators[1].paths[1, 3] = 0;
-		pathGenerators[1].paths[0, 4] = 1;	pathGenerators[1].paths[1, 4] = 0;
-		pathGenerators[1].paths[0, 5] = 1;	pathGenerators[1].paths[1, 5] = 0;
+		pathGenerators[1].paths[0, 3] = 1;	pathGenerators[1].paths[1, 3] = 1;
+		pathGenerators[1].paths[0, 4] = 1;	pathGenerators[1].paths[1, 4] = 1;
+		pathGenerators[1].paths[0, 5] = 1;	pathGenerators[1].paths[1, 5] = 1;
 		pathGenerators[1].paths[0, 6] = 0;	pathGenerators[1].paths[1, 6] = 0;
 		
 		pathGenerators[2] = new WalkingPathGenerator(7);
 		pathGenerators[2].paths[0, 0] = 0;	pathGenerators[2].paths[1, 0] = 0;
 		pathGenerators[2].paths[0, 1] = 0;	pathGenerators[2].paths[1, 1] = 0;
 		pathGenerators[2].paths[0, 2] = 1;	pathGenerators[2].paths[1, 2] = 0;
-		pathGenerators[2].paths[0, 3] = 1;	pathGenerators[2].paths[1, 3] = 0;
-		pathGenerators[2].paths[0, 4] = 1;	pathGenerators[2].paths[1, 4] = 0;
-		pathGenerators[2].paths[0, 5] = 2;	pathGenerators[2].paths[1, 5] = 0;
+		pathGenerators[2].paths[0, 3] = 1;	pathGenerators[2].paths[1, 3] = 1;
+		pathGenerators[2].paths[0, 4] = 1;	pathGenerators[2].paths[1, 4] = 1;
+		pathGenerators[2].paths[0, 5] = 2;	pathGenerators[2].paths[1, 5] = 1;
 		pathGenerators[2].paths[0, 6] = 2;	pathGenerators[2].paths[1, 6] = 0;
 		
 		pathGenerators[3] = new WalkingPathGenerator(9);
 		pathGenerators[3].paths[0, 0] = 0;	pathGenerators[3].paths[1, 0] = 0;
 		pathGenerators[3].paths[0, 1] = 1;	pathGenerators[3].paths[1, 1] = 0;
 		pathGenerators[3].paths[0, 2] = 2;	pathGenerators[3].paths[1, 2] = 0;
-		pathGenerators[3].paths[0, 3] = 2;	pathGenerators[3].paths[1, 3] = 0;
-		pathGenerators[3].paths[0, 4] = 2;	pathGenerators[3].paths[1, 4] = 0;
-		pathGenerators[3].paths[0, 5] = 2;	pathGenerators[3].paths[1, 5] = 0;
+		pathGenerators[3].paths[0, 3] = 2;	pathGenerators[3].paths[1, 3] = 1;
+		pathGenerators[3].paths[0, 4] = 2;	pathGenerators[3].paths[1, 4] = 1;
+		pathGenerators[3].paths[0, 5] = 2;	pathGenerators[3].paths[1, 5] = 1;
 		pathGenerators[3].paths[0, 6] = 2;	pathGenerators[3].paths[1, 6] = 0;
-		pathGenerators[3].paths[0, 7] = 2;	pathGenerators[3].paths[1, 7] = 0;
+		pathGenerators[3].paths[0, 7] = 2;	pathGenerators[3].paths[1, 7] = 1;
 		pathGenerators[3].paths[0, 8] = 2;	pathGenerators[3].paths[1, 8] = 0;
 	}
 }

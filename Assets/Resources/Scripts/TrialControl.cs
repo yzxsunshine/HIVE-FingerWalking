@@ -184,6 +184,10 @@ public class TrialControl : MonoBehaviour {
 			ResetToLatestPoint();
 		}
 
+		if(Input.GetKeyDown(KeyCode.Q)) {
+			Application.Quit();
+		}
+
 		if(Input.GetKeyDown(KeyCode.Space)) {
 			deviceManager.CalibrateCamera();
 			if (!HMDCalibrated && !inBreak) {
@@ -301,7 +305,7 @@ public class TrialControl : MonoBehaviour {
 				modeStr = "Surfing";
 				break;
 			}
-			modeSwitchText.text = "Switch to " + modeStr + " mode.";
+			modeSwitchText.text = "Use " + modeStr + " mode.";
 			modeSwitchText.enabled = true;
 			character.GetComponent<TravelModelInterface>().SetTargetGestureType (trialSequence[currentTrialID].mode);
 		}
@@ -351,6 +355,8 @@ public class TrialControl : MonoBehaviour {
 		int closestPtID = startWayPointCalculator.GetClosestWayPointID(character.transform);
 		trainingManager.StartTraining(startWayPointCalculator.GetTransformByID(closestPtID));
 		playerStatus.EnableControl(controlType);
+		playerStatus.CalibrateControlDevice(controlType);
+
 		inTraining = true;
 	}
 

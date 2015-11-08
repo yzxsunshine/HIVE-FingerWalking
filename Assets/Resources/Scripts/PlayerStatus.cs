@@ -20,7 +20,9 @@ public enum TRIAL_STATUS {
 public enum TRAVEL_MODE_STATUS {
 	WAIT_SWITCH,
 	CORRECT_SWITCH,
-	INCORRECT_SWITCH,
+	INCORRECT_SWITCH_TO_WALKING,
+	INCORRECT_SWITCH_TO_SEGWAY,
+	INCORRECT_SWITCH_TO_SURFING,
 	NOT_SWITCH,
 	IDLE_SWITCH
 };
@@ -123,8 +125,16 @@ public class PlayerStatus : MonoBehaviour {
 			line += "CORRECT_SWITCH";
 			modeStatus = TRAVEL_MODE_STATUS.NOT_SWITCH;
 			break;
-		case TRAVEL_MODE_STATUS.INCORRECT_SWITCH:
-			line += "INCORRECT_SWITCH";
+		case TRAVEL_MODE_STATUS.INCORRECT_SWITCH_TO_WALKING:
+			line += "INCORRECT_SWITCH_TO_WALKING";
+			modeStatus = TRAVEL_MODE_STATUS.NOT_SWITCH;
+			break;
+		case TRAVEL_MODE_STATUS.INCORRECT_SWITCH_TO_SEGWAY:
+			line += "INCORRECT_SWITCH_TO_SEGWAY";
+			modeStatus = TRAVEL_MODE_STATUS.NOT_SWITCH;
+			break;
+		case TRAVEL_MODE_STATUS.INCORRECT_SWITCH_TO_SURFING:
+			line += "INCORRECT_SWITCH_TO_SURFING";
 			modeStatus = TRAVEL_MODE_STATUS.NOT_SWITCH;
 			break;
 		case TRAVEL_MODE_STATUS.NOT_SWITCH:
@@ -213,8 +223,16 @@ public class PlayerStatus : MonoBehaviour {
 		modeStatus = TRAVEL_MODE_STATUS.CORRECT_SWITCH;
 	}
 
-	public void IncorrectSwitch() {
-		modeStatus = TRAVEL_MODE_STATUS.INCORRECT_SWITCH;
+	public void IncorrectSwitchToWalking() {
+		modeStatus = TRAVEL_MODE_STATUS.INCORRECT_SWITCH_TO_WALKING;
+	}
+
+	public void IncorrectSwitchToSegway() {
+		modeStatus = TRAVEL_MODE_STATUS.INCORRECT_SWITCH_TO_SEGWAY;
+	}
+
+	public void IncorrectSwitchToSurfing() {
+		modeStatus = TRAVEL_MODE_STATUS.INCORRECT_SWITCH_TO_SURFING;
 	}
 
 	public void IdleSwitch() {
@@ -240,5 +258,11 @@ public class PlayerStatus : MonoBehaviour {
 
 	public int GetCollisionNum() {
 		return segwayCollisionNum;
+	}
+
+	public void CalibrateControlDevice(CONTROL_TYPE controlType) {
+		if (controlType == CONTROL_TYPE.JOYSTICK) {
+			GetComponent<JoystickGesture>().Calibrate();
+		}
 	}
 }

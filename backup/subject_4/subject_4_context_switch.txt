@@ -1,0 +1,87 @@
+#Time To Switch#	#Num of Incorrect Switch#	#Target Mode#	#Current Mode#
+12.54991	0	Walking	Walking
+0	0		
+3.199402	0	Walking	Walking
+0	0		
+4.890742	0	Segway	Segway
+0	0		
+1.525445	0	Segway	Segway
+0	0		
+1.441908	0	Surfing	Surfing
+0	0		
+1.492774	0	Surfing	Surfing
+0	0		
+15.18951	0	Walking	Walking
+0	0		
+1.890011	0	Walking	Walking
+0	0		
+3.928105	0	Segway	Segway
+0	0		
+1.044456	1	Walking	
+1.061067	2	Walking	
+1.077592	3	Walking	
+1.0949	4	Walking	
+1.110934	5	Walking	
+1.127387	6	Walking	
+1.144026	7	Walking	
+1.16077	8	Walking	
+1.176969	9	Walking	
+2.602716	9	Walking	Walking
+0	0		
+6.134163	0	Segway	Segway
+0	0		
+8.007348	0	Surfing	Surfing
+0	0		
+2.320987	0	Segway	Segway
+0	0		
+0.5306544	0	Surfing	Surfing
+0	0		
+57.94242	0	Surfing	Surfing
+0	0		
+2.138963	0	Surfing	Surfing
+0	0		
+5.503988	0	Segway	Segway
+0	0		
+1.061424	0	Surfing	Surfing
+0	0		
+3.979091	0	Segway	Segway
+0	0		
+1.558838	0	Surfing	Surfing
+0	0		
+6.034617	1	Segway	
+6.051274	2	Segway	
+6.068167	3	Segway	
+6.084478	4	Segway	
+6.100983	5	Segway	
+6.117523	6	Segway	
+6.134615	7	Segway	
+6.15072	8	Segway	
+6.167443	9	Segway	
+6.18392	10	Segway	
+6.200943	11	Segway	
+6.615005	11	Segway	Segway
+0	0		
+2.486745	0	Walking	Walking
+0	0		
+1.955754	1	Walking	
+1.972393	2	Walking	
+1.989651	3	Walking	
+2.005389	4	Walking	
+2.022024	5	Walking	
+2.038454	6	Walking	
+2.055809	7	Walking	
+3.364885	7	Walking	Walking
+0	0		
+7.725265	1	Walking	
+7.74172	2	Walking	
+7.758859	3	Walking	
+7.774916	4	Walking	
+7.79142	5	Walking	
+7.808084	6	Walking	
+7.825298	7	Walking	
+7.841244	8	Walking	
+7.85779	9	Walking	
+7.874401	10	Walking	
+7.891435	11	Walking	
+8.521173	11	Walking	Walking
+0	0		

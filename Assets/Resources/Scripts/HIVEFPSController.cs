@@ -60,7 +60,7 @@ public class HIVEFPSController : MonoBehaviour {
 			mag = Mathf.Clamp (curMag - prevMag, maxWalkingVelocityDecrease, maxWalkingVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
-			velocityChange.y = 0;
+			velocityChange.y = 0;//-gravity;
 			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
 
 // Jump
@@ -73,7 +73,7 @@ public class HIVEFPSController : MonoBehaviour {
 			mag = Mathf.Clamp (curMag - prevMag, maxSegwayVelocityDecrease, maxSegwayVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
-			velocityChange.y = 0;
+			velocityChange.y = 0;// -gravity;
 			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
 
 			break;

@@ -191,7 +191,17 @@ public class TravelModelInterface : MonoBehaviour  {
 				}
 				else {
 					Debug.Log("Incorrect Switch");
-					playerStatus.IncorrectSwitch();
+					switch (gesture) {
+					case TRAVEL_TYPE.WALKING:
+						playerStatus.IncorrectSwitchToWalking();
+						break;
+					case TRAVEL_TYPE.SEGWAY:
+						playerStatus.IncorrectSwitchToSegway();
+						break;
+					case TRAVEL_TYPE.SURFING:
+						playerStatus.IncorrectSwitchToSurfing();
+						break;
+					}
 					errorSwitchNum++;
 					studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
 				}

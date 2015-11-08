@@ -222,7 +222,7 @@ public class SurfingTrialControl : MonoBehaviour {
 		startTransform.forward = endPt - startPt;
 		startTransform.forward.Normalize();
 		virtualGoal.transform.position = GoalScript.CreateGoal(endPt).transform.position;
-		arrowControl.SetTarget (virtualGoal.transform);
+		//arrowControl.SetTarget (virtualGoal.transform);
 		averageDistance = -1;
 		sumDistance = 0;
 		frameNum = 0;

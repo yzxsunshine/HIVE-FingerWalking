@@ -58,7 +58,7 @@ public class TrainingManager : MonoBehaviour {
 
 	public void StartTraining(Transform targetTransform) {
 		walkingTrialControl.SetWalkingPath(0, 0, targetTransform, walkingTrainingNum);
-		modeSwitchText.text = "Switch to Walking mode.";
+		modeSwitchText.text = "Use Walking mode.";
 		modeSwitchText.enabled = true;
 		currentStep = 0;
 		travelType = TRAVEL_TYPE.WALKING;
@@ -126,14 +126,14 @@ public class TrainingManager : MonoBehaviour {
 	public void StartNextTraining() {
 		switch(travelType) {
 		case TRAVEL_TYPE.WALKING:
-			modeSwitchText.text = "Switch to Walking mode.";
+			modeSwitchText.text = "Use Walking mode.";
 			break;
 		case TRAVEL_TYPE.SEGWAY:
-			modeSwitchText.text = "Switch to Segway mode.";
+			modeSwitchText.text = "Use Segway mode.";
 			playerStatus.CleanCollision();
 			break;
 		case TRAVEL_TYPE.SURFING:
-			modeSwitchText.text = "Switch to Surfing mode.";
+			modeSwitchText.text = "Use Surfing mode.";
 			break;
 		}
 		modeSwitchText.enabled = true;

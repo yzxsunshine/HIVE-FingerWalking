@@ -14,7 +14,7 @@ public class CutSceneManager : MonoBehaviour {
 		cutsceneTop = GameObject.Find("CutSceneTop").GetComponent<RectTransform> ();
 		cutsceneBottom = GameObject.Find("CutSceneBottom").GetComponent<RectTransform> ();
 		width = Screen.width;
-		maxHeight = Screen.height / 3.6;
+		maxHeight = Screen.height / 3.6f;
 		cutsceneTop.sizeDelta = new Vector2(width, minHeight);
 		cutsceneBottom.sizeDelta = new Vector2(width, minHeight);
 		//cutSceneOn = false;
