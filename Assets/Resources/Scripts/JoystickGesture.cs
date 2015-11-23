@@ -38,16 +38,20 @@ public class JoystickGesture : MonoBehaviour {
 
 	private TrainingManager trainingManager;
 	private bool trainingResponse = false;
-	private float calibratedLH = 0.0f;
-	private float calibratedLV = 0.0f;
-	private float calibratedRH = 0.0f;
-	private float calibratedRV = 0.0f;
+	public float calibratedLH;
+	public float calibratedLV;
+	public float calibratedRH;
+	public float calibratedRV;
 	// Use this for initialization
 	void Start () {
 		timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
 		travelModelInterface = GetComponent<TravelModelInterface>();
 		trainingManager = GameObject.Find("TrainingManager").GetComponent<TrainingManager>();
 		joystickParams = ConfigurationHandler.joystickParams;
+		//calibratedLH = 0.0f;
+	    //calibratedLV = 0.0f;
+	    //calibratedRH = 0.0f;
+	    //calibratedRV = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -99,9 +103,9 @@ public class JoystickGesture : MonoBehaviour {
 			leftVertical = Input.GetAxis ("ZVertical") * 1.0f - calibratedRV;
 		} else {
 			rightHorizontal = Input.GetAxis ("ZHorizontal") * 1.0f - calibratedRH;
-			rightVertical = -Input.GetAxis ("ZVertical") * 1.0f - calibratedRV;
+			rightVertical = -Input.GetAxis ("ZVertical") * 1.0f + calibratedRV;
 			leftHorizontal = Input.GetAxis ("Horizontal") * 1.0f - calibratedLH;
-			leftVertical = -Input.GetAxis ("Vertical") * 1.0f - calibratedLV;
+			leftVertical = -Input.GetAxis ("Vertical") * 1.0f + calibratedLV;
 		}
 		//Vector3 moveVel = velQueue.GetAvgVelocity(velocity, gestureType);
 		//controller.SendMessage("SetVelocity", moveVel);

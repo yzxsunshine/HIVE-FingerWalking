@@ -6,7 +6,9 @@
   </devices>
   <subject
     subject_id = "2" 
-	controller_type = "joystick">
+	controller_type = "joystick"
+	start_pass = "0"
+	start_id = "5">
   </subject>
   <travel_interfaces>
 	  <joystick

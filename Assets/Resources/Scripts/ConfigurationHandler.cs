@@ -15,12 +15,16 @@ public class ConfigurationHandler {
 	public static ConfigurationHandler configurationInstance = new ConfigurationHandler();
 	public static ForcePadParams forcePadParams;
 	public static JoystickParams joystickParams;
+	public static int StartTrialPass;
+	public static int StartTrialID;
 
 	public ConfigurationHandler () {
 		xmlDoc = new XmlDocument();
 		CONFIG_DIRECTORY = Application.dataPath;
 		forcePadParams = new ForcePadParams ();
 		joystickParams = new JoystickParams ();
+		StartTrialPass = 0;
+		StartTrialID = -1;
 		readXMLConfig (CONFIG_DIRECTORY + "/" + CONFIG_FILENAME);
 	}
 
@@ -47,6 +51,8 @@ public class ConfigurationHandler {
 		else if (controllerTypeStr.CompareTo ("body") == 0 || controllerTypeStr[0] == 'b') {
 			controllerType = CONTROL_TYPE.BODY_DRIVEN;
 		}
+		StartTrialPass = int.Parse (subjectNode.Attributes.GetNamedItem ("start_pass").Value);
+		StartTrialID = int.Parse (subjectNode.Attributes.GetNamedItem ("start_id").Value);
 
 		XmlNode joystickNode = xmlDoc.SelectSingleNode("config/travel_interfaces/joystick");
 		joystickParams.walkingSpeed = float.Parse(joystickNode.Attributes.GetNamedItem ("walking_speed").Value);

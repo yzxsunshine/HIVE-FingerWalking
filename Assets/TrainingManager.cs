@@ -17,9 +17,9 @@ public class TrainingManager : MonoBehaviour {
 	public Text modeSwitchText;
 	private TRAVEL_TYPE travelType;
 	private PlayerStatus playerStatus;
-	private float validWalkingTime = 100.0f;
-	private float validSegwayTime = 200.0f;
-	private int validSegwayCollision = 10;
+	private float validWalkingTime = 80.0f;
+	private float validSegwayTime = 120.0f;
+	private int validSegwayCollision = 5;
 	private float validSurfingTime = 100.0f;
 	private float validSurfingDistance = 20.0f;
 	private int walkingTrainingNum = 0;

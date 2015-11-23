@@ -23,7 +23,8 @@ public class StudyRecorder : MonoBehaviour {
 			}
 			else
 			{
-				Application.Quit();	// don't overwrite existing study
+
+				//Application.Quit();	// don't overwrite existing study
 			}
 			
 		}

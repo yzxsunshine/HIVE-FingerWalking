@@ -239,7 +239,7 @@ public class TrialControl : MonoBehaviour {
 				travelModelInterface.SetVelocity (Vector3.zero, Vector3.zero);
 				character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
 				character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
-				FirstTrial();
+				FirstTrial(0);
 			}
 			cutSceneManager.cutSceneOn = true;
 		}
@@ -277,10 +277,10 @@ public class TrialControl : MonoBehaviour {
 		}
 	}
 
-	public void FirstTrial() {
+	public void FirstTrial(int trialID) {
 		Debug.Log("FirstTrial");
 		playerStatus.EnableControl(controlType);
-		currentTrialID = 0;
+		currentTrialID = trialID;
 		character.transform.up = Vector3.up;
 		cutSceneManager.cutSceneOn = true;
 		currentStartWayPointID = startWayPointCalculator.GetClosestWayPointID(character.transform);
@@ -353,18 +353,26 @@ public class TrialControl : MonoBehaviour {
 	public void FinishCalibration () {
 		HMDCalibrated = true; 
 		int closestPtID = startWayPointCalculator.GetClosestWayPointID(character.transform);
-		trainingManager.StartTraining(startWayPointCalculator.GetTransformByID(closestPtID));
+		if (ConfigurationHandler.StartTrialID < 0) {
+			trainingManager.StartTraining(startWayPointCalculator.GetTransformByID(closestPtID));
+			inTraining = true;
+		}
+		else {
+			currentPass = ConfigurationHandler.StartTrialPass;
+			FirstTrial(ConfigurationHandler.StartTrialID);
+			inTraining = false;
+		}
 		playerStatus.EnableControl(controlType);
 		playerStatus.CalibrateControlDevice(controlType);
 
-		inTraining = true;
+
 	}
 
 	public void FinishBreak () {
 		inBreak = false;
 		HMDCalibrated = true; 
 		trialSequence = trialGenerator.GenerateByLattinSquare(Mathf.FloorToInt(ConfigurationHandler.subjectID / 2) + trialSequenceStep);
-		FirstTrial();
+		FirstTrial(0);
 	}
 
 }
