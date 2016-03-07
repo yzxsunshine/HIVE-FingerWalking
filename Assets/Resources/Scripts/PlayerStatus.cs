@@ -33,6 +33,7 @@ public class PlayerStatus : MonoBehaviour {
 	private TravelModelInterface travelModelInterface;
 	private HIVEFPSController fpsController;
 	private TrialControl trialControl;
+	private CogTrialControl cogTrialControl;
 	public float PLAYER_HEIGHT = 1.8f;
 	public COLLISION_STATUS collisionStatus = COLLISION_STATUS.COLLISION_NONE;
 	public TRIAL_STATUS trialStatus = TRIAL_STATUS.TRIAL_NOTHING;
@@ -45,7 +46,11 @@ public class PlayerStatus : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		travelModelInterface = GetComponent<TravelModelInterface> ();
-		trialControl = GetComponent<TrialControl> ();
+		if (Application.loadedLevelName == "ve_comples") {
+			trialControl = GetComponent<TrialControl> ();
+		} else {
+			cogTrialControl = GetComponent<CogTrialControl>();
+		}
 		fpsController = GetComponent<HIVEFPSController>();
 		ResetPlayerStatus ();
 		headOrientation = Vector3.zero;
@@ -179,12 +184,17 @@ public class PlayerStatus : MonoBehaviour {
 	}
 
 	public CONTROL_TYPE GetControlType() {
-		return trialControl.controlType;
+		if (Application.loadedLevelName == "ve_comples") {
+			return trialControl.controlType;
+		} else {
+			return cogTrialControl.controlType;
+		}
 	}
 
 	public void DisableControl() {
 		GetComponent<TouchPadGesture>().enabled = false;
 		GetComponent<JoystickGesture>().enabled = false;
+		GetComponent<ContexForceExtension>().enabled = false;
 		travelModelInterface.DisableMove();
 	}
 
@@ -193,14 +203,22 @@ public class PlayerStatus : MonoBehaviour {
 		case CONTROL_TYPE.JOYSTICK:
 			GetComponent<TouchPadGesture>().enabled = false;
 			GetComponent<JoystickGesture>().enabled = true;
+			GetComponent<ContexForceExtension>().enabled = false;
 			break;
 		case CONTROL_TYPE.FORCEPAD_GESTURE:
 			GetComponent<TouchPadGesture>().enabled = true;
 			GetComponent<JoystickGesture>().enabled = false;
+			GetComponent<ContexForceExtension>().enabled = false;
 			break;
 		case CONTROL_TYPE.BODY_DRIVEN:
 			GetComponent<TouchPadGesture>().enabled = false;
 			GetComponent<JoystickGesture>().enabled = false;
+			GetComponent<ContexForceExtension>().enabled = false;
+			break;
+		case CONTROL_TYPE.FORCE_EXTENSION:
+			GetComponent<TouchPadGesture>().enabled = false;
+			GetComponent<JoystickGesture>().enabled = false;
+			GetComponent<ContexForceExtension>().enabled = true;
 			break;
 		}
 		travelModelInterface.EnableMove();

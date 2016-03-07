@@ -17,6 +17,7 @@ public class ConfigurationHandler {
 	public static JoystickParams joystickParams;
 	public static int StartTrialPass;
 	public static int StartTrialID;
+	public static float FORCE_EXT_LIMIT = 0.3f;
 
 	public ConfigurationHandler () {
 		xmlDoc = new XmlDocument();
@@ -42,14 +43,17 @@ public class ConfigurationHandler {
 		XmlNode subjectNode = xmlDoc.SelectSingleNode("config/subject");
 		subjectID = int.Parse (subjectNode.Attributes.GetNamedItem ("subject_id").Value);
 		string controllerTypeStr = subjectNode.Attributes.GetNamedItem ("controller_type").Value;
-		if (controllerTypeStr.CompareTo ("joystick") == 0 || controllerTypeStr[0] == 'j') {
+		if (controllerTypeStr.CompareTo ("joystick") == 0) {
 			controllerType = CONTROL_TYPE.JOYSTICK;
 		}
-		else if (controllerTypeStr.CompareTo ("forcepad") == 0 || controllerTypeStr[0] == 'f') {
+		else if (controllerTypeStr.CompareTo ("forcepad") == 0) {
 			controllerType = CONTROL_TYPE.FORCEPAD_GESTURE;
 		}
-		else if (controllerTypeStr.CompareTo ("body") == 0 || controllerTypeStr[0] == 'b') {
+		else if (controllerTypeStr.CompareTo ("body") == 0) {
 			controllerType = CONTROL_TYPE.BODY_DRIVEN;
+		}
+		else if (controllerTypeStr.CompareTo ("force_extension") == 0) {
+			controllerType = CONTROL_TYPE.FORCE_EXTENSION;
 		}
 		StartTrialPass = int.Parse (subjectNode.Attributes.GetNamedItem ("start_pass").Value);
 		StartTrialID = int.Parse (subjectNode.Attributes.GetNamedItem ("start_id").Value);

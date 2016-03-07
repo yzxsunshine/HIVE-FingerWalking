@@ -79,7 +79,7 @@ public class SegwayPathController : MonoBehaviour {
 		pathes [3, 2, 0] = new SegwayPath(new int[17] {2, 9, 8, 14, 18, 22, 24, 20, 16, 23, 24, 22, 19, 15, 10, 11, 3});
 		pathes [3, 2, 1] = new SegwayPath(new int[17] {2, 8, 9, 13, 17, 20, 24, 21, 18, 22, 24, 23, 16, 12, 7, 6, 1});
 		
-		pathes [3, 3, 0] = new SegwayPath(new int[17] {3, 11, 10, 15, 19, 23, 24, 21, 17, 20, 24, 23, 16, 12, 4, 5, 0});
+		pathes [3, 3, 0] = new SegwayPath(new int[17] {3, 11, 10, 15, 19, 23, 24, 21, 17, 20, 24, 23, 16, 12, 4, 5, 0});	// double check way points
 		pathes [3, 3, 1] = new SegwayPath(new int[17] {3, 10, 11, 14, 18, 21, 24, 22, 19, 23, 24, 20, 17, 13, 9, 8, 2});
 
 		currentPosition = 0;

@@ -13,6 +13,7 @@ public enum TRAVEL_TYPE {
 	WALKING,
 	SEGWAY,
 	SURFING,
+	FORCE_EXT,
 	NOTHING,
 	RESTING,
 	RESET
@@ -21,6 +22,7 @@ public enum TRAVEL_TYPE {
 public enum CONTROL_TYPE {
 	JOYSTICK,
 	FORCEPAD_GESTURE,
+	FORCE_EXTENSION,
 	BODY_DRIVEN
 };
 
@@ -237,8 +239,10 @@ public class TrialControl : MonoBehaviour {
 				modeSwitchText.text = "Training COMPLETE!\n Preparing for trials.";
 				modeSwitchText.enabled = true;
 				travelModelInterface.SetVelocity (Vector3.zero, Vector3.zero);
-				character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
-				character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
+				if (controlType != CONTROL_TYPE.FORCE_EXTENSION) {
+					character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
+					character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
+				}
 				FirstTrial(0);
 			}
 			cutSceneManager.cutSceneOn = true;
@@ -248,8 +252,10 @@ public class TrialControl : MonoBehaviour {
 			modeSwitchText.text = "Trial COMPLETE!\n Preparing for next trial.";
 			modeSwitchText.enabled = true;
 			travelModelInterface.SetVelocity (Vector3.zero, Vector3.zero);
-			character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
-			character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
+			if (controlType != CONTROL_TYPE.FORCE_EXTENSION) {
+				character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
+				character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
+			}
 			if(currentTrialID < trialSequence.Length) {
 				//
 				currentStartWayPointID = startWayPointCalculator.GetClosestWayPointID(character.transform);
@@ -307,7 +313,13 @@ public class TrialControl : MonoBehaviour {
 			}
 			modeSwitchText.text = "Use " + modeStr + " mode.";
 			modeSwitchText.enabled = true;
-			character.GetComponent<TravelModelInterface>().SetTargetGestureType (trialSequence[currentTrialID].mode);
+			if (controlType == CONTROL_TYPE.FORCE_EXTENSION) {
+				character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.FORCE_EXT);
+				character.GetComponent<TravelModelInterface>().SetGestureType(TRAVEL_TYPE.FORCE_EXT);
+			}
+			else {
+				character.GetComponent<TravelModelInterface>().SetTargetGestureType (trialSequence[currentTrialID].mode);
+			}
 		}
 		playerStatus.EnableControl(controlType);
 		//character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);

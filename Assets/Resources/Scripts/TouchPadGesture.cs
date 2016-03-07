@@ -39,15 +39,12 @@ public class ForcePadParams {
 	}
 };
 
-
 public class TouchPadGesture : MonoBehaviour {
 	private Dictionary<int, Vector2> fingerPositions = new Dictionary<int, Vector2>();	// record the trails of each finger
 	private Dictionary<int, Vector2> fingerStart = new Dictionary<int, Vector2>();	// record the trails of each finger
 	private Dictionary<int, float> fingerForce = new Dictionary<int, float>();	// forces of each fingers, can be queried by touch id
 	private Dictionary<int, Vector2> fingerVel = new Dictionary<int, Vector2>();	// velocity of each finger trail, which is used to smooth velocity
 	private Dictionary<int, List<Tuio.Touch>> fingerTrails = new Dictionary<int, List<Tuio.Touch>>();
-	private KeyValuePair<int, float> leftTurnForce = new KeyValuePair<int, float>();
-	private KeyValuePair<int, float> rightTurnForce = new KeyValuePair<int, float>();
 
 	private int curFingerNum = 0;	// number of fingers on track
 	
@@ -69,8 +66,6 @@ public class TouchPadGesture : MonoBehaviour {
 	//private Dictionary<int, GameObject> fingerTrailRender = new Dictionary<int, GameObject>();
 	
 	Rect touchPadRect;
-	Rect leftRect;
-	Rect rightRect;
 
 	private Queue<int> fingerNumQueue;
 	private int fingerNumQueueLength = 2;
@@ -88,7 +83,7 @@ public class TouchPadGesture : MonoBehaviour {
 
 	private TrainingManager trainingManager;
 	private bool trainingResponse = false;
-
+	float timestamp = 0;
 	// Use this for initialization
 	void Start () {
 		fingerNumQueue = new Queue<int>(fingerNumQueueLength);
@@ -97,8 +92,6 @@ public class TouchPadGesture : MonoBehaviour {
 		}
 
 		touchPadRect = new Rect(0, 0, Screen.width, Screen.height);
-		leftRect = new Rect(0, 0, touchPadRect.width*0.2f, touchPadRect.height);
-		rightRect = new Rect(touchPadRect.width*0.8f, 0, touchPadRect.width*0.2f, touchPadRect.height);
 
 		resolutionCompensateX = 900.0f / Screen.width;
 		resolutionCompensateY = 500.0f / Screen.height;
@@ -110,9 +103,9 @@ public class TouchPadGesture : MonoBehaviour {
 		widgetRatio = new Vector2(widgetSize.x / Screen.width, widgetSize.y / Screen.height);
 		travel_model_interface = GetComponent<TravelModelInterface>();
 		forcePadParams = ConfigurationHandler.forcePadParams;
-		leftTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
-		rightTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
-		trainingManager = GameObject.Find("TrainingManager").GetComponent<TrainingManager>();
+		if (Application.loadedLevelName == "ve_comples") {
+			trainingManager = GameObject.Find ("TrainingManager").GetComponent<TrainingManager> ();
+		}
 	}
 
 	void InitTouches() {	// called every update in TrackingComponentBase, before HandleTouches and FinishTouches
@@ -120,6 +113,8 @@ public class TouchPadGesture : MonoBehaviour {
 	}
 	
 	void FinishTouches() {	// called every update in TrackingComponentBase, after HandleTouches
+		if (this.enabled == false) 
+			return;
 		if (fingerNumQueue != null) {
 			fingerNumQueue.Dequeue ();
 			fingerNumQueue.Enqueue (curFingerNum);
@@ -145,6 +140,8 @@ public class TouchPadGesture : MonoBehaviour {
 	
 	// a step is from addTouch to removeTouch
 	void HandleTouches(Tuio.Touch t) { // called every update in TrackingComponentBase, between InitTouches and FinishTouches
+		if (this.enabled == false) 
+			return;
 		switch (t.Status)
 		{
 		case TouchStatus.Began:
@@ -169,16 +166,8 @@ public class TouchPadGesture : MonoBehaviour {
 	{
 		float force = Mathf.Clamp(Mathf.Abs ((float)t.Properties.Force), 0, 1);
 		//Debug.Log("Add Touch");
-		if (leftRect.Contains (t.TouchPoint)) {
-			leftTurnForce = new KeyValuePair<int, float> (t.TouchId, force);
-			Debug.Log ("add id=" + t.TouchId + ", turn left=" + ", value=" + leftTurnForce.Value);
-		} else if (rightRect.Contains (t.TouchPoint)) {
-			rightTurnForce = new KeyValuePair<int, float> (t.TouchId, force);
-			Debug.Log ("add id=" + t.TouchId + ", turn right" + ", value=" + rightTurnForce.Value);
-		} else {
-			addTrail (t);
-			curFingerNum++;
-		}
+		addTrail (t);
+		curFingerNum++;
 		//GameObject trail = Instantiate(Resources.Load("Prefabs/FingerTrail", typeof(GameObject))) as GameObject;
 		//fingerTrailRender.Add(t.TouchId, trail);
 		
@@ -207,19 +196,12 @@ public class TouchPadGesture : MonoBehaviour {
 	void removeTouch(Tuio.Touch t)
 	{
 		//Debug.Log("Remove Touch");
-		if (t.TouchId == leftTurnForce.Key) {
-			leftTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
-		} else if (t.TouchId == rightTurnForce.Key) {
-			rightTurnForce = new KeyValuePair<int, float> (-1, 0.0f);
-		} else {
-			//if (travel_model_interface.GetGestureType() == TRAVEL_TYPE.WALKING) {
-		//	}
-			removeTrail (t);
-			curFingerNum--;
-			if(curFingerNum < 0)
-				curFingerNum = 0;
-			Debug.Log("Remove Touch id=" + t.FingerId + ", remain figers: " + curFingerNum);
-		}
+		removeTrail (t);
+		curFingerNum--;
+		if(curFingerNum < 0)
+			curFingerNum = 0;
+		Debug.Log("Remove Touch id=" + t.FingerId + ", remain figers: " + curFingerNum);
+	
 		Destroy(fingerTips[t.TouchId]);
 		fingerTips.Remove(t.TouchId);
 		//Destroy(fingerTrailRender[t.TouchId]);
@@ -239,21 +221,12 @@ public class TouchPadGesture : MonoBehaviour {
 		 *		Student Innovation Contest
 		 */		
 		float force = Mathf.Clamp(Mathf.Abs ((float)t.Properties.Force), 0, 1);
-		if(t.TouchId == leftTurnForce.Key) {
-			leftTurnForce = new KeyValuePair<int, float>(t.TouchId, force);
-		}
-		else if(t.TouchId == rightTurnForce.Key) {
-			rightTurnForce = new KeyValuePair<int, float>(t.TouchId, force);
-		}
-		else if(fingerPositions.ContainsKey(t.TouchId)) {
-			Vector2 diff = t.TouchPoint - fingerPositions[t.TouchId];
-			fingerVel[t.TouchId] = diff;
-			fingerPositions[t.TouchId] = t.TouchPoint;
-			fingerForce[t.TouchId] = force;
-			fingerTrails[t.TouchId].Add(t);
-//			Debug.Log("id = " + t.TouchId + ", force = " + t.Properties.Force);
-		}
-		
+		Vector2 diff = t.TouchPoint - fingerPositions[t.TouchId];
+		fingerVel[t.TouchId] = diff;
+		fingerPositions[t.TouchId] = t.TouchPoint;
+		fingerForce[t.TouchId] = force;
+		fingerTrails[t.TouchId].Add(t);
+
 		RectTransform rectTrans = fingerTips[t.TouchId].GetComponent<RectTransform>();
 		rectTrans.anchoredPosition = new Vector2(0, 0);
 		Vector3 pos = TransformToWidget(t.TouchPoint);//TransformToWidget(t.TouchPoint);
@@ -265,7 +238,8 @@ public class TouchPadGesture : MonoBehaviour {
 		RawImage img = fingerTips[t.TouchId].GetComponent<RawImage>();
 		img.color = new Color(1.0f, 0.9f * (1-force), 0.9f * (1-force));
 		
-		
+		Debug.Log("timestamp = " + (Time.time - timestamp) + ", id = " + t.TouchId + ", force = " + t.Properties.Force);
+		timestamp = Time.time;
 	}
 
 	Vector3 TransformToWidget(Vector2 pt) {
@@ -312,14 +286,7 @@ public class TouchPadGesture : MonoBehaviour {
 				twoFingerFrames++;
 		}
 		TRAVEL_TYPE curGestureType = travel_model_interface.GetGestureType();
-		if(leftTurnForce.Key > 0 || rightTurnForce.Key > 0) {
-			curGestureType = TRAVEL_TYPE.WALKING;
-		}
-		else if(curFingerNum == 0) {
-			curGestureType = TRAVEL_TYPE.NOTHING;
-			//Debug.Log("Do Nothing");
-		}
-		else if(twoFingerFrames >= fingerNumQueueLength * 0.8) {
+		if(twoFingerFrames >= fingerNumQueueLength * 0.8) {
 			Vector2 diff = new Vector2(0, 0);
 			foreach(var key in fingerPositions.Keys) {
 				diff = fingerPositions[key] - diff;
@@ -396,8 +363,6 @@ public class TouchPadGesture : MonoBehaviour {
 		float avgDisplacement = 0.0f;
 		moveVel = new Vector3 (0, 0, 0);
 		rotVel = new Vector3 (0, 0, 0);
-		if (leftTurnForce.Key < 0 && rightTurnForce.Key < 0 && curFingerNum <= 0)
-			return;
 		if (curFingerNum > 2) 
 			return;
 		foreach (var pos in fingerPositions) {
@@ -407,39 +372,35 @@ public class TouchPadGesture : MonoBehaviour {
 		}
 		switch(travel_model_interface.GetGestureType()) {
 		case TRAVEL_TYPE.WALKING:
-			if(leftTurnForce.Key > 0 && rightTurnForce.Key > 0) {
-			}
-			else if(leftTurnForce.Key >= 0) {
-				rotVel = new Vector3(0, -forcePadParams.walkingAngularSpeed * leftTurnForce.Value, 0);
-			}
-			else if(rightTurnForce.Key >= 0) {
-				rotVel = new Vector3(0, forcePadParams.walkingAngularSpeed * rightTurnForce.Value, 0);
-			}
 			Vector2 diff = Vector2.zero;
 			foreach (var vel in fingerVel) {
 				diff += vel.Value;
 			}
-			
-			Vector3 move = new Vector3(-diff.x, 0.0f, diff.y);
-			move.Normalize();
-			if(diff.magnitude < forcePadParams.minFingerMove) {
-				// tapping
-				move = Vector3.zero;
+			if (Mathf.Abs(diff.y) > Mathf.Abs(diff.x)) {
+				Vector3 move = new Vector3(-diff.x, 0.0f, diff.y);
+				move.Normalize();
+				if(diff.magnitude < forcePadParams.minFingerMove) {
+					// tapping
+					move = Vector3.zero;
+				}
+				else {	// Clamping
+					if(diff.magnitude < forcePadParams.minFingerSpeed) {	
+						move = move * forcePadParams.minFingerSpeed;
+					}
+					else if(diff.magnitude > forcePadParams.maxFingerSpeed) {
+						move = move * forcePadParams.maxFingerSpeed;
+					}
+					else {
+						move = move * diff.magnitude;//((diff.magnitude - minFingerSpeed) * speedScale + minCharSpeed);
+					}
+					moveVel = move * forcePadParams.walkingSpeedScale;
+					//Vector3 walkingRot = walkingRotVelQueue.GetAvgVelocity(new Vector3(walkingAngleSpeed * move.x, 0, 0), gestureType);
+					//this.transform.Rotate(0.0f, walkingRot.x, 0.0f);
+					//velocity = transform.TransformDirection(move.z * new Vector3(0, 0, 1));
+				}
 			}
-			else {	// Clamping
-				if(diff.magnitude < forcePadParams.minFingerSpeed) {	
-					move = move * forcePadParams.minFingerSpeed;
-				}
-				else if(diff.magnitude > forcePadParams.maxFingerSpeed) {
-					move = move * forcePadParams.maxFingerSpeed;
-				}
-				else {
-					move = move * diff.magnitude;//((diff.magnitude - minFingerSpeed) * speedScale + minCharSpeed);
-				}
-				moveVel = move * forcePadParams.walkingSpeedScale;
-				//Vector3 walkingRot = walkingRotVelQueue.GetAvgVelocity(new Vector3(walkingAngleSpeed * move.x, 0, 0), gestureType);
-				//this.transform.Rotate(0.0f, walkingRot.x, 0.0f);
-				//velocity = transform.TransformDirection(move.z * new Vector3(0, 0, 1));
+			else {
+				rotVel = new Vector3(0, -diff.x * forcePadParams.walkingAngularSpeed, 0);
 			}
 			this.GetComponent("HIVEFPSController").SendMessage("SetWalking");
 			

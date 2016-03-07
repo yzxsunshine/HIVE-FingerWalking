@@ -2,23 +2,23 @@
 using System.Collections;
 
 public class TrialSequenceGenerator {
-	public static int [,] lattinSquare = new int[9, 9] {{0,8,1,7,2,6,3,5,4},
-														{1,0,2,8,3,7,4,6,5},
-														{2,1,3,0,4,8,5,7,6},
-														{3,2,4,1,5,0,6,8,7},
-														{4,3,5,2,6,1,7,0,8},
-														{5,4,6,3,7,2,8,1,0},
-														{6,5,7,4,8,3,0,2,1},
-														{7,6,8,5,0,4,1,3,2},
-														{8,7,0,6,1,5,2,4,3}} ;
+	public static int [,] lattinSquare = new int[6, 6] {{0,5,1,4,2,3},	//new int[9, 9] {{0,8,1,7,2,6,3,5,4},
+														{1,0,2,5,3,4},	//				{1,0,2,8,3,7,4,6,5},
+														{2,1,3,0,4,5},	//				{2,1,3,0,4,8,5,7,6},
+														{3,2,4,1,5,0},	//				{3,2,4,1,5,0,6,8,7},
+														{4,3,5,2,0,1},	//				{4,3,5,2,6,1,7,0,8},
+														{5,4,0,3,1,2}};	//				{5,4,6,3,7,2,8,1,0},
+																		//				{6,5,7,4,8,3,0,2,1},
+																		//				{7,6,8,5,0,4,1,3,2},
+																		//				{8,7,0,6,1,5,2,4,3}} ;
 	public TrialSequenceGenerator() {
 
 	}
 
 	public TrialType[] GenerateByLattinSquare(int subjectID) {
-		int lattinID = subjectID % 9;
-		TrialType[] trials = new TrialType[9];
-		for (int i=0; i<9; i++) {
+		int lattinID = subjectID % 6;
+		TrialType[] trials = new TrialType[6];
+		for (int i=0; i<6; i++) {
 			int difficultLevel = lattinSquare[lattinID, i] % 3;
 			int travelType = lattinSquare[lattinID, i] / 3;
 			trials[i] = new TrialType();

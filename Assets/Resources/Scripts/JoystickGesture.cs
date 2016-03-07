@@ -36,7 +36,6 @@ public class JoystickGesture : MonoBehaviour {
 	public float timerDoubleClick;
 	private TravelModelInterface travelModelInterface;
 
-	private TrainingManager trainingManager;
 	private bool trainingResponse = false;
 	public float calibratedLH;
 	public float calibratedLV;
@@ -46,7 +45,6 @@ public class JoystickGesture : MonoBehaviour {
 	void Start () {
 		timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
 		travelModelInterface = GetComponent<TravelModelInterface>();
-		trainingManager = GameObject.Find("TrainingManager").GetComponent<TrainingManager>();
 		joystickParams = ConfigurationHandler.joystickParams;
 		//calibratedLH = 0.0f;
 	    //calibratedLV = 0.0f;
@@ -56,14 +54,7 @@ public class JoystickGesture : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-		if (trainingResponse) {
-			if(Input.GetKey("joystick button 0") || Input.GetKey("joystick button 1") || Input.GetKey("joystick button 2") || Input.GetKey("joystick button 3")) {
-				SetTrainingResponse(false);
-				trainingManager.ShowTrainingImage();
-				return;
-			}
-		}
+		
 		//GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 		if(Input.GetKeyDown("joystick button 0")) {
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.WALKING);

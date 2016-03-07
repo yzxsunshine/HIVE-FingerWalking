@@ -141,11 +141,11 @@ public class DevicesManager : MonoBehaviour {
 	public void CalibrateCamera()
 	{
 		//Set the current orientation values of SpacePoint Fusion sensor as the forward direction (zero reference)
-		uiva.GetSpacePointFusionData(ref hmd_quat, out hmd_buttons);
-		ComputeHMDEulerAngles();
+		//uiva.GetSpacePointFusionData(ref hmd_quat, out hmd_buttons);
+		//ComputeHMDEulerAngles();
 		
 		//hmd_euler now hold the latest orientation
-		calib_euler = hmd_euler;
+		//calib_euler = hmd_euler;
 	}
 	
 	public Vector3 GetHMDCalibEuler() {

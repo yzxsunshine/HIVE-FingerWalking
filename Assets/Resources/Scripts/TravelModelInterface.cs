@@ -54,8 +54,10 @@ public class TravelModelInterface : MonoBehaviour  {
 	private VelocityQueue surfingRotVelQueue;
 	private VelocityQueue walkingRotVelQueue;
 	private VelocityQueue segwayRotVelQueue;
+	private VelocityQueue forceExt;
 	private bool pressureBasedSegwayOn = false;
 	private TrialControl trialControl;
+	private CogTrialControl cogTrialControl;
 	private StudyRecorder studyRecorder;
 	private float modeSwitchTimer = 0;
 	private int errorSwitchNum = 0;
@@ -63,9 +65,17 @@ public class TravelModelInterface : MonoBehaviour  {
 	// Use this for initialization
 	void Start () {
 		controller = GetComponent<HIVEFPSController>();
-		trialControl = GetComponent<TrialControl>();
+		if (Application.loadedLevelName == "ve_comples") {
+			trialControl = GetComponent<TrialControl> ();
+		}
+		else {
+			cogTrialControl = GetComponent<CogTrialControl>();
+		}
 		walkingRotVelQueue = new VelocityQueue();
 		walkingRotVelQueue.SetQueueSize(20);
+		forceExt = new VelocityQueue ();
+		forceExt.SetQueueSize (20);
+
 		playerStatus = GetComponent<PlayerStatus>();
 		studyRecorder = GameObject.Find("StudyRecorder").GetComponent<StudyRecorder>();
 	}
@@ -141,6 +151,11 @@ public class TravelModelInterface : MonoBehaviour  {
 			transform.Rotate(Vector3.up, avgVel.y);
 			transform.eulerAngles = new Vector3(avgVel.x, transform.eulerAngles.y, 0);
 			break;
+		case TRAVEL_TYPE.FORCE_EXT:
+			avgVel = rotVel;//forceExt.GetAvgVelocity(rotVel, gestureType);
+			//Debug.Log("avgVel: " + avgVel.ToString());
+			transform.Rotate(Vector3.up, avgVel.y);
+			break;
 		}
 		Vector3 transVel = transform.TransformDirection (moveVel);
 		
@@ -185,8 +200,10 @@ public class TravelModelInterface : MonoBehaviour  {
 					Debug.Log("Correct Switch");
 					playerStatus.CorrectSwitch();
 					studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
-					if (!trialControl.IsAllTrialsDone())
-						trialControl.modeSwitchText.enabled = false;
+					if (Application.loadedLevelName == "ve_comples") {
+						if (!trialControl.IsAllTrialsDone())
+							trialControl.modeSwitchText.enabled = false;
+					}
 					//trialControl.StartNextTrial();
 				}
 				else {

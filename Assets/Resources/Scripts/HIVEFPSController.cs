@@ -61,11 +61,11 @@ public class HIVEFPSController : MonoBehaviour {
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
 			velocityChange.y = 0;//-gravity;
-			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
+			GetComponent<Rigidbody> ().AddForce (velocityChange, ForceMode.VelocityChange);
 
 // Jump
 			if (canJump && Input.GetButton ("Jump")) {
-					GetComponent<Rigidbody>().velocity = new Vector3 (velocity.x, CalculateJumpVerticalSpeed (), velocity.z);
+				GetComponent<Rigidbody> ().velocity = new Vector3 (velocity.x, CalculateJumpVerticalSpeed (), velocity.z);
 			}
 			break;
 
@@ -74,32 +74,38 @@ public class HIVEFPSController : MonoBehaviour {
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
 			velocityChange.y = 0;// -gravity;
-			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
+			GetComponent<Rigidbody> ().AddForce (velocityChange, ForceMode.VelocityChange);
 
 			break;
 		case TRAVEL_TYPE.SURFING:
 			mag = Mathf.Clamp (curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
-			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
+			GetComponent<Rigidbody> ().AddForce (velocityChange, ForceMode.VelocityChange);
+			break;
+		case TRAVEL_TYPE.FORCE_EXT:
+			mag = Mathf.Clamp (curMag - prevMag, maxSegwayVelocityDecrease, maxSegwayVelocityIncrease);
+			velocityChange.Normalize ();
+			velocityChange = velocityChange * Mathf.Abs (mag);
+			velocityChange.y = 0;// -gravity;
+			GetComponent<Rigidbody> ().AddForce (velocityChange, ForceMode.VelocityChange);
+			
 			break;
 		case TRAVEL_TYPE.NOTHING: 
 			mag = Mathf.Clamp (curMag - prevMag, maxSurfVelocityDecrease, maxSurfVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
-			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
+			GetComponent<Rigidbody> ().AddForce (velocityChange, ForceMode.VelocityChange);
 			break;
 		case TRAVEL_TYPE.RESET:
 			mag = Mathf.Clamp (curMag, maxResetVelocityDecrease, maxResetVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);
-			GetComponent<Rigidbody>().AddForce (velocityChange, ForceMode.VelocityChange);
+			GetComponent<Rigidbody> ().AddForce (velocityChange, ForceMode.VelocityChange);
 			break;
 		default:
 			break;
 		}
-	
-
 
 		// We apply gravity manually for more tuning control
 		GetComponent<Rigidbody>().AddForce(new Vector3 (0, -gravity * GetComponent<Rigidbody>().mass, 0));
