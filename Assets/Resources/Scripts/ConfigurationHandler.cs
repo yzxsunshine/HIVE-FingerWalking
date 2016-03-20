@@ -15,6 +15,7 @@ public class ConfigurationHandler {
 	public static ConfigurationHandler configurationInstance = new ConfigurationHandler();
 	public static ForcePadParams forcePadParams;
 	public static JoystickParams joystickParams;
+	public static JoystickSingleModeParams joystickSingleModeParams;
 	public static int StartTrialPass;
 	public static int StartTrialID;
 	public static float FORCE_EXT_LIMIT = 0.3f;
@@ -24,6 +25,7 @@ public class ConfigurationHandler {
 		CONFIG_DIRECTORY = Application.dataPath;
 		forcePadParams = new ForcePadParams ();
 		joystickParams = new JoystickParams ();
+		joystickSingleModeParams = new JoystickSingleModeParams ();
 		StartTrialPass = 0;
 		StartTrialID = -1;
 		readXMLConfig (CONFIG_DIRECTORY + "/" + CONFIG_FILENAME);
@@ -55,6 +57,9 @@ public class ConfigurationHandler {
 		else if (controllerTypeStr.CompareTo ("force_extension") == 0) {
 			controllerType = CONTROL_TYPE.FORCE_EXTENSION;
 		}
+		else if (controllerTypeStr.CompareTo ("joystick_single_mode") == 0) {
+			controllerType = CONTROL_TYPE.JOYSTICK_SINGLE_MODE;
+		}
 		StartTrialPass = int.Parse (subjectNode.Attributes.GetNamedItem ("start_pass").Value);
 		StartTrialID = int.Parse (subjectNode.Attributes.GetNamedItem ("start_id").Value);
 
@@ -85,6 +90,10 @@ public class ConfigurationHandler {
 		forcePadParams.surfingPitchSpeed = float.Parse(forcepadNode.Attributes.GetNamedItem ("surfing_pitch_speed").Value);
 		forcePadParams.surfingYawSpeed = float.Parse(forcepadNode.Attributes.GetNamedItem ("surfing_yaw_speed").Value);
 
+		XmlNode joystickSingleModeNode = xmlDoc.SelectSingleNode("config/travel_interfaces/joystick_single_mode");
+		joystickSingleModeParams.minSpeed = float.Parse(joystickSingleModeNode.Attributes.GetNamedItem("min_speed").Value);
+		joystickSingleModeParams.maxSpeed = float.Parse(joystickSingleModeNode.Attributes.GetNamedItem("max_speed").Value);
+		joystickSingleModeParams.angularSpeed = float.Parse(joystickSingleModeNode.Attributes.GetNamedItem("angular_speed").Value);
 		Debug.Log(string.Format("All configuration loaded from XML file...{0}", filePath));
 	}
 }

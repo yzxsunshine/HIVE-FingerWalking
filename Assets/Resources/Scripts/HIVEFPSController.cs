@@ -83,7 +83,7 @@ public class HIVEFPSController : MonoBehaviour {
 			velocityChange = velocityChange * Mathf.Abs (mag);
 			GetComponent<Rigidbody> ().AddForce (velocityChange, ForceMode.VelocityChange);
 			break;
-		case TRAVEL_TYPE.FORCE_EXT:
+		case TRAVEL_TYPE.SINGLE_MODE:
 			mag = Mathf.Clamp (curMag - prevMag, maxSegwayVelocityDecrease, maxSegwayVelocityIncrease);
 			velocityChange.Normalize ();
 			velocityChange = velocityChange * Mathf.Abs (mag);

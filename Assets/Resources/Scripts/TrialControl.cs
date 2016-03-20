@@ -13,7 +13,7 @@ public enum TRAVEL_TYPE {
 	WALKING,
 	SEGWAY,
 	SURFING,
-	FORCE_EXT,
+	SINGLE_MODE,
 	NOTHING,
 	RESTING,
 	RESET
@@ -23,6 +23,7 @@ public enum CONTROL_TYPE {
 	JOYSTICK,
 	FORCEPAD_GESTURE,
 	FORCE_EXTENSION,
+	JOYSTICK_SINGLE_MODE,
 	BODY_DRIVEN
 };
 
@@ -60,6 +61,8 @@ public class StartWayPointCalculator {
 		int minID = 0;
 		float minDis = (startWayPoints[0].transform.position - transform.position).magnitude;
 		for(int i=1; i<4; i++) {
+			if (startWayPoints[i] == null)
+				continue;
 			float distance = (startWayPoints[i].transform.position - transform.position).magnitude;
 			if (distance < minDis) {
 				minDis = distance;
@@ -314,8 +317,8 @@ public class TrialControl : MonoBehaviour {
 			modeSwitchText.text = "Use " + modeStr + " mode.";
 			modeSwitchText.enabled = true;
 			if (controlType == CONTROL_TYPE.FORCE_EXTENSION) {
-				character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.FORCE_EXT);
-				character.GetComponent<TravelModelInterface>().SetGestureType(TRAVEL_TYPE.FORCE_EXT);
+				character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.SINGLE_MODE);
+				character.GetComponent<TravelModelInterface>().SetGestureType(TRAVEL_TYPE.SINGLE_MODE);
 			}
 			else {
 				character.GetComponent<TravelModelInterface>().SetTargetGestureType (trialSequence[currentTrialID].mode);

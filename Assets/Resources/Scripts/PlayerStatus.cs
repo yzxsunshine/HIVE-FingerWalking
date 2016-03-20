@@ -204,21 +204,31 @@ public class PlayerStatus : MonoBehaviour {
 			GetComponent<TouchPadGesture>().enabled = false;
 			GetComponent<JoystickGesture>().enabled = true;
 			GetComponent<ContexForceExtension>().enabled = false;
+			GetComponent<JoystickGestureSingleMode>().enabled = false;
 			break;
 		case CONTROL_TYPE.FORCEPAD_GESTURE:
 			GetComponent<TouchPadGesture>().enabled = true;
 			GetComponent<JoystickGesture>().enabled = false;
 			GetComponent<ContexForceExtension>().enabled = false;
+			GetComponent<JoystickGestureSingleMode>().enabled = false;
 			break;
 		case CONTROL_TYPE.BODY_DRIVEN:
 			GetComponent<TouchPadGesture>().enabled = false;
 			GetComponent<JoystickGesture>().enabled = false;
 			GetComponent<ContexForceExtension>().enabled = false;
+			GetComponent<JoystickGestureSingleMode>().enabled = false;
 			break;
 		case CONTROL_TYPE.FORCE_EXTENSION:
 			GetComponent<TouchPadGesture>().enabled = false;
 			GetComponent<JoystickGesture>().enabled = false;
 			GetComponent<ContexForceExtension>().enabled = true;
+			GetComponent<JoystickGestureSingleMode>().enabled = false;
+			break;
+		case CONTROL_TYPE.JOYSTICK_SINGLE_MODE:
+			GetComponent<TouchPadGesture>().enabled = false;
+			GetComponent<JoystickGesture>().enabled = false;
+			GetComponent<ContexForceExtension>().enabled = false;
+			GetComponent<JoystickGestureSingleMode>().enabled = true;
 			break;
 		}
 		travelModelInterface.EnableMove();

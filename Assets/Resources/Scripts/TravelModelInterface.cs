@@ -151,7 +151,7 @@ public class TravelModelInterface : MonoBehaviour  {
 			transform.Rotate(Vector3.up, avgVel.y);
 			transform.eulerAngles = new Vector3(avgVel.x, transform.eulerAngles.y, 0);
 			break;
-		case TRAVEL_TYPE.FORCE_EXT:
+		case TRAVEL_TYPE.SINGLE_MODE:
 			avgVel = rotVel;//forceExt.GetAvgVelocity(rotVel, gestureType);
 			//Debug.Log("avgVel: " + avgVel.ToString());
 			transform.Rotate(Vector3.up, avgVel.y);

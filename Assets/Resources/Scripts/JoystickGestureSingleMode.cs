@@ -1,27 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class JoystickParams {
-	public float walkingSpeed;
-	public float walkingAngularSpeed;
-	public float segwaySpeed;
-	public float segwayAngularSpeed;
-	public float surfingSpeed;
-	public float surfingPitchSpeed;
-	public float surfingYawSpeed;
+public class JoystickSingleModeParams {
+	public float minSpeed;
+	public float angularSpeed;
+	public float maxSpeed;
 
-	public JoystickParams() {
-		walkingSpeed = 10.0f;
-		walkingAngularSpeed = 1.0f;
-		segwaySpeed = 20.0f;
-		segwayAngularSpeed = 1.0f;
-		surfingSpeed = 30.0f;
-		surfingPitchSpeed = 20.0f;
-		surfingYawSpeed = 1.0f;
+	public JoystickSingleModeParams() {
+		minSpeed = 10.0f;
+		angularSpeed = 1.0f;
+		maxSpeed = 20.0f;
 	}
 };
 
-public class JoystickGesture : MonoBehaviour {
+public class JoystickGestureSingleMode : MonoBehaviour {
 	private TRAVEL_TYPE gestureType = TRAVEL_TYPE.WALKING;
 	public float rightHorizontal;
 	public float rightVertical;
@@ -29,7 +21,7 @@ public class JoystickGesture : MonoBehaviour {
 	public float leftVertical;
 	public float zValue;
 
-	public JoystickParams joystickParams;
+	public JoystickSingleModeParams joystickSingleModeParams;
 	public bool flipLeftRight = false;
 	public bool flipSurfPitch = false;
 
@@ -42,11 +34,12 @@ public class JoystickGesture : MonoBehaviour {
 	public float calibratedLV;
 	public float calibratedRH;
 	public float calibratedRV;
+	public float calibratedZ;
 	// Use this for initialization
 	void Start () {
 		timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
 		travelModelInterface = GetComponent<TravelModelInterface>();
-		joystickParams = ConfigurationHandler.joystickParams;
+		joystickSingleModeParams = ConfigurationHandler.joystickSingleModeParams;
 		//calibratedLH = 0.0f;
 	    //calibratedLV = 0.0f;
 	    //calibratedRH = 0.0f;
@@ -61,13 +54,14 @@ public class JoystickGesture : MonoBehaviour {
 			rightVertical = Input.GetAxis ("Vertical") * 1.0f - calibratedLV;
 			leftHorizontal = Input.GetAxis ("ZHorizontal") * 1.0f - calibratedRH;
 			leftVertical = Input.GetAxis ("ZVertical") * 1.0f - calibratedRV;
-			zValue = Input.GetAxis ("ZVertical") * 1.0f - calibratedRV;
 		} else {
 			rightHorizontal = Input.GetAxis ("ZHorizontal") * 1.0f - calibratedRH;
 			rightVertical = -Input.GetAxis ("ZVertical") * 1.0f + calibratedRV;
 			leftHorizontal = Input.GetAxis ("Horizontal") * 1.0f - calibratedLH;
 			leftVertical = -Input.GetAxis ("Vertical") * 1.0f + calibratedLV;
 		}
+
+		zValue = Mathf.Abs(Input.GetAxis ("ZAxis") * 1.0f - calibratedZ);
 		//Vector3 moveVel = velQueue.GetAvgVelocity(velocity, gestureType);
 		//controller.SendMessage("SetVelocity", moveVel);
 		//this.GetComponent("HIVEFPSController").SendMessage("SetRotation", rotation);
@@ -76,28 +70,9 @@ public class JoystickGesture : MonoBehaviour {
 		Vector3 moveVel = new Vector3();
 		Vector3 rotVel = new Vector3 ();
 
-		switch (travelModelInterface.GetGestureType ()) {
-		case TRAVEL_TYPE.WALKING:
-			// right hand joystick control the translation, left hand joystick control rotation
-			moveVel = new Vector3 (leftHorizontal, 0, leftVertical) * joystickParams.walkingSpeed;
-			rotVel = new Vector3 (0, rightHorizontal, 0) * joystickParams.walkingAngularSpeed;
-			this.GetComponent ("HIVEFPSController").SendMessage ("SetWalking");
-			break;
-		case TRAVEL_TYPE.SEGWAY:
-			moveVel = Vector3.forward * leftVertical * joystickParams.segwaySpeed;
-			rotVel = new Vector3 (0, leftHorizontal, 0) * joystickParams.segwayAngularSpeed;
-			this.GetComponent ("HIVEFPSController").SendMessage ("SetSegway");
-			break;
-		case TRAVEL_TYPE.SURFING:
-			moveVel = -Vector3.forward * Mathf.Min(rightVertical, 0) * joystickParams.surfingSpeed;
-
-			if (flipSurfPitch) {
-				leftVertical = - leftVertical;
-			} 
-			rotVel = new Vector3(leftVertical * joystickParams.surfingPitchSpeed, leftHorizontal * joystickParams.surfingYawSpeed, 0);
-			this.GetComponent("HIVEFPSController").SendMessage("SetSurfing");
-			break;
-		}
+		moveVel = Vector3.forward * leftVertical * (joystickSingleModeParams.minSpeed + zValue * (joystickSingleModeParams.maxSpeed - joystickSingleModeParams.minSpeed));
+		rotVel = new Vector3 (0, leftHorizontal, 0) * joystickSingleModeParams.angularSpeed;
+		this.GetComponent ("HIVEFPSController").SendMessage ("SetSegway");
 
 		travelModelInterface.SetVelocity (moveVel, rotVel);
 		timerDoubleClick += Time.deltaTime;
@@ -108,6 +83,7 @@ public class JoystickGesture : MonoBehaviour {
 		calibratedLV = Input.GetAxis ("Vertical") * 1.0f;
 		calibratedRH = Input.GetAxis ("ZHorizontal") * 1.0f;
 		calibratedRV = Input.GetAxis ("ZVertical") * 1.0f;
+		calibratedZ = Input.GetAxis ("ZAxis") * 1.0f;
 	}
 
 	public void SetTrainingResponse(bool response) {
