@@ -10,6 +10,7 @@ public class StudyRecorder : MonoBehaviour {
 	public StreamWriter currentTrialWriter;
 	public StreamWriter contextSwitchWriter;
 	private string trialDirectory;
+	private bool ready = false;
 
 	// Use this for initialization
 	void Start () {
@@ -56,14 +57,32 @@ public class StudyRecorder : MonoBehaviour {
 			File.Delete(fileName);
 		} 
 		currentTrialWriter = File.CreateText (fileName);
+		ready = true;
 		return currentTrialWriter;
 	}
-	
+
+	public StreamWriter GenerateCogTrialFileWriter(int controller, int sequenceID, int travelType) {
+		string fileName = trialDirectory + "/subject_" + ConfigurationHandler.subjectID;
+		fileName += "_trial_" + controller + "_" + sequenceID + "_" + travelType;
+		fileName += ".txt";
+		if (File.Exists (fileName)) {
+			File.Delete(fileName);
+		} 
+		currentTrialWriter = File.CreateText (fileName);
+		ready = true;
+		return currentTrialWriter;
+	}
+
+
+	public bool IsReady() {
+		return ready;
+	}
 
 	public void StopTrialFileWriter () {
 		currentTrialWriter.Flush ();
 		currentTrialWriter.Close ();
 		currentTrialWriter = null;
+		ready = false;
 	}
 
 	public bool RecordLine(string line) {

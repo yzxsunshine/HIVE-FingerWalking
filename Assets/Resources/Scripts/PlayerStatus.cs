@@ -43,6 +43,7 @@ public class PlayerStatus : MonoBehaviour {
 	public float timeStamp;
 	public bool triggerWaypoint = false;
 	public Vector3 wayPointOnPath;
+	public bool isCollisionOpen = true;
 	// Use this for initialization
 	void Awake () {
 		travelModelInterface = GetComponent<TravelModelInterface> ();
@@ -292,5 +293,9 @@ public class PlayerStatus : MonoBehaviour {
 		if (controlType == CONTROL_TYPE.JOYSTICK) {
 			GetComponent<JoystickGesture>().Calibrate();
 		}
+	}
+
+	public void SwitchCharacterCollision(bool collision) {
+		isCollisionOpen = collision;
 	}
 }

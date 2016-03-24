@@ -65,7 +65,7 @@ public class JoystickGesture : MonoBehaviour {
 		}
 		else if(Input.GetKeyDown("joystick button 1")) {
 			if (Application.loadedLevelName == "cognitive") {
-				travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SURFING);
+				travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SEGWAY);
 			}
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.SEGWAY);
 			Debug.Log("Segway");

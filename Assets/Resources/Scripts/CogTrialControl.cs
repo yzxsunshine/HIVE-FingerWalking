@@ -119,7 +119,7 @@ public class CogTrialControl : MonoBehaviour {
 	private int currentMazeID = 0;
 	private GameObject[] wayPoints = new GameObject[45];
 	private GameObject[] mazes = new GameObject[3];
-	private GameObject[] barrierTapes = new GameObject[3];
+	private GameObject[] barrierTapes = new GameObject[6];
 	private int[, ] wayPtIndexes = new int[6, 6] {	{0, 5, 11, 16, 22, 27},
 													{5, 10, 16, 21, 27, 32},
 													{1, 10, 11, 21, 22, 32},
@@ -169,12 +169,13 @@ public class CogTrialControl : MonoBehaviour {
 
 		for (int i = 0; i < 3; i++) {
 			mazes[i] = GameObject.Find("Maze_"+i);
-			barrierTapes[i] = GameObject.Find("NoPassing_"+i);
 		}
-
+		for (int i = 0; i < 6; i++) {
+			barrierTapes [i] = GameObject.Find ("NoPassing_" + i);
+		}
 		int trialID = 0;
 
-
+		studyRecorder = GameObject.Find ("StudyRecorder").GetComponent<StudyRecorder> ();;
 		startWayPointCalculator = new StartWayPointCalculator ();
 		startWayPointCalculator.SetWayPointTransform (0, wayPoints [0].transform);
 		startWayPointCalculator.SetWayPointTransform (1, wayPoints [11].transform);
@@ -188,31 +189,35 @@ public class CogTrialControl : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if(cutSceneManager.cutSceneOn) {
+	void FixedUpdate () {
+		if (cutSceneManager.cutSceneOn) {
 			Vector3 targetPos = targetTransform.position;
 			targetPos.y = playerStatus.PLAYER_HEIGHT;
 			Vector3 posVel = targetPos - character.transform.position;
-			float angleDiff = Mathf.Acos(Vector3.Dot(targetTransform.forward, character.transform.forward));
+			float angleDiff = Mathf.Acos (Vector3.Dot (targetTransform.forward, character.transform.forward));
 			if (posVel.magnitude < 5.0f && angleDiff < 0.4f) {
 				// bingo we are in the right place
 				character.transform.position = targetPos;
 				character.transform.forward = targetTransform.forward;
 				cutSceneManager.cutSceneOn = false;
 
-				playerStatus.EnableControl(controlType);
-				StartNextTrial();
-			}
-			else {
+				playerStatus.EnableControl (controlType);
+				StartNextTrial ();
+			} else {
 				if (angleDiff > 0.4f) {
-					character.transform.Rotate(Vector3.up * angleDiff * rotCutSceneSpeed);
+					character.transform.Rotate (Vector3.up * angleDiff * rotCutSceneSpeed);
 					//character.transform.up = Vector3.up;
 				}
 				if (posVel.magnitude > 5.0f) {
 					//character.transform.position = character.transform.position + posVel.normalized * posCutSceneSpeed;
-					Vector3 moveVel = character.transform.InverseTransformDirection(posVel);
+					Vector3 moveVel = character.transform.InverseTransformDirection (posVel);
 					travelModelInterface.SetVelocity (moveVel/*posVel.normalized * posCutSceneSpeed*/, Vector3.zero);
 				}
+			}
+		} else {
+			if (studyRecorder.IsReady()) {
+				string line = playerStatus.GetCurrentTransformLine();
+				studyRecorder.RecordLine(line);
 			}
 		}
 	}
@@ -228,7 +233,7 @@ public class CogTrialControl : MonoBehaviour {
 		for(int k=0; k<colliders.Length; k++) {
 			colliders[k].enabled = close;
 		}
-		GameObject tape_1 = GameObject.Find(barrierTape.name + "/barrierTape");
+		GameObject tape_1 = GameObject.Find(barrierTape.name + "/wall");
 		MeshRenderer[] render_1 = tape_1.GetComponentsInChildren<MeshRenderer>();
 		for(int k=0; k<render_1.Length; k++) {
 			render_1[k].enabled = close;
@@ -236,14 +241,29 @@ public class CogTrialControl : MonoBehaviour {
 	}
 
 	public void OpenCloseBarrierTapes() {
-		for (int i = 0; i < 3; i++) {		// close all
+		for (int i = 0; i < 6; i++) {		// close all
 			SwitchBarrierTape(barrierTapes [i], true);
 		}
-		if (trialSequence [currentTrialID].sequenceID == 1 || trialSequence [currentTrialID].sequenceID == 4) {	 // open for segway only tests
-			SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].mazeID], false);
-			SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].nextMazeID], false);
-		} else if (trialSequence [currentTrialID].sequenceID == 3 || trialSequence [currentTrialID].sequenceID == 5) {	
-			SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].mazeID], false);
+		switch (trialSequence [currentTrialID].sequenceID) {
+		case 1:
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].mazeID], false);
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].mazeID + 3], false);
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].nextMazeID], false);
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].nextMazeID + 3], false);
+			break;
+		case 4:
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].mazeID], false);
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].mazeID + 3], false);
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].nextMazeID], false);
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].nextMazeID + 3], false);
+			break;
+		case 3:
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].mazeID], false);
+			break;
+		case 5:
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].mazeID], false);
+			SwitchBarrierTape (barrierTapes [trialSequence [currentTrialID].mazeID + 3], false);
+			break;
 		}
 	}
 
@@ -278,6 +298,10 @@ public class CogTrialControl : MonoBehaviour {
 			str += trialSequence[currentTrialID].sequence[i] + ", ";
 		}
 		Debug.Log (str);
+		playerStatus.SwitchCharacterCollision(true);
+		studyRecorder.GenerateCogTrialFileWriter ((int) playerStatus.GetControlType(), trialSequence[currentTrialID].sequenceID, (int) playerStatus.GetGestureType());
+		string instruction = playerStatus.GetStatusTableHead ();
+		studyRecorder.RecordLine(instruction);
 	}
 
 	public void GenerateAllTrials(int trialID, int mazeID) {
@@ -292,10 +316,10 @@ public class CogTrialControl : MonoBehaviour {
 	}
 
 	public void GenerateTrial() {
-		for (int i = 0; i < trialSequence[currentTrialID].sequence.Length; i++) {
-			int wayPtID = trialSequence[currentTrialID].sequence[i];
-			Debug.Log("wayPtID = " + wayPtID);
-			SwitchConeStatus(wayPoints[wayPtID], false, false);
+		for (int i = 0; i < wayPoints.Length; i++) {
+			//int wayPtID = trialSequence[currentTrialID].sequence[i];
+			//Debug.Log("wayPtID = " + wayPtID);
+			SwitchConeStatus(wayPoints[i], false, false);
 		}
 		SwitchConeStatus(wayPoints [trialSequence [currentTrialID].sequence[0]], true, false);
 	}
@@ -303,15 +327,20 @@ public class CogTrialControl : MonoBehaviour {
 	public void FinishTrial () {
 		currentStep = 0;
 		currentTrialID++;
+		studyRecorder.StopTrialFileWriter ();
 		if (currentTrialID < trialSequence.Length) {
 			character.transform.up = Vector3.up;
 			currentMazeID = startWayPointCalculator.GetClosestWayPointID (character.transform);
 			currentWayPt = currentMazeID * 11;
 			targetTransform.SetTransform (mazes [currentMazeID].transform);
 			GenerateTrial ();
+			playerStatus.SwitchCharacterCollision(false);
 			cutSceneManager.cutSceneOn = true;
 		} else {
-			Application.Quit ();
+			modeSwitchText.text = "All the trials are finished! Thank you!";
+			modeSwitchText.enabled = true;
+			studyRecorder.StopContextSwitchRecorder();
+			playerStatus.DisableControl();
 		}
 	}
 
@@ -326,13 +355,25 @@ public class CogTrialControl : MonoBehaviour {
 		SwitchConeStatus (wayPoints [wayPtID], true, false);
 		SwitchConeStatus (wayPoints [prevWayPtID], false, false);
 		if (currentStep == 5) {
-			if (trialSequence [currentTrialID].sequenceID == 3 || trialSequence [currentTrialID].sequenceID == 5) {	
-				SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].mazeID], true);
-			}
-			else if (trialSequence [currentTrialID].sequenceID == 0 || trialSequence [currentTrialID].sequenceID == 2) {	
+			switch (trialSequence [currentTrialID].sequenceID) {
+			case 0:
+				SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].mazeID], false);
+				break;
+			case 2:
+				SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].mazeID + 3], false);
 				SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].nextMazeID], false);
-			}
+				SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].nextMazeID + 3], false);
+				break;
+			case 3:
+				SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].mazeID], true);
+				break;
+			case 5:
+				SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].mazeID], true);
+				SwitchBarrierTape(barrierTapes [trialSequence [currentTrialID].nextMazeID + 3], false);
+				break;
 
+			}
+		
 			if (trialSequence [currentTrialID].sequenceID == 0 || trialSequence [currentTrialID].sequenceID == 3) {
 				SwitchConeStatus(wayPoints[trialSequence [currentTrialID].sequence[trialSequence [currentTrialID].sequence.Length - 1]], true, true);
 			}

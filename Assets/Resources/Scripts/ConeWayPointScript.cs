@@ -20,11 +20,13 @@ public class ConeWayPointScript : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		GameObject obj = cogTrialControl.NextStep ();
-		if (obj != null)
-			arrowCtrl.SetTarget (obj.transform);
-		else
-			arrowCtrl.ResetTarget ();
+		if (status.isCollisionOpen == true) {
+			GameObject obj = cogTrialControl.NextStep ();
+			if (obj != null)
+				arrowCtrl.SetTarget (obj.transform);
+			else
+				arrowCtrl.ResetTarget ();
+		}
 	}
 
 }

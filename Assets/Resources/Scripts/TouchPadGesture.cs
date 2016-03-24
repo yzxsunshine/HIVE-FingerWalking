@@ -129,7 +129,7 @@ public class TouchPadGesture : MonoBehaviour {
 				//Vector3 moveVel = velQueue.GetAvgVelocity(velocity, gestureType);
 			
 				//Debug.Log(moveVel.ToString());
-				if(travel_model_interface.HasControl())
+				//if(travel_model_interface.HasControl())
 					travel_model_interface.SetVelocity (moveVel, rotVel);
 			}
 		
@@ -347,6 +347,10 @@ public class TouchPadGesture : MonoBehaviour {
 		}
 		if(curGestureType != TRAVEL_TYPE.SEGWAY && dashline != null) {
 			GameObject.Destroy(dashline);
+		}
+
+		if (Application.loadedLevelName == "cognitive") {
+			travel_model_interface.SetTargetGestureType (curGestureType);
 		}
 		//if(curGestureType != TRAVEL_TYPE.NOTHING)
 			travel_model_interface.SetGestureType (curGestureType);
