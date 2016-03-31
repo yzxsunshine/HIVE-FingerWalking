@@ -75,7 +75,7 @@ public class DevicesManager : MonoBehaviour {
 		//tb = new TactaBoard(Configuration.TACTA_BOARD_COM_PORT, 0);		//Init wind system
 		//tb.Open();
 		
-		DontDestroyOnLoad(this);
+		//DontDestroyOnLoad(this);
 		devsConnected = true;
 	}
 

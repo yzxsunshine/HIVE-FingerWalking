@@ -163,6 +163,12 @@ public class HIVEFPSController : MonoBehaviour {
 		gravity = 10.0f;
 	}
 
+	public void SegSingleMode() {
+		gestureType = TRAVEL_TYPE.SINGLE_MODE;
+		grounded = true;
+		gravity = 10.0f;
+	}
+
 	public TRAVEL_TYPE SetReset () {
 		TRAVEL_TYPE prevType = gestureType;
 		gestureType = TRAVEL_TYPE.RESET;

@@ -8,11 +8,11 @@
     subject_id = "5" 
 	controller_type = "joystick_single_mode"
 	start_pass = "0"
-	start_id = "0">
+	start_id = "-1">
   </subject>
   <travel_interfaces>
 	  <joystick
-		walking_speed = "15.0"
+		walking_speed = "8.0"
 		walking_angular_speed = "2.0"
 		segway_speed = "50.0"
 		segway_angular_speed = "1.0"
@@ -23,7 +23,7 @@
 	  <forcepad
 		min_finger_move = "5.0"
 		min_finger_speed = "5.0"
-		max_finger_speed = "15.0"
+		max_finger_speed = "8.0"
 		walking_angular_speed = "0.3"
 		walking_speed_scale = "1.5"
 		segway_speed = "60.0"
@@ -35,8 +35,9 @@
 		surfing_yaw_speed = "0.01">
 	  </forcepad>
 	  <joystick_single_mode
-		min_speed = "15.0"
+		min_speed = "8.0"
 		angular_speed = "1.0"
+		max_angular_speed = "1.0"
 		max_speed = "50.0">
 	  </joystick_single_mode>
 	  <force_extension>

@@ -57,25 +57,25 @@ public class JoystickGesture : MonoBehaviour {
 		
 		//GetComponentInChildren<LocomotionAnimation> ().vel = moveVel;
 		if(Input.GetKeyDown("joystick button 0")) {
-			if (Application.loadedLevelName == "cognitive") {
+			//if (Application.loadedLevelName == "cognitive") {
 				travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.WALKING);
-			}
+			//}
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.WALKING);
 			Debug.Log("Walking");
 		}
 		else if(Input.GetKeyDown("joystick button 1")) {
-			if (Application.loadedLevelName == "cognitive") {
+			//if (Application.loadedLevelName == "cognitive") {
 				travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SEGWAY);
-			}
+			//}
 			travelModelInterface.SetGestureType (TRAVEL_TYPE.SEGWAY);
 			Debug.Log("Segway");
 		}
 		else if(Input.GetKeyDown("joystick button 2")) {
-			if (Application.loadedLevelName == "cognitive") {
-				travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SURFING);
-			}
-			travelModelInterface.SetGestureType (TRAVEL_TYPE.SURFING);
-			Debug.Log("Surfing");
+			//if (Application.loadedLevelName == "cognitive") {
+			//	travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SURFING);
+			//}
+			//travelModelInterface.SetGestureType (TRAVEL_TYPE.SURFING);
+			//Debug.Log("Surfing");
 		}
 		else if(Input.GetKeyDown("joystick button 3")) {
 			if (timerDoubleClick > MAX_DOUBLE_CLICK_TIME) {	// too long between two click

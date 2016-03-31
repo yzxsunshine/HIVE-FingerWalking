@@ -5,10 +5,12 @@ public class JoystickSingleModeParams {
 	public float minSpeed;
 	public float angularSpeed;
 	public float maxSpeed;
+	public float maxAngularSpeed;
 
 	public JoystickSingleModeParams() {
 		minSpeed = 10.0f;
 		angularSpeed = 1.0f;
+		maxAngularSpeed = 2.0f;
 		maxSpeed = 20.0f;
 	}
 };
@@ -71,8 +73,8 @@ public class JoystickGestureSingleMode : MonoBehaviour {
 		Vector3 rotVel = new Vector3 ();
 
 		moveVel = Vector3.forward * leftVertical * (joystickSingleModeParams.minSpeed + zValue * (joystickSingleModeParams.maxSpeed - joystickSingleModeParams.minSpeed));
-		rotVel = new Vector3 (0, leftHorizontal, 0) * joystickSingleModeParams.angularSpeed;
-		this.GetComponent ("HIVEFPSController").SendMessage ("SetSegway");
+		rotVel = new Vector3 (0, rightHorizontal, 0) * (joystickSingleModeParams.angularSpeed + zValue * (joystickSingleModeParams.maxAngularSpeed - joystickSingleModeParams.angularSpeed));
+		this.GetComponent ("HIVEFPSController").SendMessage ("SegSingleMode");
 
 		travelModelInterface.SetVelocity (moveVel, rotVel);
 		timerDoubleClick += Time.deltaTime;

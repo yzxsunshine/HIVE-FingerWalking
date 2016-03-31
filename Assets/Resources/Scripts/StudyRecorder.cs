@@ -12,6 +12,8 @@ public class StudyRecorder : MonoBehaviour {
 	private string trialDirectory;
 	private bool ready = false;
 
+	void Awake() {
+	}
 	// Use this for initialization
 	void Start () {
 		string directoryName = "subject_" + ConfigurationHandler.subjectID;
@@ -34,14 +36,14 @@ public class StudyRecorder : MonoBehaviour {
 			Application.Quit();	// don't overwrite existing study
 		}
 
-		string fileName = trialDirectory + "/subject_" + ConfigurationHandler.subjectID;
-		fileName += "_context_switch.txt";
-		if (File.Exists (fileName)) {
-			File.Delete(fileName);
-		} 
-		contextSwitchWriter = File.CreateText (fileName);
-		string line = "#Time To Switch#\t#Num of Incorrect Switch#\t#Target Mode#\t#Current Mode#";
-		contextSwitchWriter.WriteLine(line);
+		//string fileName = trialDirectory + "/subject_" + ConfigurationHandler.subjectID;
+		//fileName += "_context_switch.txt";
+		//if (File.Exists (fileName)) {
+		//	File.Delete(fileName);
+		//} 
+		//contextSwitchWriter = File.CreateText (fileName);
+		//string line = "#Time To Switch#\t#Num of Incorrect Switch#\t#Target Mode#\t#Current Mode#";
+		//contextSwitchWriter.WriteLine(line);
 	}
 	
 	// Update is called once per frame
@@ -61,9 +63,9 @@ public class StudyRecorder : MonoBehaviour {
 		return currentTrialWriter;
 	}
 
-	public StreamWriter GenerateCogTrialFileWriter(int controller, int sequenceID, int travelType) {
+	public StreamWriter GenerateCogTrialFileWriter(int controller, int isTraining, int sequenceID, int travelType) {
 		string fileName = trialDirectory + "/subject_" + ConfigurationHandler.subjectID;
-		fileName += "_trial_" + controller + "_" + sequenceID + "_" + travelType;
+		fileName += "_trial_" + controller + "_" + isTraining + "_" + sequenceID + "_" + travelType;
 		fileName += ".txt";
 		if (File.Exists (fileName)) {
 			File.Delete(fileName);
@@ -98,7 +100,7 @@ public class StudyRecorder : MonoBehaviour {
 		contextSwitchWriter.Close ();
 		contextSwitchWriter = null;
 	}
-
+	/*
 	public bool RecordContextSwitch(float timeStamp, int errorSwitchNum, TRAVEL_TYPE targetMode, TRAVEL_TYPE currentMode) {
 		string line = "" + timeStamp + "\t" + errorSwitchNum + "\t";
 		switch (targetMode) {
@@ -129,5 +131,5 @@ public class StudyRecorder : MonoBehaviour {
 			return true;
 		}
 		return false;
-	}
+	}*/
 }

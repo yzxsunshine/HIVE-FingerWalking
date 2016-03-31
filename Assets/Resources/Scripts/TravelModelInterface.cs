@@ -43,7 +43,7 @@ public class VelocityQueue {
 
 
 public class TravelModelInterface : MonoBehaviour  {
-	private TRAVEL_TYPE gestureType = TRAVEL_TYPE.NOTHING;
+	public TRAVEL_TYPE gestureType = TRAVEL_TYPE.NOTHING;
 	private TRAVEL_TYPE targetGestureType = TRAVEL_TYPE.RESTING;
 	private HIVEFPSController controller;
 	private PlayerStatus playerStatus;
@@ -65,7 +65,7 @@ public class TravelModelInterface : MonoBehaviour  {
 	// Use this for initialization
 	void Start () {
 		controller = GetComponent<HIVEFPSController>();
-		if (Application.loadedLevelName == "ve_comples") {
+		if (Application.loadedLevelName == "ve_complex") {
 			trialControl = GetComponent<TrialControl> ();
 		}
 		else {
@@ -199,8 +199,8 @@ public class TravelModelInterface : MonoBehaviour  {
 				if(targetGestureType == gestureType) {
 					Debug.Log("Correct Switch");
 					playerStatus.CorrectSwitch();
-					studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
-					if (Application.loadedLevelName == "ve_comples") {
+					//studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
+					if (Application.loadedLevelName == "ve_complex") {
 						if (!trialControl.IsAllTrialsDone())
 							trialControl.modeSwitchText.enabled = false;
 					}
@@ -220,13 +220,13 @@ public class TravelModelInterface : MonoBehaviour  {
 						break;
 					}
 					errorSwitchNum++;
-					studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
+//					studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
 				}
 			}
 			else {
 				Debug.Log("Idle Switch");
 				playerStatus.IdleSwitch();
-				studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
+//				studyRecorder.RecordContextSwitch(modeSwitchTimer, errorSwitchNum, targetGestureType, gestureType);
 			}
 		}
 	}

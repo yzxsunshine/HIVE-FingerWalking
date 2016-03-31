@@ -102,7 +102,7 @@ public class TrialControl : MonoBehaviour {
 	public TravelModelInterface travelModelInterface;
 	private bool HMDCalibrated = false;
 	private bool inTraining = false;
-	private TRAVEL_TYPE typeBeforeReset;
+	public TRAVEL_TYPE typeBeforeReset;
 	private TrainingManager trainingManager;
 	private DevicesManager deviceManager;
 	private int currentPass = 0;
@@ -167,6 +167,9 @@ public class TrialControl : MonoBehaviour {
 					break;
 				case TRAVEL_TYPE.SURFING: 
 					fpsController.SetSurfing();
+					break;
+				case TRAVEL_TYPE.SINGLE_MODE:
+					fpsController.SegSingleMode();
 					break;
 				}
 				playerStatus.EnableControl(controlType);
@@ -242,10 +245,18 @@ public class TrialControl : MonoBehaviour {
 				modeSwitchText.text = "Training COMPLETE!\n Preparing for trials.";
 				modeSwitchText.enabled = true;
 				travelModelInterface.SetVelocity (Vector3.zero, Vector3.zero);
-				if (controlType != CONTROL_TYPE.FORCE_EXTENSION) {
-					character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
-					character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
+				if (controlType != CONTROL_TYPE.JOYSTICK_SINGLE_MODE) {
+					travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.RESTING);
+					travelModelInterface.SetGestureType (TRAVEL_TYPE.RESTING);
 				}
+				else {
+					travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SINGLE_MODE);
+					travelModelInterface.SetGestureType (TRAVEL_TYPE.SINGLE_MODE);
+				}
+				character.transform.Translate(55.3f, 1.8f, -170f); 
+				character.AddComponent<CogTrialControl>();
+				Application.LoadLevel("cognitive");
+				return;
 				FirstTrial(0);
 			}
 			cutSceneManager.cutSceneOn = true;
@@ -255,9 +266,13 @@ public class TrialControl : MonoBehaviour {
 			modeSwitchText.text = "Trial COMPLETE!\n Preparing for next trial.";
 			modeSwitchText.enabled = true;
 			travelModelInterface.SetVelocity (Vector3.zero, Vector3.zero);
-			if (controlType != CONTROL_TYPE.FORCE_EXTENSION) {
-				character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
-				character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.RESTING);
+			if (controlType != CONTROL_TYPE.JOYSTICK_SINGLE_MODE) {
+				travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.RESTING);
+				travelModelInterface.SetGestureType (TRAVEL_TYPE.RESTING);
+			}
+			else {
+				travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SINGLE_MODE);
+				travelModelInterface.SetGestureType (TRAVEL_TYPE.SINGLE_MODE);
 			}
 			if(currentTrialID < trialSequence.Length) {
 				//
@@ -316,16 +331,16 @@ public class TrialControl : MonoBehaviour {
 			}
 			modeSwitchText.text = "Use " + modeStr + " mode.";
 			modeSwitchText.enabled = true;
-			if (controlType == CONTROL_TYPE.FORCE_EXTENSION) {
-				character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.SINGLE_MODE);
-				character.GetComponent<TravelModelInterface>().SetGestureType(TRAVEL_TYPE.SINGLE_MODE);
+			if (controlType == CONTROL_TYPE.JOYSTICK_SINGLE_MODE) {
+				travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SINGLE_MODE);
+				travelModelInterface.SetGestureType(TRAVEL_TYPE.SINGLE_MODE);
 			}
 			else {
-				character.GetComponent<TravelModelInterface>().SetTargetGestureType (trialSequence[currentTrialID].mode);
+				travelModelInterface.SetTargetGestureType (trialSequence[currentTrialID].mode);
 			}
 		}
 		playerStatus.EnableControl(controlType);
-		//character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.RESTING);
+		//travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.RESTING);
 
 
 		//playerStatus.DisableControl();

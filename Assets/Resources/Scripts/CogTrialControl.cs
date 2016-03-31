@@ -126,20 +126,29 @@ public class CogTrialControl : MonoBehaviour {
 													{10, 33, 21, 37, 32, 41},
 													{33, 37, 37, 41, 41, 33},
 													{33, 41, 37, 33, 41, 37}};
-	private int[, ] lattinSquare = new int[,] {	{0,5,1,4,2,3},		// 0 short distance, 1 long distance, 2 combined
-												{1,0,2,5,3,4},
-												{2,1,3,0,4,5},
-												{3,2,4,1,5,0},
-												{4,3,5,2,0,1},
-												{5,4,0,3,1,2}}; 
-	private CogTrialSequence[] trialSequence = new CogTrialSequence[6];
+	private int[, ] lattinSquare = new int[,] {	{0,3,1,4,0,5,1,4,2,3},		// 0 short distance, 1 long distance, 2 combined
+												{0,3,1,4,1,0,2,5,3,4},		// first four are training
+												{0,3,1,4,2,1,3,0,4,5},
+												{0,3,1,4,3,2,4,1,5,0},
+												{0,3,1,4,4,3,5,2,0,1},
+												{0,3,1,4,5,4,0,3,1,2}}; 
+
+	private int[, ] lattinSquareControl = new int[3, 3] {	{0,1,2},
+														{1,2,0},
+														{2,0,1}};
+	private CogTrialSequence[] trialSequence = new CogTrialSequence[10];
 
 	private StartWayPointCalculator startWayPointCalculator;
 	public StoreTransform targetTransform = null;
 
 	private float posCutSceneSpeed = 1.0f;
 	private float rotCutSceneSpeed = 0.3f;
+	private bool initialized = false;
 	ArrowControl arrowCtrl;
+	private PathGenerator pathGenerator;
+	private Vector3 centerPos = new Vector3(4.757739f, 4.5f, 22.99999f);
+
+	private int controlCount = 0;
 
 	void Awake() {
 		character = GameObject.Find ("Character");
@@ -150,8 +159,12 @@ public class CogTrialControl : MonoBehaviour {
 		travelModelInterface = GetComponent<TravelModelInterface> ();
 		fpsController = GetComponent<HIVEFPSController> ();
 	}
-	// Use this for initialization
 	void Start () {
+		if (character.GetComponent<TrialControl> () != null) {
+
+			character.GetComponent<TrialControl> ().enabled = false;
+			Application.LoadLevel("cognitive");
+		}
 		controlType = ConfigurationHandler.controllerType;
 		if(controlType != CONTROL_TYPE.FORCEPAD_GESTURE && controlType != CONTROL_TYPE.FORCE_EXTENSION) {
 			GameObject.Find("Widget").GetComponent<RawImage>().enabled = false;
@@ -183,9 +196,23 @@ public class CogTrialControl : MonoBehaviour {
 		startWayPointCalculator.SetWayPointTransform (3, null);
 
 		arrowCtrl = character.GetComponentInChildren<ArrowControl> ();
+		pathGenerator = GameObject.Find ("PathGeneratorManager").GetComponent<PathGenerator> ();
 
 		targetTransform = new StoreTransform ();
-		FirstTrial (0);
+		initialized = true;
+		FirstTrial ((ConfigurationHandler.subjectID + controlCount) % 3);
+		switch ((ConfigurationHandler.subjectID + controlCount) % 3) {
+		case 0:
+			controlType = CONTROL_TYPE.JOYSTICK;
+			break;
+		case 1:
+			controlType = CONTROL_TYPE.FORCEPAD_GESTURE;
+			break;
+		case 2:
+			controlType = CONTROL_TYPE.JOYSTICK_SINGLE_MODE;
+			break;
+		}
+		controlCount++;
 	}
 	
 	// Update is called once per frame
@@ -200,9 +227,9 @@ public class CogTrialControl : MonoBehaviour {
 				character.transform.position = targetPos;
 				character.transform.forward = targetTransform.forward;
 				cutSceneManager.cutSceneOn = false;
+				modeSwitchText.text = "Wait for the next trial!";
+				modeSwitchText.enabled = true;
 
-				playerStatus.EnableControl (controlType);
-				StartNextTrial ();
 			} else {
 				if (angleDiff > 0.4f) {
 					character.transform.Rotate (Vector3.up * angleDiff * rotCutSceneSpeed);
@@ -218,6 +245,14 @@ public class CogTrialControl : MonoBehaviour {
 			if (studyRecorder.IsReady()) {
 				string line = playerStatus.GetCurrentTransformLine();
 				studyRecorder.RecordLine(line);
+			}
+		}
+
+		if(Input.GetKeyDown(KeyCode.Space)) {
+			if (modeSwitchText.enabled == true && currentTrialID < trialSequence.Length) {
+				modeSwitchText.enabled = false;
+				playerStatus.EnableControl (controlType);
+				StartNextTrial ();
 			}
 		}
 	}
@@ -299,16 +334,30 @@ public class CogTrialControl : MonoBehaviour {
 		}
 		Debug.Log (str);
 		playerStatus.SwitchCharacterCollision(true);
-		studyRecorder.GenerateCogTrialFileWriter ((int) playerStatus.GetControlType(), trialSequence[currentTrialID].sequenceID, (int) playerStatus.GetGestureType());
+		int isTraining = 1;
+		if (currentTrialID < 4) {
+			isTraining = 0;
+		}
+		studyRecorder.GenerateCogTrialFileWriter ((int) playerStatus.GetControlType(), isTraining, trialSequence[currentTrialID].sequenceID, (int) playerStatus.GetGestureType());
 		string instruction = playerStatus.GetStatusTableHead ();
 		studyRecorder.RecordLine(instruction);
+
+		PathIndicatorSegment[] segs = new PathIndicatorSegment[2];
+		for (int i = 0; i < 2; i++) {
+			int first = trialSequence [currentTrialID].sequence[i];
+			int second = trialSequence [currentTrialID].sequence[i + 1];
+			segs[i] = new PathIndicatorSegment();
+			segs[i].startPt = wayPoints[first].transform;
+			segs[i].endPt = wayPoints[second].transform;
+		}
+		pathGenerator.GeneratePath (segs);
 	}
 
 	public void GenerateAllTrials(int trialID, int mazeID) {
 		Debug.Log("GenerateAllTrials");
 		//playerStatus.EnableControl(controlType);
 		int curMazeTmp = mazeID;
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 10; i++) {
 			trialSequence[i] = new CogTrialSequence(curMazeTmp, lattinSquare[trialID, i]);
 			curMazeTmp = trialSequence[i].nextMazeID;
 		}
@@ -337,14 +386,250 @@ public class CogTrialControl : MonoBehaviour {
 			playerStatus.SwitchCharacterCollision(false);
 			cutSceneManager.cutSceneOn = true;
 		} else {
-			modeSwitchText.text = "All the trials are finished! Thank you!";
+			if (controlCount < 3) {
+				currentStep = 0;
+				currentTrialID = 0;
+				modeSwitchText.text = "Current session is finished! Have a break!";
+				FirstTrial ((ConfigurationHandler.subjectID + controlCount) % 3);
+				switch ((ConfigurationHandler.subjectID + controlCount) % 3) {
+				case 0:
+					controlType = CONTROL_TYPE.JOYSTICK;
+					break;
+				case 1:
+					controlType = CONTROL_TYPE.FORCEPAD_GESTURE;
+					break;
+				case 2:
+					controlType = CONTROL_TYPE.JOYSTICK_SINGLE_MODE;
+					break;
+				}
+				controlCount++;
+			}
+			else {
+				modeSwitchText.text = "All the trials are finished! Thank you!";
+			}
 			modeSwitchText.enabled = true;
-			studyRecorder.StopContextSwitchRecorder();
+			//studyRecorder.StopContextSwitchRecorder();
 			playerStatus.DisableControl();
 		}
 	}
 
+	private PathIndicatorSegment[] GetSegs() {
+		PathIndicatorSegment[] segs = new PathIndicatorSegment[2];
+		if (currentStep + 1 < trialSequence [currentTrialID].sequence.Length) {
+			int first = trialSequence [currentTrialID].sequence [currentStep];
+			int second = trialSequence [currentTrialID].sequence [currentStep + 1];
+			segs [0] = new PathIndicatorSegment ();
+			segs [0].startPt = wayPoints [first].transform;
+			segs [0].endPt = wayPoints [second].transform;
+			if (currentStep + 2 < trialSequence [currentTrialID].sequence.Length) {
+				first = trialSequence [currentTrialID].sequence [currentStep + 1];
+				second = trialSequence [currentTrialID].sequence [currentStep + 2];
+				segs [1] = new PathIndicatorSegment ();
+				segs [1].startPt = wayPoints [first].transform;
+				segs [1].endPt = wayPoints [second].transform;
+			}
+			else {
+				segs[1] = null;
+			}
+		}
+		else {
+			segs[0] = null;
+			segs[1] = null;
+		}
+		return segs;
+	}
+
+	private void GeneratePath() {
+		if (currentStep < trialSequence [currentTrialID].sequence.Length - 1) {
+			PathIndicatorSegment[] segs = new PathIndicatorSegment[2];
+			switch (trialSequence [currentTrialID].sequenceID) {
+			case 0:
+				segs = GetSegs();
+				break;
+			case 1:
+				if (currentStep == 1) {
+					int first = trialSequence [currentTrialID].sequence [1];
+					int second = trialSequence [currentTrialID].sequence [2];
+					segs [0] = new PathIndicatorSegment ();
+					segs [0].startPt = wayPoints [first].transform;
+					segs [0].endPt = wayPoints [second].transform;
+					
+					first = trialSequence [currentTrialID].sequence [2];
+					second = trialSequence [currentTrialID].sequence [3];
+					segs [1] = new PathIndicatorSegment ();
+					segs [1].startPt = wayPoints [first].transform;
+					segs [1].endPt = wayPoints [second].transform;
+					segs [1].center = centerPos;
+				}
+				else if (currentStep > 1 && currentStep < 5) {
+					for (int i = 0; i < 2; i++) {
+						int first = trialSequence [currentTrialID].sequence [currentStep + i];
+						int second = trialSequence [currentTrialID].sequence [currentStep + i + 1];
+						segs [i] = new PathIndicatorSegment ();
+						segs [i].startPt = wayPoints [first].transform;
+						segs [i].endPt = wayPoints [second].transform;
+						segs [i].center = centerPos;
+					}
+				}
+				else if (currentStep == 5) {
+					int first = trialSequence [currentTrialID].sequence [currentStep];
+					int second = trialSequence [currentTrialID].sequence [currentStep + 1];
+					segs [0] = new PathIndicatorSegment ();
+					segs [0].startPt = wayPoints [first].transform;
+					segs [0].endPt = wayPoints [second].transform;
+					//segs [0].center = centerPos;
+					
+					first = trialSequence [currentTrialID].sequence [currentStep + 1];
+					second = trialSequence [currentTrialID].sequence [currentStep + 2];
+					segs [1] = new PathIndicatorSegment ();
+					segs [1].startPt = wayPoints [first].transform;
+					segs [1].endPt = wayPoints [second].transform;
+				}
+				else {
+					segs = GetSegs();
+				}
+				break;
+			case 2:
+				if (currentStep == 9) {
+					int first = trialSequence [currentTrialID].sequence [currentStep];
+					int second = trialSequence [currentTrialID].sequence [currentStep + 1];
+					segs [0] = new PathIndicatorSegment ();
+					segs [0].startPt = wayPoints [first].transform;
+					segs [0].endPt = wayPoints [second].transform;
+					
+					first = trialSequence [currentTrialID].sequence [currentStep + 1];
+					second = trialSequence [currentTrialID].sequence [currentStep + 2];
+					segs [1] = new PathIndicatorSegment ();
+					segs [1].startPt = wayPoints [first].transform;
+					segs [1].endPt = wayPoints [second].transform;
+					segs [1].center = centerPos;
+				}
+				else if (currentStep > 9 && currentStep < 14) {
+					for (int i = 0; i < 2; i++) {
+						int first = trialSequence [currentTrialID].sequence [currentStep + i];
+						int second = trialSequence [currentTrialID].sequence [currentStep + i + 1];
+						segs [i] = new PathIndicatorSegment ();
+						segs [i].startPt = wayPoints [first].transform;
+						segs [i].endPt = wayPoints [second].transform;
+						segs [i].center = centerPos;
+					}
+				}
+				else if (currentStep == 14) {
+					int first = trialSequence [currentTrialID].sequence [currentStep];
+					int second = trialSequence [currentTrialID].sequence [currentStep + 1];
+					segs [0] = new PathIndicatorSegment ();
+					segs [0].startPt = wayPoints [first].transform;
+					segs [0].endPt = wayPoints [second].transform;
+					//segs [0].center = centerPos;
+					
+					first = trialSequence [currentTrialID].sequence [currentStep + 1];
+					second = trialSequence [currentTrialID].sequence [currentStep + 2];
+					segs [1] = new PathIndicatorSegment ();
+					segs [1].startPt = wayPoints [first].transform;
+					segs [1].endPt = wayPoints [second].transform;
+				}
+				else {
+					segs = GetSegs();
+				}
+				break;
+			case 3:
+				segs = GetSegs();
+				
+				break;
+			case 4:
+				if (currentStep == 1) {
+					int first = trialSequence [currentTrialID].sequence [currentStep];
+					int second = trialSequence [currentTrialID].sequence [currentStep + 1];
+					segs [0] = new PathIndicatorSegment ();
+					segs [0].startPt = wayPoints [first].transform;
+					segs [0].endPt = wayPoints [second].transform;
+					
+					first = trialSequence [currentTrialID].sequence [currentStep + 1];
+					second = trialSequence [currentTrialID].sequence [currentStep + 2];
+					segs [1] = new PathIndicatorSegment ();
+					segs [1].startPt = wayPoints [first].transform;
+					segs [1].endPt = wayPoints [second].transform;
+					segs [1].center = centerPos;
+				}
+				else if (currentStep > 1 && currentStep < 10) {
+					for (int i = 0; i < 2; i++) {
+						int first = trialSequence [currentTrialID].sequence [currentStep + i];
+						int second = trialSequence [currentTrialID].sequence [currentStep + i + 1];
+						segs [i] = new PathIndicatorSegment ();
+						segs [i].startPt = wayPoints [first].transform;
+						segs [i].endPt = wayPoints [second].transform;
+						segs [i].center = centerPos;
+					}
+				}
+				else if (currentStep == 10) {
+					int first = trialSequence [currentTrialID].sequence [currentStep];
+					int second = trialSequence [currentTrialID].sequence [currentStep + 1];
+					segs [0] = new PathIndicatorSegment ();
+					segs [0].startPt = wayPoints [first].transform;
+					segs [0].endPt = wayPoints [second].transform;
+					//segs [0].center = centerPos;
+					
+					first = trialSequence [currentTrialID].sequence [currentStep + 1];
+					second = trialSequence [currentTrialID].sequence [currentStep + 2];
+					segs [1] = new PathIndicatorSegment ();
+					segs [1].startPt = wayPoints [first].transform;
+					segs [1].endPt = wayPoints [second].transform;
+				}
+				else {
+					segs = GetSegs();
+				}
+				break;
+			case 5:
+				if (currentStep == 1) {
+					int first = trialSequence [currentTrialID].sequence [currentStep];
+					int second = trialSequence [currentTrialID].sequence [currentStep + 1];
+					segs [0] = new PathIndicatorSegment ();
+					segs [0].startPt = wayPoints [first].transform;
+					segs [0].endPt = wayPoints [second].transform;
+					
+					first = trialSequence [currentTrialID].sequence [currentStep + 1];
+					second = trialSequence [currentTrialID].sequence [currentStep + 2];
+					segs [1] = new PathIndicatorSegment ();
+					segs [1].startPt = wayPoints [first].transform;
+					segs [1].endPt = wayPoints [second].transform;
+					segs [1].center = centerPos;
+				}
+				else if (currentStep > 1 && currentStep < 5) {
+					for (int i = 0; i < 2; i++) {
+						int first = trialSequence [currentTrialID].sequence [currentStep + i];
+						int second = trialSequence [currentTrialID].sequence [currentStep + i + 1];
+						segs [i] = new PathIndicatorSegment ();
+						segs [i].startPt = wayPoints [first].transform;
+						segs [i].endPt = wayPoints [second].transform;
+						segs [i].center = centerPos;
+					}
+				}
+				else if (currentStep == 5) {
+					int first = trialSequence [currentTrialID].sequence [currentStep];
+					int second = trialSequence [currentTrialID].sequence [currentStep + 1];
+					segs [0] = new PathIndicatorSegment ();
+					segs [0].startPt = wayPoints [first].transform;
+					segs [0].endPt = wayPoints [second].transform;
+					//segs [0].center = centerPos;
+					
+					first = trialSequence [currentTrialID].sequence [currentStep + 1];
+					second = trialSequence [currentTrialID].sequence [currentStep + 2];
+					segs [1] = new PathIndicatorSegment ();
+					segs [1].startPt = wayPoints [first].transform;
+					segs [1].endPt = wayPoints [second].transform;
+				}
+				else {
+					segs = GetSegs();
+				}
+				break;
+			}
+			
+			pathGenerator.GeneratePath (segs);
+		}
+	}
+
 	public GameObject NextStep() {
+		GeneratePath ();
 		currentStep++;
 		if (currentStep >= trialSequence [currentTrialID].sequence.Length) {
 			FinishTrial();

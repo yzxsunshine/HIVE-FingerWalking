@@ -64,6 +64,10 @@ public class TrainingManager : MonoBehaviour {
 		travelType = TRAVEL_TYPE.WALKING;
 		character.GetComponent<TravelModelInterface>().SetTargetGestureType (travelType);
 		StartTimer();
+		if (ConfigurationHandler.controllerType == CONTROL_TYPE.JOYSTICK_SINGLE_MODE) {
+			character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.SINGLE_MODE);
+			character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.SINGLE_MODE);
+		}
 		walkingTrainingNum++;
 	}
 
@@ -86,8 +90,10 @@ public class TrainingManager : MonoBehaviour {
 				}
 				break;
 			case TRAVEL_TYPE.SEGWAY:
-				if (passedTime < validSegwayTime && playerStatus.GetCollisionNum() < validSegwayCollision)
+				if (passedTime < validSegwayTime && playerStatus.GetCollisionNum() < validSegwayCollision) {
+					return null;	// for cog experiment, just stop here
 					travelType = TRAVEL_TYPE.SURFING;
+				}
 				else {
 					currentStep--;	// repeat current
 				}
@@ -120,6 +126,10 @@ public class TrainingManager : MonoBehaviour {
 			break;
 		}
 
+		if (ConfigurationHandler.controllerType == CONTROL_TYPE.JOYSTICK_SINGLE_MODE) {
+			character.GetComponent<TravelModelInterface>().SetTargetGestureType (TRAVEL_TYPE.SINGLE_MODE);
+			character.GetComponent<TravelModelInterface>().SetGestureType (TRAVEL_TYPE.SINGLE_MODE);
+		}
 		return targetTransform;
 	}
 

@@ -47,7 +47,7 @@ public class PlayerStatus : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		travelModelInterface = GetComponent<TravelModelInterface> ();
-		if (Application.loadedLevelName == "ve_comples") {
+		if (Application.loadedLevelName == "ve_complex") {
 			trialControl = GetComponent<TrialControl> ();
 		} else {
 			cogTrialControl = GetComponent<CogTrialControl>();
@@ -185,7 +185,7 @@ public class PlayerStatus : MonoBehaviour {
 	}
 
 	public CONTROL_TYPE GetControlType() {
-		if (Application.loadedLevelName == "ve_comples") {
+		if (Application.loadedLevelName == "ve_complex") {
 			return trialControl.controlType;
 		} else {
 			return cogTrialControl.controlType;
@@ -195,7 +195,7 @@ public class PlayerStatus : MonoBehaviour {
 	public void DisableControl() {
 		GetComponent<TouchPadGesture>().enabled = false;
 		GetComponent<JoystickGesture>().enabled = false;
-		GetComponent<ContexForceExtension>().enabled = false;
+		GetComponent<JoystickGestureSingleMode>().enabled = false;
 		travelModelInterface.DisableMove();
 	}
 
@@ -204,31 +204,26 @@ public class PlayerStatus : MonoBehaviour {
 		case CONTROL_TYPE.JOYSTICK:
 			GetComponent<TouchPadGesture>().enabled = false;
 			GetComponent<JoystickGesture>().enabled = true;
-			GetComponent<ContexForceExtension>().enabled = false;
 			GetComponent<JoystickGestureSingleMode>().enabled = false;
 			break;
 		case CONTROL_TYPE.FORCEPAD_GESTURE:
 			GetComponent<TouchPadGesture>().enabled = true;
 			GetComponent<JoystickGesture>().enabled = false;
-			GetComponent<ContexForceExtension>().enabled = false;
 			GetComponent<JoystickGestureSingleMode>().enabled = false;
 			break;
 		case CONTROL_TYPE.BODY_DRIVEN:
 			GetComponent<TouchPadGesture>().enabled = false;
 			GetComponent<JoystickGesture>().enabled = false;
-			GetComponent<ContexForceExtension>().enabled = false;
 			GetComponent<JoystickGestureSingleMode>().enabled = false;
 			break;
 		case CONTROL_TYPE.FORCE_EXTENSION:
 			GetComponent<TouchPadGesture>().enabled = false;
 			GetComponent<JoystickGesture>().enabled = false;
-			GetComponent<ContexForceExtension>().enabled = true;
 			GetComponent<JoystickGestureSingleMode>().enabled = false;
 			break;
 		case CONTROL_TYPE.JOYSTICK_SINGLE_MODE:
 			GetComponent<TouchPadGesture>().enabled = false;
 			GetComponent<JoystickGesture>().enabled = false;
-			GetComponent<ContexForceExtension>().enabled = false;
 			GetComponent<JoystickGestureSingleMode>().enabled = true;
 			break;
 		}
