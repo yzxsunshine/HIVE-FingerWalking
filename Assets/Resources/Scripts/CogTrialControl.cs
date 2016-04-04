@@ -156,21 +156,17 @@ public class CogTrialControl : MonoBehaviour {
 		modeSwitchText = GameObject.Find ("ModeSwitchText").GetComponent<Text> ();
 		playerStatus = character.GetComponent<PlayerStatus> ();
 		studyRecorder = GameObject.Find ("StudyRecorder").GetComponent<StudyRecorder> ();
-		travelModelInterface = GetComponent<TravelModelInterface> ();
-		fpsController = GetComponent<HIVEFPSController> ();
+
 	}
 	void Start () {
-		if (character.GetComponent<TrialControl> () != null) {
-
-			character.GetComponent<TrialControl> ().enabled = false;
-			Application.LoadLevel("cognitive");
-		}
 		controlType = ConfigurationHandler.controllerType;
 		if(controlType != CONTROL_TYPE.FORCEPAD_GESTURE && controlType != CONTROL_TYPE.FORCE_EXTENSION) {
 			GameObject.Find("Widget").GetComponent<RawImage>().enabled = false;
 		}
 		playerStatus.DisableControl ();
 		playerStatus.EnableControl(controlType);
+		travelModelInterface = GetComponent<TravelModelInterface> ();
+		fpsController = GetComponent<HIVEFPSController> ();
 		travelModelInterface.SetTargetGestureType (TRAVEL_TYPE.SINGLE_MODE);
 		travelModelInterface.SetGestureType(TRAVEL_TYPE.SINGLE_MODE);
 
@@ -229,6 +225,8 @@ public class CogTrialControl : MonoBehaviour {
 				cutSceneManager.cutSceneOn = false;
 				modeSwitchText.text = "Wait for the next trial!";
 				modeSwitchText.enabled = true;
+				travelModelInterface.SetVelocity(Vector3.zero, Vector3.zero);
+				fpsController.StandStill();
 
 			} else {
 				if (angleDiff > 0.4f) {
@@ -351,6 +349,7 @@ public class CogTrialControl : MonoBehaviour {
 			segs[i].endPt = wayPoints[second].transform;
 		}
 		pathGenerator.GeneratePath (segs);
+		playerStatus.accelerate = 0.0f;
 	}
 
 	public void GenerateAllTrials(int trialID, int mazeID) {
@@ -410,6 +409,8 @@ public class CogTrialControl : MonoBehaviour {
 			modeSwitchText.enabled = true;
 			//studyRecorder.StopContextSwitchRecorder();
 			playerStatus.DisableControl();
+			travelModelInterface.SetVelocity(Vector3.zero, Vector3.zero);
+			fpsController.StandStill();
 		}
 	}
 

@@ -5,7 +5,7 @@
     uiva_ip_address = "localhost">
   </devices>
   <subject
-    subject_id = "5" 
+    subject_id = "2" 
 	controller_type = "joystick_single_mode"
 	start_pass = "0"
 	start_id = "-1">

@@ -77,24 +77,24 @@ public class JoystickGesture : MonoBehaviour {
 			//travelModelInterface.SetGestureType (TRAVEL_TYPE.SURFING);
 			//Debug.Log("Surfing");
 		}
-		else if(Input.GetKeyDown("joystick button 3")) {
-			if (timerDoubleClick > MAX_DOUBLE_CLICK_TIME) {	// too long between two click
-				timerDoubleClick = 0;
-			}
-			else
-			{
-				travelModelInterface.GetTrialControl().ResetToLatestPoint();
-				timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
-			}
-		}
-		else if(Input.GetKeyDown("joystick button 4")) {
-			flipLeftRight = ! flipLeftRight;
-			Debug.Log("Flip left and right");
-		}
-		else if(Input.GetKeyDown("joystick button 5")) {
-			flipSurfPitch = ! flipSurfPitch;
-			Debug.Log("Flip surfing pitch");
-		}
+		//else if(Input.GetKeyDown("joystick button 3")) {
+		//	if (timerDoubleClick > MAX_DOUBLE_CLICK_TIME) {	// too long between two click
+		//		timerDoubleClick = 0;
+		//	}
+		//	else
+		//	{
+		//		travelModelInterface.GetTrialControl().ResetToLatestPoint();
+		//		timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
+		//	}
+		//}
+		//else if(Input.GetKeyDown("joystick button 4")) {
+		//	flipLeftRight = ! flipLeftRight;
+		//	Debug.Log("Flip left and right");
+		//}
+		//else if(Input.GetKeyDown("joystick button 5")) {
+		//	flipSurfPitch = ! flipSurfPitch;
+		//	Debug.Log("Flip surfing pitch");
+		//}
 
 		if (flipLeftRight) {
 			rightHorizontal = Input.GetAxis ("Horizontal") * 1.0f - calibratedLH;

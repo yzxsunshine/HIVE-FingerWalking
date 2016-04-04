@@ -11,6 +11,14 @@ public class WallTriggerManager : MonoBehaviour {
 				box.gameObject.AddComponent<WallCollisionHandler>();
 			}
 		}
+
+		CapsuleCollider[] caps = GetComponentsInChildren<CapsuleCollider> ();
+		foreach (CapsuleCollider cap in caps) {
+			if(cap.isTrigger == true && cap.gameObject.GetComponent<WallCollisionHandler>() == null) {
+				cap.gameObject.AddComponent<WallCollisionHandler>();
+			}
+		}
+
 		MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>();
 		foreach (MeshRenderer renderer in renderers) {
 			renderer.enabled = false;

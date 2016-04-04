@@ -37,11 +37,14 @@ public class JoystickGestureSingleMode : MonoBehaviour {
 	public float calibratedRH;
 	public float calibratedRV;
 	public float calibratedZ;
+
+	public PlayerStatus playerStatus;
 	// Use this for initialization
 	void Start () {
 		timerDoubleClick = MAX_DOUBLE_CLICK_TIME;
 		travelModelInterface = GetComponent<TravelModelInterface>();
 		joystickSingleModeParams = ConfigurationHandler.joystickSingleModeParams;
+		playerStatus = GetComponent<PlayerStatus> ();
 		//calibratedLH = 0.0f;
 	    //calibratedLV = 0.0f;
 	    //calibratedRH = 0.0f;
@@ -77,6 +80,7 @@ public class JoystickGestureSingleMode : MonoBehaviour {
 		this.GetComponent ("HIVEFPSController").SendMessage ("SegSingleMode");
 
 		travelModelInterface.SetVelocity (moveVel, rotVel);
+		playerStatus.accelerate = zValue;
 		timerDoubleClick += Time.deltaTime;
 	}
 

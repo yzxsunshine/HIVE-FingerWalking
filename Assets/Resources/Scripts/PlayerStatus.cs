@@ -44,6 +44,7 @@ public class PlayerStatus : MonoBehaviour {
 	public bool triggerWaypoint = false;
 	public Vector3 wayPointOnPath;
 	public bool isCollisionOpen = true;
+	public float accelerate = 0.0f;
 	// Use this for initialization
 	void Awake () {
 		travelModelInterface = GetComponent<TravelModelInterface> ();
@@ -173,6 +174,7 @@ public class PlayerStatus : MonoBehaviour {
 		line += transform.rotation.x + "\t" + transform.rotation.y + "\t" + transform.rotation.z + "\t" + transform.rotation.w + "\t";
 		line += headOrientation.x + "\t" + headOrientation.y + "\t" + headOrientation.z + "\t";
 		line += wayPointOnPath.x + "\t" + wayPointOnPath.y + "\t" + wayPointOnPath.z + "\t";
+		line += accelerate;
 		return line;
 	}
 
@@ -181,6 +183,7 @@ public class PlayerStatus : MonoBehaviour {
 		line += "#OrientationX#\t" + "#OrientationY#\t" + "#OrientationZ#\t" + "#OrientationW#\t";
 		line += "#HeadOrientationX#\t" + "#HeadOrientationY#\t" + "#HeadOrientationZ#\t";
 		line += "#WayPointX#\t" + "#WayPointY#\t" + "#WayPointZ#\t";
+		line += "#Accelerate#";
 		return line;
 	}
 

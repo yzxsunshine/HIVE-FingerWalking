@@ -185,4 +185,7 @@ public class HIVEFPSController : MonoBehaviour {
 		hasControl = false;
 	}
 
+	public void StandStill() {
+		GetComponent<Rigidbody> ().velocity = Vector3.zero;
+	}
 }

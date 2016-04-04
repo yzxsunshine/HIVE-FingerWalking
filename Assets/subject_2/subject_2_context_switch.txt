@@ -1,2 +1,0 @@
-#Time To Switch#	#Num of Incorrect Switch#	#Target Mode#	#Current Mode#
-0	0		

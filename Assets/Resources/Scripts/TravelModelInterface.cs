@@ -63,7 +63,7 @@ public class TravelModelInterface : MonoBehaviour  {
 	private int errorSwitchNum = 0;
 	private bool hasControl = true;
 	// Use this for initialization
-	void Start () {
+	void Awake() {
 		controller = GetComponent<HIVEFPSController>();
 		if (Application.loadedLevelName == "ve_complex") {
 			trialControl = GetComponent<TrialControl> ();
@@ -71,13 +71,17 @@ public class TravelModelInterface : MonoBehaviour  {
 		else {
 			cogTrialControl = GetComponent<CogTrialControl>();
 		}
+		playerStatus = GetComponent<PlayerStatus>();
+		studyRecorder = GameObject.Find("StudyRecorder").GetComponent<StudyRecorder>();
+	}
+	void Start () {
+
 		walkingRotVelQueue = new VelocityQueue();
 		walkingRotVelQueue.SetQueueSize(20);
 		forceExt = new VelocityQueue ();
 		forceExt.SetQueueSize (20);
 
-		playerStatus = GetComponent<PlayerStatus>();
-		studyRecorder = GameObject.Find("StudyRecorder").GetComponent<StudyRecorder>();
+
 	}
 	
 	// Update is called once per frame
